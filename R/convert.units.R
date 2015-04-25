@@ -2,10 +2,13 @@ convert.units <-
 structure(function(# Function to convert between phi and micrometers.
 ### The function converts values from the phi-scale to the 
 ### micrometer-scale and vice versa.
+  
 phi,
 ### Numeric vector with grain-size class values in phi to be converted.
+
 mu
 ### Numeric vector with grain-size class values in micrometres to be converted.
+
 ){
   if(missing(mu) == TRUE){
     ## convert phi to mu
