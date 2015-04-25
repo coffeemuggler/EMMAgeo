@@ -1,0 +1,14 @@
+Changes for R-package Luminescence
+
+Version 0.9.1 (2013-09-13)
+	- Function mix.EM(): as.numeric() added to proportion parameter, to also support matrices as input
+	- Function EMMA(), test.lw(), test.L(): weight quantile calulation implemented as sapply() rather than separate function definition
+	- Function EMMA(), test.lw(), test.L(): parameters ls, Vqr, Vqn, Vqsn corrected for geometry (now: ls[2,m], Vq...[q,m])
+	- Function EMMA(): two redundant but convenient function values added: $loadings and $scores
+	- Function test.parameters(): y-axes limits set automatically to prevent false display of data
+	- Function test.lw(): test for valid EMMA()$Mqs matrix added
+	- Function check.data(): lw-validity-test now supports scalars for lw
+	- Function define.limits() was added
+
+Version 0.9.0 (2013-06-21)
+	- Initial version

@@ -1,0 +1,10 @@
+Package: EMMAgeo
+Type: Package
+Title: End-member modelling algorithm and supporting functions for grain-size analysis
+Version: 0.9.1
+Date: 2013-10-14
+Author: Michael Dietze, Elisabeth Dietze
+Maintainer: Michael Dietze <micha.dietze@mailbox.tu-dresden.de>
+Description: This package provides a set of functions for convenient end-member modelling analysis of grain-size data (EMMAgeo). 
+License: GPL-3
+Depends: R (>= 3.0.1), GPArotation, limSolve, shape
