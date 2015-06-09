@@ -1,0 +1,40 @@
+\name{check.data}
+\alias{check.data}
+\title{Function to check data consistency.}
+\description{The input data matrix (X), number of end-members (q),
+weight transformation limits (lw) and constant sum scaling
+parameter (c) are checked for consistency. This includes checking
+for absence of missing values, columns containing only zero-values and 
+for numeric data type of variables. Furthermore, a check tests if 
+lw is below the maximum possible value, preventing numerical instability 
+prior to factor rotation.}
+\usage{check.data(X, q, lw, c, invisible = TRUE)}
+\arguments{
+  \item{X}{Numeric matrix with m samples (rows) and n variables (columns).}
+  \item{q}{Numeric scalar with number of end-members to be modelled.}
+  \item{lw}{Numeric scalar or vector specifying the weight transformation limit, i.e. 
+quantile.}
+  \item{c}{Numeric scalar specifying the constant sum scaling parameter, e.g. 1, 
+100, 1000.}
+  \item{invisible}{Logical scalar setting visibility option.}
+}
+
+\value{Character vector with test results.}
+\references{Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S, 
+Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for 
+deciphering modern detrital processes from lake sediments of Lake Donggi 
+Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.}
+\author{Michael Dietze, Elisabeth Dietze}
+
+
+
+\seealso{\code{\link{EMMA}}}
+\examples{
+## load example data set
+data(X.artificial, envir = environment())
+
+## perform data set check
+check.data(X = X.artificial, q = 6, lw = seq(0, 0.2, 0.01), c = 1)
+}
+
+\keyword{EMMA}

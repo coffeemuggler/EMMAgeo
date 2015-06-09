@@ -63,28 +63,15 @@ Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.}
 \code{\link{test.robustness}}, 
 \code{\link{define.limits}}}
 \examples{
-## load example data set
-data(X.artificial, envir = environment())
+## load example data, i.e. here TR
+data(TR, envir = environment())
 
-## truncate the data set for faster computation
-X.trunc <- X.artificial[1:20,]
-
-## define limits data set
+## define end-member limits
 limits = cbind(c(11, 31, 60, 78), 
                c(13, 33, 62, 80))
 
-## end-member numbers to test
-q  <- 4:8
-## weight transformation limits to test
-lw <- seq(from = 0, to = 0.1, by = 0.025)
-
-## perform robustness test without rejection criteria and plots
-TR  <- test.robustness(X.trunc, q, lw)
-## extract end-member loadings from robustness test data set
-Vqsn <- TR$Vqsn
-
 ## extract robust end-members with limits matrix
-REM <- robust.EM(Vqsn = Vqsn, limits = limits,
+REM <- robust.EM(Vqsn = TR$Vqsn, limits = limits,
                  plot = TRUE,
                  legend = "topleft", 
                  cex = 0.7, 

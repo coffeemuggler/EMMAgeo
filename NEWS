@@ -1,5 +1,10 @@
 Changes for R-package Luminescence
 
+Version 0.9.2
+	- Function create.sample() was added
+	- Example data was enlarged to facilitate function examples
+	- Function lw.max() was added
+
 Version 0.9.1 (2013-09-13)
 	- Function mix.EM(): as.numeric() added to proportion parameter, to also support matrices as input
 	- Function EMMA(), test.lw(), test.L(): weight quantile calulation implemented as sapply() rather than separate function definition

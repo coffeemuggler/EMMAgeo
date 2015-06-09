@@ -104,7 +104,7 @@ pm = FALSE
 
   ## get eigenvector scores as non-negative least squares estimate
   Mq <- matrix(nrow = nrow(X), ncol = q)
-  for (i in 1:nrow(X)) {Mq[i,] = nnls(t(Vqn), as.vector(t(W[i,])))$X}
+  for (i in 1:nrow(X)) {Mq[i,] = limSolve::nnls(t(Vqn), as.vector(t(W[i,])))$X}
 
   ## modelled values matrix
   Wm <- Mq %*% Vqn

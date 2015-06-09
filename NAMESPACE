@@ -1,1 +1,5 @@
 exportPattern("^[[:alpha:]]+")
+import(shape)
+import(shiny)
+importFrom(GPArotation,Varimax)
+importFrom(limSolve,nnls)

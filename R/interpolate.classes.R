@@ -17,6 +17,12 @@ fixed.start = TRUE
 ### to the same values as in the original matrix, default is \code{TRUE}.
 ### This may become necessary to avoid interpolation errors, see example.
 ){
+  ## check input data
+  if(min(boundaries.in, na.rm = TRUE) > min(boundaries.out, na.rm = TRUE) |
+       max(boundaries.in, na.rm = TRUE) < max(boundaries.out, na.rm = TRUE)) {
+    stop("Output boundary range is wider than input boundary range!")
+  }
+  
   ## transform data structure of X
   if(is.matrix(X) == FALSE) {X <- t(as.matrix(X))}
   

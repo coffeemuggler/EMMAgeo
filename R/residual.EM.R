@@ -36,27 +36,9 @@ structure(function # Function to evaluate residual end-member loading.
   ## EMMA
   }, ex = function(){
   ## Some preparing steps to retrieve only robust end-members
-  ## load example data
-  data(X.artificial, envir = environment())
+  ## load example data, i.e. here TR
+  data(REM, envir = environment())
   
-  ## truncate the data set for faster computation
-  X.trunc <- X.artificial[1:20,]
-  
-  ## define limits data set
-  limits = cbind(c(11, 31, 60, 78), 
-                 c(13, 33, 62, 80))
-  
-  ## define end-member numbers to test
-  q  <- 4:8
-  ## define weight transformation limits
-  lw <- seq(from = 0, to = 0.1, by = 0.05)
-  ## perform the robustness test
-  TR  <- test.robustness(X.trunc, q, lw, c = 100)
-  
-  ## extract robust end-members
-  REM <- robust.EM(Vqsn = TR$Vqsn, limits = limits, Vqn = TR$Vqn)
-  
-  ## Calculation of residual end-member loading
   ## define mean robust end-member loadings
   Vqn.rob <- REM$Vqn.mean
   ## perform residual end-member loading calculation

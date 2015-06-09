@@ -108,13 +108,13 @@ invisible = TRUE
     
     for(i in 1:n_frames){
       # define circles
-      filledcircle(r1 = r1, r2 = 0.00001, mid = c(x1[i], y1[i]), 
+      shape::filledcircle(r1 = r1, r2 = 0.00001, mid = c(x1[i], y1[i]), 
                    from = angles_mouth[i], to = 2 * pi - angles_mouth[i], 
                    col = "yellow")
-      filledcircle(r1 = r2, r2 = 0.00001, mid = c(x2[i], y2[i]), 
+      shape::filledcircle(r1 = r2, r2 = 0.00001, mid = c(x2[i], y2[i]), 
                    from = angles_mouth[i], to = 2 * pi - angles_mouth[i], 
                    col = "yellow")
-      filledcircle(r1 = r4, r2 = 0.00001, mid = c(x4[i], y4[i]), 
+      shape::filledcircle(r1 = r4, r2 = 0.00001, mid = c(x4[i], y4[i]), 
                    from = angles_mouth[i] + 3, to = 2 * pi - angles_mouth[i] + 3, 
                    col = "yellow")
       
@@ -126,11 +126,11 @@ invisible = TRUE
       Sys.sleep(dt)
       
       # define white background
-      plotcircle(r = 1.1 * r1, mid = c(x1[i], y1[i]), 
+      shape::plotcircle(r = 1.1 * r1, mid = c(x1[i], y1[i]), 
                  col = "white", lcol = "white")
-      plotcircle(r = 1.1 * r2, mid = c(x2[i], y2[i]), 
+      shape::plotcircle(r = 1.1 * r2, mid = c(x2[i], y2[i]), 
                  col = "white", lcol = "white")
-      plotcircle(r = 1.1 * r4, mid = c(x4[i], y4[i]), 
+      shape::plotcircle(r = 1.1 * r4, mid = c(x4[i], y4[i]), 
                  col = "white", lcol = "white")
     }
   }
