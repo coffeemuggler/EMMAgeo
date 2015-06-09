@@ -1,40 +1,20 @@
-\name{check.data}
-\alias{check.data}
-\title{Function to check data consistency.}
-\description{The input data matrix (X), number of end-members (q),
-weight transformation limits (lw) and constant sum scaling
-parameter (c) are checked for consistency. This includes checking
-for absence of missing values, columns containing only zero-values and 
-for numeric data type of variables. Furthermore, a check tests if 
-lw is below the maximum possible value, preventing numerical instability 
-prior to factor rotation.}
-\usage{check.data(X, q, lw, c, invisible = TRUE)}
+\name{EMMA.GUI}
+\alias{EMMA.GUI}
+\title{Function to run EMMA with a GUI.}
+\description{This function will call a shiny app that allows running EMMA with 
+  a graphic user interface.}
+\usage{EMMA.GUI(path = "~/Documents/projects/R-packages/R_EMMAgeo/EMMAgeo/")}
 \arguments{
-  \item{X}{Numeric matrix with m samples (rows) and n variables (columns).}
-  \item{q}{Numeric scalar with number of end-members to be modelled.}
-  \item{lw}{Numeric scalar or vector specifying the weight transformation limit, i.e. 
-quantile.}
-  \item{c}{Numeric scalar specifying the constant sum scaling parameter, e.g. 1, 
-100, 1000.}
-  \item{invisible}{Logical scalar setting visibility option.}
+  \item{path}{Character scalar, path to the R-package, with package name. If 
+     omitted, the likely path will be searched automatically.}
 }
 
-\value{Character vector with test results.}
-\references{Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S, 
-Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for 
-deciphering modern detrital processes from lake sediments of Lake Donggi 
-Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.}
+\value{A graphic user interface to run EMMA.}
 \author{Michael Dietze, Elisabeth Dietze}
-
-
-
 \seealso{\code{\link{EMMA}}}
 \examples{
-## load example data set
-data(X.artificial, envir = environment())
-
-## perform data set check
-check.data(X = X.artificial, q = 6, lw = seq(0, 0.2, 0.01), c = 1)
+## not run
+# EMMA.GUI()
 }
 
 \keyword{EMMA}
