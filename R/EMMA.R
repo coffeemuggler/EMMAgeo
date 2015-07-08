@@ -201,7 +201,9 @@ pm = FALSE
 
   ## rescale end-member loadings after Miesch (1976)
   Vqs <- Vqn
-  for(i in 1:q) {Vqs[i,] <- s[i] * Vqn[i,] * ((ls[2,] - ls[1,]) + ls[1,])}
+  for (i in 1:q) {
+    Vqs[i, ] <- s[i] * Vqn[i, ] * (ls[2, ] - ls[1, ]) + ls[1, ]
+  } 
 
   ## normalise end-member loadings
   Vqsn <- Vqs / apply(Vqs, 1, sum) * c
