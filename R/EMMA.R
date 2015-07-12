@@ -83,82 +83,62 @@
 #'            colour = colors()[c(441, 496, 499, 506)])
 #' 
 #' @export EMMA
-EMMA <-
-structure(function # Function for end-member modelling analysis.
-### A multivariate data set (m samples composed of n variables) is decomposed
-### by eigenspace analysis and modelled with a given number of end-members 
-### (q). Several steps of scaling, transformation, normalisation, eigen 
-### space decomposition, factor rotation, data modelling and evaluation are
-### performed.
-(X,
-### Numeric matrix with m samples (rows) and n variables (columns).
-q, 
-### Numeric scalar with number of end-members to be modelled.
-lw,
-### Numeric scalar with the weight tranformation limit, i.e. quantiles, 
-### cf. Klovan & Imbrie (1971); default is 0.
-c,
-### Numeric scalar specifying the constant sum scaling parameter, e.g. 1, 
-### 100, 1000; default is 100.
-Vqn,
-### Numeric matrix specifying optional unscaled user-defined end-member
-### loadings. If provided, these are used instead of model-derived ones.
-EM.ID,
-### Character vector with end-member names. If present, these will be set
-### as row-names of the output data set and used in the legend text if
-### a legend is enabled.
-classunits,
-### Numeric vector, optional class units (e.g. micrometers or phi-units) of 
-### the same length as columns of X.
-ID,
-### Numeric or character vector, optional sample IDs of the same
-### length as rows of X.
-rotation = "Varimax",
-### Character scalar, rotation type, default is "Varimax" (cf. Dietze et 
-### al., 2012). One out of the rotations provided in GPArotation is 
-### possible (cf. \code{\link{rotations}}).
-plot = FALSE,
-### Logical scalar, optional graphical output of the results, default is 
-### FALSE. If set to TRUE, end-member loadings and end-member scores are 
-### plotted.
-legend,
-### Character scalar, legend position (cf. \code{\link{legend}}). If
-### omitted, no legend will be plotted, default is no legend.
-...,
-### Additional arguments passed to the plot function. Since the function 
-### returns two plots some additional graphical parameters must be
-### specified as vector with the first element for the first plot
-### and the second element for the second plot. Legend contents and 
-### colours apply to both plots. If colours are specified, \code{colour} 
-### should be used instead of \code{col}. See example section for 
-### further advice.
-pm = FALSE
-### Logical scalar to enable pm.
+EMMA <- function(
+ X,
+ q, 
+ lw,
+ c,
+ Vqn,
+ EM.ID,
+ classunits,
+ ID,
+ rotation = "Varimax",
+ plot = FALSE,
+ legend,
+ ...,
+ pm = FALSE
 ) {
    
   ## check/set default values
-  if(missing(lw) == TRUE) {lw <- 0}
-  if(missing(c) == TRUE) {c <- 100}
-  if(missing(EM.ID) == TRUE) {EM.ID <- paste("EM", 1:q, sep = "")}
+  if(missing(lw) == TRUE) {
+    lw <- 0
+    }
+  if(missing(c) == TRUE) {
+    c <- 100
+    }
+  if(missing(EM.ID) == TRUE) {
+    EM.ID <- paste("EM", 1:q, sep = "")
+    }
   
   ## check/set class units vector and test for consistency
-  if(missing(classunits) == TRUE) classunits <- 1:ncol(X)
-  if(ncol(X) != length(classunits)) stop(
-    "Units vector is not of same length as variables.")
+  if(missing(classunits) == TRUE) {
+    classunits <- 1:ncol(X)
+  }
+  
+  if(ncol(X) != length(classunits)) {
+    stop("Units vector is not of same length as variables.")
+    }
   
   ## check/set ID vector and test for consistency
-  if(missing(ID) == TRUE) ID <- 1:nrow(X)
-  if(nrow(X) != length(ID)) stop(
-    "ID vector is not of same length as variables.")
+  if(missing(ID) == TRUE) {
+    ID <- 1:nrow(X)
+  }
+  
+  if(nrow(X) != length(ID)) {
+    stop("ID vector is not of same length as variables.")
+  }
   
   ## End-member modelling
   ## rescale X to constant sum c
-  X  <- X / apply(X, 1, sum) * c
+  X  <- X / apply(X = X, MARGIN = 1, FUN = sum) * c
 
   ## calculate weight limit quantiles column-wise
-  ls <- sapply(X = 1:ncol(X), FUN = function(i) {
-    quantile(x = X[,i], probs = c(lw, 1 - lw), type = 5)})
-
+  ls <- apply(X <- X, 
+              MARGIN = 2, 
+              FUN = quantile, 
+              probs = c(lw, 1 - lw), 
+              type = 5)
+  
   ## perform weight-transformation
   W <- t((t(X) - ls[1,]) / (ls[2,] - ls[1,]))
 
@@ -173,31 +153,40 @@ pm = FALSE
   Vf <- V[,order(seq(ncol(A), 1, -1))]
 
   ## rotate eigenvectors and assign factor loadings
-  Vr <- do.call(rotation, list(Vf[,1:q]))
+  Vr <- do.call(what = rotation, 
+                args = list(Vf[,1:q]))
   Vq <- Vr$loadings[,seq(q, 1, -1)]
 
   ## rescale factor loadings and transpose matrix
-  Vqr <- t(Vq) / apply(Vq, 2, sum) * c
+  Vqr <- t(Vq) / apply(X = Vq, MARGIN = 2, FUN = sum) * c
 
   ## optionally calculate normalised factor loadings
   if(missing(Vqn) == TRUE) {
-    Vqn <- ((Vqr - apply(Vqr, 1, min)) / (
-      apply(Vqr, 1, max) - apply(Vqr, 1, min)))
+    Vqn <- ((Vqr - apply(X = Vqr, MARGIN = 1, FUN = min)) / (
+      apply(X = Vqr, MARGIN = 1, FUN = max) - 
+        apply(X = Vqr, MARGIN = 1, FUN = min)))
   } else {
   ## or use respective values from input data  
     Vqn <- Vqn}
 
   ## get eigenvector scores as non-negative least squares estimate
   Mq <- matrix(nrow = nrow(X), ncol = q)
-  for (i in 1:nrow(X)) {Mq[i,] = limSolve::nnls(t(Vqn), as.vector(t(W[i,])))$X}
-
+  for (i in 1:nrow(X)) {
+    Mq[i,] = limSolve::nnls(t(Vqn), as.vector(t(W[i,])))$X
+  }
+  
   ## modelled values matrix
   Wm <- Mq %*% Vqn
 
   ## calculate scaling vector after Miesch (1976)
-  ls <- sapply(X = 1:ncol(X), FUN = function(x) {
-    quantile(x = X[,x], probs = c(lw, 1 - lw), type = 5)})
-  s <- c - sum(ls[1,]) / apply(Vqn * (ls[2,] - ls[1,]), 1, sum)
+  ls <- apply(X <- X, 
+              MARGIN = 2, 
+              FUN = quantile, 
+              probs = c(lw, 1 - lw), 
+              type = 5)
+  s <- c - sum(ls[1,]) / apply(X = Vqn * (ls[2,] - ls[1,]), 
+                               MARGIN = 1, 
+                               FUN = sum)
 
   ## rescale end-member loadings after Miesch (1976)
   Vqs <- Vqn
@@ -365,21 +354,4 @@ pm = FALSE
   
   ##keyword<<
   ## EMMA
-}, ex = function(){
-  ## load example data and set phi-vector
-  data(X.artificial, envir = environment())
-  phi <- seq(from = 1, to = 10, length.out = ncol(X.artificial))
-  
-  ## perform EMMA with 5 end-members
-  EM <- EMMA(X = X.artificial, q = 5, lw = 0.05, c = 100, plot = TRUE)
-  
-  ## perform EMMA with 4 end-members and more graphical settings
-  EM <- EMMA(X = X.artificial, q = 4, lw = 0.05, c = 100, 
-             plot = TRUE,
-             EM.ID = c("EM 1", "EM 2", "EM 3", "EM 4"),
-             classunits = phi,
-             xlab = c(expression(paste("Class [", phi, "]")), "Sample ID"),
-             legend = "topleft", 
-             cex = 0.7,
-             colour = colors()[c(441, 496, 499, 506)])
-})
+}
