@@ -7,7 +7,8 @@
 #' 
 #' The function values \code{$loadings} and \code{$scores} are redundant. They
 #' are essentially the same as \code{$Vqsn} and \code{$Mqs}. However, they are
-#' included for user convenience.
+#' included for user convenience. \cr\cr We kindly thank Christoph Burow for 
+#' his quick contribution to remove unnecessary loops.
 #' 
 #' @param X Numeric matrix with m samples (rows) and n variables (columns).
 #' @param q Numeric scalar with number of end-members to be modelled.
@@ -102,13 +103,15 @@ EMMA <- function(
   ## check/set default values
   if(missing(lw) == TRUE) {
     lw <- 0
-    }
+  }
+  
   if(missing(c) == TRUE) {
     c <- 100
-    }
+  }
+  
   if(missing(EM.ID) == TRUE) {
     EM.ID <- paste("EM", 1:q, sep = "")
-    }
+  }
   
   ## check/set class units vector and test for consistency
   if(missing(classunits) == TRUE) {
@@ -117,7 +120,7 @@ EMMA <- function(
   
   if(ncol(X) != length(classunits)) {
     stop("Units vector is not of same length as variables.")
-    }
+  }
   
   ## check/set ID vector and test for consistency
   if(missing(ID) == TRUE) {
@@ -166,14 +169,14 @@ EMMA <- function(
       apply(X = Vqr, MARGIN = 1, FUN = max) - 
         apply(X = Vqr, MARGIN = 1, FUN = min)))
   } else {
-  ## or use respective values from input data  
-    Vqn <- Vqn}
+    ## or use respective values from input data  
+    Vqn <- Vqn
+  }
 
   ## get eigenvector scores as non-negative least squares estimate
-  Mq <- matrix(nrow = nrow(X), ncol = q)
-  for (i in 1:nrow(X)) {
-    Mq[i,] = limSolve::nnls(t(Vqn), as.vector(t(W[i,])))$X
-  }
+  Mq <- t(apply(W, MARGIN = 1, FUN = function(row) {
+    limSolve::nnls(t(Vqn), as.vector(t(row)))$X
+  }))
   
   ## modelled values matrix
   Wm <- Mq %*% Vqn
@@ -189,10 +192,9 @@ EMMA <- function(
                                FUN = sum)
 
   ## rescale end-member loadings after Miesch (1976)
-  Vqs <- Vqn
-  for (i in 1:q) {
-    Vqs[i, ] <- s[i] * Vqn[i, ] * (ls[2, ] - ls[1, ]) + ls[1, ]
-  } 
+  Vqs <- t(apply(cbind(t(t(s)), Vqn), MARGIN = 1, FUN = function(row) {
+    row[1] * row[2:length(row)] * (ls[2, ] - ls[1, ]) + ls[1, ]
+  }))
 
   ## normalise end-member loadings
   Vqsn <- Vqs / apply(Vqs, 1, sum) * c
@@ -202,13 +204,10 @@ EMMA <- function(
   
   ## Model evaluation
   ## get number of overlapping end-member loadings
-  ol <- numeric(q)
-  for (i in 1:q) {
-    ol[i] <- if(Vqsn[i, (Vqsn[i,] == max(Vqsn[i,]))] < 
-      max(Vqsn[i, (Vqsn[i,] == max(Vqsn[i,]))])) {1} else {0}
-  }
-  ol <- sum(ol)
-
+  ol <- sum(apply(Vqsn, MARGIN = 1, FUN = function(row) {
+    if (row[row == max(row)] < max(row[row == max(row)])) { 1 } else { 0 }
+  }))
+  
   ## evaluate absolute error and explained variances
   Xm <- Mqs %*% Vqs                       # modelled data values
   Mqs.var <- diag(var(Mqs)) / 
@@ -241,30 +240,69 @@ EMMA <- function(
     
     ## read additional arguments list and check/set default values
     extraArgs <- list(...)
-    main <- if("main" %in% names(extraArgs)) {extraArgs$main} else
-    {c("End-member loadings",
-      "End-member scores")}
-    xlab <- if("xlab" %in% names(extraArgs)) {extraArgs$xlab} else
-    {c("Classes",
-       "Samples")}
-    ylab <- if("ylab" %in% names(extraArgs)) {extraArgs$ylab} else
-    {c("Amount, relative",
-       "Amount, relative")}
-    ylim <- if("ylim" %in% names(extraArgs)) {extraArgs$ylim} else
-    {rbind(c(0, max(Vqsn, na.rm = TRUE)),
-           c(0, 1))}
-    log <- if("log" %in% names(extraArgs)) {extraArgs$log} else
-    {""}
-    colour <- if("colour" %in% names(extraArgs)) {extraArgs$colour} else
-    {seq(1, q)}
-    if("legend" %in% names(extraArgs)) {extraArgs$legend} else
-    {legend.text <- rep(NA, q)
-      for(i in 1:q) legend.text[i] <- paste(EM.ID[i], " (", 
-        round(modes[i], 2), ")", sep = "")}
-    legend.cex <- if("cex" %in% names(extraArgs)) {extraArgs$cex} else
-    {1}
-    legend.lty <- if("lty" %in% names(extraArgs)) {extraArgs$lty} else
-    {1}
+    
+    main <- if("main" %in% names(extraArgs)) {
+      extraArgs$main
+    } else {
+      c("End-member loadings",
+        "End-member scores")
+    }
+    
+    xlab <- if("xlab" %in% names(extraArgs)) {
+      extraArgs$xlab
+    } else {
+      c("Classes",
+        "Samples")
+    }
+    
+    ylab <- if("ylab" %in% names(extraArgs)) {
+      extraArgs$ylab
+    } else {
+      c("Amount, relative",
+        "Amount, relative")
+    }
+    
+    ylim <- if("ylim" %in% names(extraArgs)) {
+      extraArgs$ylim
+    } else {
+      rbind(c(0, max(Vqsn, na.rm = TRUE)),
+            c(0, 1))
+    }
+    
+    log <- if("log" %in% names(extraArgs)) {
+      extraArgs$log
+    } else {
+      ""
+    }
+
+    colour <- if("colour" %in% names(extraArgs)) {
+      extraArgs$colour
+    } else {
+      seq(1, q)
+    }
+    
+    if("legend" %in% names(extraArgs)) {
+      extraArgs$legend
+    } else {
+      legend.text <- rep(NA, q)
+      for(i in 1:q) {
+        legend.text[i] <- paste(EM.ID[i], " (", 
+                                round(modes[i], 2), ")", 
+                                sep = "")
+      }
+    }
+    
+    legend.cex <- if("cex" %in% names(extraArgs)) {
+      extraArgs$cex
+    } else {
+      1
+    }
+    
+    legend.lty <- if("lty" %in% names(extraArgs)) {
+       extraArgs$lty
+    } else {
+        1
+    }
 
     ## setup plot area
     par(mfcol = c(1, 2),
@@ -278,15 +316,23 @@ EMMA <- function(
          ylim = as.vector(ylim[1,]),
          log = log,
          col = colour[1])
-    if(nrow(Vqsn) >= 2) {for(i in 2:nrow(Vqsn)) {lines(
-      classunits, Vqsn[i,], col = colour[i])}}
     
-    if(missing(legend) == FALSE) {legend.position <- legend
-                                  legend(x = legend.position,
+    if(nrow(Vqsn) >= 2) {
+      for(i in 2:nrow(Vqsn)) {
+        lines(x = classunits, 
+              y = Vqsn[i,], 
+              col = colour[i])
+      }
+    }
+    
+    if(missing(legend) == FALSE) {
+      legend.position <- legend
+      legend(x = legend.position,
              legend = legend.text,
              col = colour,
              cex = legend.cex,
-             lty = legend.lty)}
+             lty = legend.lty)
+    }
     
     ## plot end-member scores
     barplot(t(Mqs), names.arg = ID,
@@ -297,13 +343,16 @@ EMMA <- function(
             col = colour,
             horiz = FALSE)
   }
+  
   ## reset plot area format
   par(mfcol = c(1, 1),
       oma=c(0, 0, 0, 0))
   
   ## optionally add pm
-  if(pm == TRUE) {pm <- check.data(matrix(runif(4), ncol = 2),
-                                   5, 0.01, 100, invisible = FALSE)}
+  if(pm == TRUE) {
+    pm <- check.data(matrix(runif(4), ncol = 2),
+                     5, 0.01, 100, invisible = FALSE)
+  }
   
   ## readjust plot margins
   par(oma = c(0, 0, 0, 0))
@@ -314,44 +363,18 @@ EMMA <- function(
     rownames(Vqsn) <- EM.ID
   }
   
-  ##value<< A list with numeric matrix objects.
-  list(loadings = Vqsn,    ##<< Normalised rescaled end-member loadings.
-       scores   = Mqs,     ##<< Rescaled end-member scores.
-       Vqn      = Vqn,     ##<< Normalised end-member loadings.
-       Vqsn     = Vqsn,    ##<< Normalised rescaled end-member loadings.
-       Mqs      = Mqs,     ##<< Rescaled end-member scores.
-       Xm       = Xm,      ##<< Modelled data.
-       modes    = modes,   ##<< Mode class of end-member loadings.
-       Mqs.var  = Mqs.var, ##<< Explained variance of end-members
-       Em       = Em,      ##<< Absolute row-wise model error.
-       En       = En,      ##<< Absolute column-wise model error.
-       Rm       = Rm,      ##<< Row-wise (sample-wise) explained variance.
-       Rn       = Rn,      ##<< Column-wise (variable-wise) explained variance.
-       ol       = ol)      ##<< Number of overlapping end-members.
-       
-  ##end<<
-  
-  ##details<<
-  ## The function values \code{$loadings} and \code{$scores} are redundant.
-  ## They are essentially the same as \code{$Vqsn} and \code{$Mqs}. However,
-  ## they are included for user convenience.
-  
-  ##references<<
-  ## Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S, 
-  ## Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for 
-  ## deciphering modern detrital processes from lake sediments of Lake Donggi 
-  ## Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.\cr
-  ## Klovan JE, Imbrie J. 1971. An Algorithm and FORTRAN-IV Program for 
-  ## Large-Scale Q-Mode Factor Analysis and Calculation of Factor Scores. 
-  ## Mathematical Geology 3: 61-77.
-  ## Miesch AT. 1976. Q-Mode factor analysis of geochemical and petrologic  
-  ## data matrices with constant row sums. U.S. Geological Survey 
-  ## Professsional Papers 574.
-  
-  ##seealso<<
-  ## \code{\link{test.parameters}}, \code{\link{rotations}},
-  ## \code{\link{eigen}}, \code{\link{nnls}}
-  
-  ##keyword<<
-  ## EMMA
+  ## Output list with numeric matrix objects.
+  list(loadings = Vqsn,    ## Normalised rescaled end-member loadings.
+       scores   = Mqs,     ## Rescaled end-member scores.
+       Vqn      = Vqn,     ## Normalised end-member loadings.
+       Vqsn     = Vqsn,    ## Normalised rescaled end-member loadings.
+       Mqs      = Mqs,     ## Rescaled end-member scores.
+       Xm       = Xm,      ## Modelled data.
+       modes    = modes,   ## Mode class of end-member loadings.
+       Mqs.var  = Mqs.var, ## Explained variance of end-members
+       Em       = Em,      ## Absolute row-wise model error.
+       En       = En,      ## Absolute column-wise model error.
+       Rm       = Rm,      ## Row-wise (sample-wise) explained variance.
+       Rn       = Rn,      ## Column-wise (variable-wise) explained variance.
+       ol       = ol)      ## Number of overlapping end-members.
 }
