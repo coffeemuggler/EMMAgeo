@@ -8,7 +8,9 @@
 #' of meaningful end-members for subsequent modelling, e.g. as the number of
 #' end-members, which reaches the first local mRt maximum.\cr\cr Overlapping is
 #' defined as one end-member having its mode within the "area" of any other
-#' end-member, which is genetically not explainable.
+#' end-member, which is genetically not explainable.\cr\cr Special 
+#' acknowledgements go to Christoph Burow for his efforts to implement the 
+#' multicore functionality to this function.
 #' 
 #' @param X Numeric matrix with m samples (rows) and n variables (columns).
 #' @param q Numeric vector of length two, specifying the minimum and maximum

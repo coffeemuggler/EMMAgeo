@@ -208,8 +208,13 @@ EMMA <- function(
     if (row[row == max(row)] < max(row[row == max(row)])) { 1 } else { 0 }
   }))
   
+  ## calculate modelled data set
+  Xm <- Mqs %*% Vqs
+
+  ## normalise modelled data set
+  Xm  <- Xm / apply(X = Xm, MARGIN = 1, FUN = sum) * c
+  
   ## evaluate absolute error and explained variances
-  Xm <- Mqs %*% Vqs                       # modelled data values
   Mqs.var <- diag(var(Mqs)) / 
     sum(diag(var(Mqs))) * 100             # explained scores variance
   Em <- as.vector(apply(X - Xm, 1, mean)) # absolute row-wise model error
