@@ -3,7 +3,7 @@
 \title{Function to run EMMA with a GUI.}
 \description{This function will call a shiny app that allows running EMMA with 
   a graphic user interface.}
-\usage{EMMA.GUI(path = "~/Documents/projects/R-packages/R_EMMAgeo/EMMAgeo/")}
+\usage{EMMA.GUI(path)}
 \arguments{
   \item{path}{Character scalar, path to the R-package, with package name. If 
      omitted, the likely path will be searched automatically.}

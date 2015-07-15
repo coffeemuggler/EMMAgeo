@@ -74,6 +74,7 @@
 #' ## test parameter influence and plot mean total explained variance
 #' TP <- test.parameters(X = X.trunc, q = q, lw = lw, plot = "mRt",
 #'                       legend = "bottomright", cex = 0.7,
+#'                       multicore = FALSE,
 #'                       colour = rgb((1:7) / 7, 0.9, 0.2, 1))
 #' 
 #' ## show maximum number of end-members

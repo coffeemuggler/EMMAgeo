@@ -1,3 +1,16 @@
+#' Function to generate GUI for EMMA.
+#' 
+#' A graphical user interface (GUI) is started.
+#' 
+#' #' @return A GUI.
+#' @author Michael Dietze, Elisabeth Dietze
+#' @keywords EMMA
+#' @examples
+#' 
+#' ## Not run
+#' EMMA.GUI()
+#' 
+#' @export shinyUi
 shinyUI(fluidPage(
   titlePanel("EMMA online - End-member modelling analysis online"),
   

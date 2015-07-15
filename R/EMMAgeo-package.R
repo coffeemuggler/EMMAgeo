@@ -3,7 +3,7 @@
 #' End-member modelling algorithm and supporting functions for grain-size
 #' analysis
 #' 
-#' This package provides a set of functions for convenient end-member modelling
+#' This package provides a set of functions for end-member modelling
 #' analysis of grain-size data (EMMAgeo).
 #' 
 #' \tabular{ll}{ Package: \tab EMMAgeo\cr Type: \tab Package\cr Version: \tab
@@ -14,11 +14,11 @@
 #' @docType package
 #' @author Michael Dietze, Elisabeth Dietze
 #' @keywords package
+#' @import GPArotation
+#' @import limSolve
+#' @import shape
+#' @import shiny
 NULL
-
-
-
-
 
 #' example data
 #' 

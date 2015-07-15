@@ -1,8 +1,26 @@
-## load example data
-data("X.artificial")
+#' Function to generate GUI server for EMMA.
+#' 
+#' A graphical user interface (GUI) server backend is started.
+#' 
+#' @param input A collection of input objects.
+#' @param output A collection of input objects.
+#' @return A GUI server.
+#' @author Michael Dietze, Elisabeth Dietze
+#' @keywords EMMA
+#' @examples
+#' 
+#' ## Not run
+#' EMMA.GUI()
+#' 
+#' @export shinyServer
+
+data(X.artificial, envir = environment())
 X <- X.artificial
 
-shinyServer(function(input, output) {
+shinyServer(function(
+  input, 
+  output
+  ) {
   
   ## define reactive file loading
   get.data <- reactive({

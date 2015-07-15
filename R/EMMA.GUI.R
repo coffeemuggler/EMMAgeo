@@ -1,12 +1,12 @@
 EMMA.GUI <- structure(function(# Function to run EMMA from a GUI.
   
-  path = "~/Documents/projects/R-packages/R_EMMAgeo/EMMAgeo/"
-  
+  path
+
 ){
 
   ## check if path is correct
   if(missing(path) == TRUE) {
-    
+
     ## search on Linux system
     if(Sys.info()["sysname"] == "Linux") {
       potential.paths <- system('find ~/ -type f -name "X.to.find.EMMAgeo.path.MDT.rda"', 
@@ -27,9 +27,9 @@ EMMA.GUI <- structure(function(# Function to run EMMA from a GUI.
     likely.path <- strsplit(x = likely.path, 
                             split = "data/X.to.find.EMMAgeo.path.MDT.rda")[[1]]
     
-  } else {
+  } else if(path == "TEST") {
     
-    
+    path <- "~/Documents/projects/R-packages/R_EMMAgeo/EMMAgeo/"
   }
   
   ## otherwise use provided path
