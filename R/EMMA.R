@@ -358,34 +358,34 @@ EMMA <- function(
             ylim = as.vector(ylim[2,]),
             col = col,
             horiz = FALSE)
+    
+    ## plot legend-like information
+    par(mar = c(1, 1, 1, 1))
+    
+    plot(NA, 
+         xlim = c(0, 1), 
+         ylim = c(0, 1), 
+         axes = FALSE, 
+         ann = FALSE, 
+         frame.plot = TRUE)
+    
+    mtext(line = -2, 
+          text = "End-member ID (mode position | explained variance)", 
+          cex = 0.9 * cex)
+    
+    legend(x = "bottom", 
+           legend = paste(EM.ID, " (", signif(x = modes, digits = 2), " | ", 
+                          signif(x = Mqs.var, digits = 2), " %)", sep = ""), 
+           col = col, 
+           lty = lty, 
+           lwd = lwd, 
+           horiz = TRUE, 
+           box.lty = 0)
+    
+    ## reset plot parameters
+    par(par.old)
   }
-  
-  ## plot legend-like information
-  par(mar = c(1, 1, 1, 1))
-  
-  plot(NA, 
-       xlim = c(0, 1), 
-       ylim = c(0, 1), 
-       axes = FALSE, 
-       ann = FALSE, 
-       frame.plot = TRUE)
-  
-  mtext(line = -2, 
-        text = "End-member ID (mode position | explained variance)", 
-        cex = 0.9 * cex)
-  
-  legend(x = "bottom", 
-         legend = paste(EM.ID, " (", signif(x = modes, digits = 2), " | ", 
-                        signif(x = Mqs.var, digits = 2), " %)", sep = ""), 
-         col = col, 
-         lty = lty, 
-         lwd = lwd, 
-         horiz = TRUE, 
-         box.lty = 0)
-  
-  ## reset plot parameters
-  par(par.old)
-  
+
   ## optionally, assign EM.IDs to Vqsn and Vqn matrices
   if(missing(EM.ID) == FALSE) {
     rownames(Vqn) <- EM.ID
