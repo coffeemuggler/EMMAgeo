@@ -318,7 +318,8 @@ EMMA <- function(
     plot(x = classunits, 
          y = Rn, 
          type = "b", 
-         main = "Explained variance (class-wise)",
+         main = paste("Class-wise explained variance (", 
+                      signif(x = mean(Rn * 100), digits = 2), " %)", sep = ""),
          xlab = xlab[1],
          ylab = expression(paste(R^2, " (%)")),
          log = log)
@@ -327,7 +328,8 @@ EMMA <- function(
     plot(x = 1:nrow(X), 
          y = Rm, 
          type = "b", 
-         main = "Explained variance (sample-wise)",
+         main = paste("Sample-wise explained variance (", 
+                      signif(x = mean(Rm * 100), digits = 2), " %)", sep = ""),
          xlab = xlab[1],
          ylab = expression(paste(R^2, " (%)")))
     
