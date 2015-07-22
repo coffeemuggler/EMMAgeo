@@ -180,6 +180,7 @@ EMMA <- function(
               FUN = quantile, 
               probs = c(lw, 1 - lw), 
               type = 5)
+  
   s <- c - sum(ls[1,]) / apply(X = Vqn * (ls[2,] - ls[1,]), 
                                MARGIN = 1, 
                                FUN = sum)
@@ -239,62 +240,62 @@ EMMA <- function(
     ## read additional arguments list and check/set default values
     extraArgs <- list(...)
     
-    main <- if("main" %in% names(extraArgs)) {
-      extraArgs$main
+    if("main" %in% names(extraArgs)) {
+      main <- extraArgs$main
     } else {
-      c("End-member loadings",
-        "End-member scores")
+      main <- c("End-member loadings",
+                "End-member scores")
     }
     
-    xlab <- if("xlab" %in% names(extraArgs)) {
-      extraArgs$xlab
+    if("xlab" %in% names(extraArgs)) {
+      xlab <- extraArgs$xlab
     } else {
-      c("Classes",
-        "Samples")
+      xlab <- c("Classes",
+                "Samples")
     }
     
-    ylab <- if("ylab" %in% names(extraArgs)) {
-      extraArgs$ylab
+    if("ylab" %in% names(extraArgs)) {
+      ylab <- extraArgs$ylab
     } else {
-      c("Amount, relative",
-        "Amount, relative")
+      ylab <- c("Amount, relative",
+                "Amount, relative")
     }
     
-    ylim <- if("ylim" %in% names(extraArgs)) {
-      extraArgs$ylim
+    if("ylim" %in% names(extraArgs)) {
+      ylim <- extraArgs$ylim
     } else {
-      rbind(c(0, max(Vqsn, na.rm = TRUE)),
-            c(0, 1))
+      ylim <- rbind(c(0, max(Vqsn, na.rm = TRUE)),
+                    c(0, 1))
     }
     
-    log <- if("log" %in% names(extraArgs)) {
-      extraArgs$log
+    if("log" %in% names(extraArgs)) {
+      log <- extraArgs$log
     } else {
-      ""
+      log <- ""
     }
 
-    col <- if("col" %in% names(extraArgs)) {
-      extraArgs$col
+    if("col" %in% names(extraArgs)) {
+      col <- extraArgs$col
     } else {
-      seq(1, q)
+      col <- seq(1, q)
     }
     
-    cex <- if("cex" %in% names(extraArgs)) {
-      extraArgs$cex
+    if("cex" %in% names(extraArgs)) {
+      cex <- extraArgs$cex
     } else {
-      1
+      cex <- 1
     }
     
-    lty <- if("lty" %in% names(extraArgs)) {
-       extraArgs$lty
+    if("lty" %in% names(extraArgs)) {
+      lty <- extraArgs$lty
     } else {
-        1
+      lty <- 1
     }
 
-    lwd <- if("lwd" %in% names(extraArgs)) {
-      extraArgs$lwd
+    if("lwd" %in% names(extraArgs)) {
+      lwd <- extraArgs$lwd
     } else {
-      1
+      lwd <- 1
     }
 
     ## setup plot area
@@ -324,7 +325,7 @@ EMMA <- function(
          log = log)
     
     ## plot row-wise explained variance
-    plot(x = 1:ncol(X), 
+    plot(x = 1:nrow(X), 
          y = Rm, 
          type = "b", 
          main = "Explained variance (sample-wise)",
