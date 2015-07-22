@@ -102,10 +102,6 @@ EMMA <- function(
     c <- 100
   }
   
-  if(missing(EM.ID) == TRUE) {
-    EM.ID <- paste("EM", 1:q, sep = "")
-  }
-  
   ## check/set class units vector and test for consistency
   if(missing(classunits) == TRUE) {
     classunits <- 1:ncol(X)
@@ -227,7 +223,10 @@ EMMA <- function(
   Vqn <- Vqn[ind.sort,]
   Mqs <- Mqs[,ind.sort]
   Mqs.var <- Mqs.var[ind.sort]
-  EM.ID <- EM.ID[ind.sort]
+  
+  if(missing(EM.ID) == TRUE) {
+    EM.ID <- paste("EM", 1:q, sep = "")
+  }
   
   ## determine mode class for all end-member loadings
   modes <- numeric(q)
