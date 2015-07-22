@@ -20,8 +20,7 @@
 #' end-member loadings. If provided, these are used instead of model-derived
 #' ones.
 #' @param EM.ID Character vector with end-member names. If present, these will
-#' be set as row-names of the output data set and used in the legend text if a
-#' legend is enabled.
+#' be set as row-names of the output data set and used in the legend text.
 #' @param classunits Numeric vector, optional class units (e.g. micrometers or
 #' phi-units) of the same length as columns of X.
 #' @param ID Numeric or character vector, optional sample IDs of the same
@@ -32,14 +31,10 @@
 #' @param plot Logical scalar, optional graphical output of the results,
 #' default is FALSE. If set to TRUE, end-member loadings and end-member scores
 #' are plotted.
-#' @param legend Character scalar, legend position (cf. \code{\link{legend}}).
-#' If omitted, no legend will be plotted, default is no legend.
 #' @param \dots Additional arguments passed to the plot function. Since the
 #' function returns two plots some additional graphical parameters must be
 #' specified as vector with the first element for the first plot and the second
-#' element for the second plot. Legend contents and colours apply to both
-#' plots. If colours are specified, \code{colour} should be used instead of
-#' \code{col}. See example section for further advice.
+#' element for the second plot. 
 #' @param pm Logical scalar to enable pm.
 #' @return A list with numeric matrix objects. \item{loadings}{Normalised
 #' rescaled end-member loadings.} \item{scores}{Rescaled end-member scores.}
@@ -79,9 +74,8 @@
 #'            EM.ID = c("EM 1", "EM 2", "EM 3", "EM 4"),
 #'            classunits = phi,
 #'            xlab = c(expression(paste("Class [", phi, "]")), "Sample ID"),
-#'            legend = "topleft", 
 #'            cex = 0.7,
-#'            colour = colors()[c(441, 496, 499, 506)])
+#'            col = colors()[c(441, 496, 499, 506)])
 #' 
 #' @export EMMA
 EMMA <- function(
@@ -95,7 +89,6 @@ EMMA <- function(
  ID,
  rotation = "Varimax",
  plot = FALSE,
- legend,
  ...,
  pm = FALSE
 ) {
@@ -280,38 +273,63 @@ EMMA <- function(
       ""
     }
 
-    colour <- if("colour" %in% names(extraArgs)) {
-      extraArgs$colour
+    col <- if("col" %in% names(extraArgs)) {
+      extraArgs$col
     } else {
       seq(1, q)
     }
     
-    if("legend" %in% names(extraArgs)) {
-      extraArgs$legend
-    } else {
-      legend.text <- rep(NA, q)
-      for(i in 1:q) {
-        legend.text[i] <- paste(EM.ID[i], " (", 
-                                round(modes[i], 2), ")", 
-                                sep = "")
-      }
-    }
-    
-    legend.cex <- if("cex" %in% names(extraArgs)) {
+    cex <- if("cex" %in% names(extraArgs)) {
       extraArgs$cex
     } else {
       1
     }
     
-    legend.lty <- if("lty" %in% names(extraArgs)) {
+    lty <- if("lty" %in% names(extraArgs)) {
        extraArgs$lty
     } else {
         1
     }
 
+    lwd <- if("lwd" %in% names(extraArgs)) {
+      extraArgs$lwd
+    } else {
+      1
+    }
+
     ## setup plot area
-    par(mfcol = c(1, 2),
-        oma=c(0, 1, 0, 0))
+    ## save origial parameters
+    par.old <- op <- par(no.readonly = TRUE)
+    
+    ## adjust margins
+    par(mar = c(3.9, 4.5, 3.1, 1.1))
+    
+    ## define layout
+    layout(rbind(c(1, 1, 2, 2), 
+                 c(1, 1, 2, 2), 
+                 c(3, 3, 4, 4), 
+                 c(3, 3, 4, 4),
+                 c(3, 3, 4, 4), 
+                 c(3, 3, 4, 4),
+                 c(5, 5, 5, 5))
+           )
+
+    ## plot col-wise explained variance
+    plot(x = classunits, 
+         y = Rn, 
+         type = "b", 
+         main = "Explained variance (class-wise)",
+         xlab = xlab[1],
+         ylab = expression(paste(R^2, " (%)")),
+         log = log)
+    
+    ## plot row-wise explained variance
+    plot(x = 1:ncol(X), 
+         y = Rm, 
+         type = "b", 
+         main = "Explained variance (sample-wise)",
+         xlab = xlab[1],
+         ylab = expression(paste(R^2, " (%)")))
     
     ## plot end-member loadings
     plot(classunits, Vqsn[1,], type = "l", 
@@ -320,23 +338,14 @@ EMMA <- function(
          ylab = ylab[1],
          ylim = as.vector(ylim[1,]),
          log = log,
-         col = colour[1])
+         col = col[1])
     
     if(nrow(Vqsn) >= 2) {
       for(i in 2:nrow(Vqsn)) {
         lines(x = classunits, 
               y = Vqsn[i,], 
-              col = colour[i])
+              col = col[i])
       }
-    }
-    
-    if(missing(legend) == FALSE) {
-      legend.position <- legend
-      legend(x = legend.position,
-             legend = legend.text,
-             col = colour,
-             cex = legend.cex,
-             lty = legend.lty)
     }
     
     ## plot end-member scores
@@ -345,23 +354,36 @@ EMMA <- function(
             xlab = xlab[2], 
             ylab = ylab[2],
             ylim = as.vector(ylim[2,]),
-            col = colour,
+            col = col,
             horiz = FALSE)
   }
   
-  ## reset plot area format
-  par(mfcol = c(1, 1),
-      oma=c(0, 0, 0, 0))
+  ## plot legend-like information
+  par(mar = c(1, 1, 1, 1))
   
-  ## optionally add pm
-  if(pm == TRUE) {
-    pm <- check.data(matrix(runif(4), ncol = 2),
-                     5, 0.01, 100, invisible = FALSE)
-  }
+  plot(NA, 
+       xlim = c(0, 1), 
+       ylim = c(0, 1), 
+       axes = FALSE, 
+       ann = FALSE, 
+       frame.plot = TRUE)
   
-  ## readjust plot margins
-  par(oma = c(0, 0, 0, 0))
-
+  mtext(line = -2, 
+        text = "End-member ID (mode position | explained variance)", 
+        cex = 0.9 * cex)
+  
+  legend(x = "bottom", 
+         legend = paste(EM.ID, " (", signif(x = modes, digits = 2), " | ", 
+                        signif(x = Mqs.var, digits = 2), " %)", sep = ""), 
+         col = col, 
+         lty = lty, 
+         lwd = lwd, 
+         horiz = TRUE, 
+         box.lty = 0)
+  
+  ## reset plot parameters
+  par(par.old)
+  
   ## optionally, assign EM.IDs to Vqsn and Vqn matrices
   if(missing(EM.ID) == FALSE) {
     rownames(Vqn) <- EM.ID
