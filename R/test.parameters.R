@@ -522,12 +522,12 @@ test.parameters <-function(
   ## readjust plot margins
   par(oma = c(0, 0, 0, 0))
   
-  ##value<< A list with result objects
-  list(mEm   = mEm,     ##<< Absolute row-wise model error.
-       mEn   = mEn,     ##<< Absolute column-wise model error.
-       mRm   = mRm,     ##<< Mean row-wise explained variance.
-       mRn   = mRn,     ##<< Mean column-wise explained variance.
-       mRt   = mRt,     ##<< Mean total explained variance.
-       ol    = ol,      ##<< Number of overlapping end-member loadings.
-       q.max = q.max)   ##<< Maximum number of meaningful end-members.
+  ## return result
+  list(mEm   = mEm,
+       mEn   = mEn,
+       mRm   = mRm,
+       mRn   = mRn,
+       mRt   = mRt,
+       ol    = ol, 
+       q.max = q.max)
 }

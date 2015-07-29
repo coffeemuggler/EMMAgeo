@@ -70,51 +70,19 @@
 #'                  median = TRUE)
 #' 
 #' @export robust.EM
-robust.EM <-
-structure(function # Function to extract robust end-members.
-### This function takes a matrix with end-member loadings and extracts those
-### whose modes fall into specified limits. The function returns a list with 
-### all passing end-member loadings and scores, along with their respective 
-### coumn-wise (variable-wise) measures of centrality and dispersion.
-(Vqsn,
-### Numeric matrix with m samples (rows) and n variables (columns).
-limits,
-### Numeric matrix with two columns that contain the boundaries of mode classes
-### for each end-member. The first column contains the lower, the second column
-### the upper limit. If \code{classunits} are provided, the limits are assumed 
-### to relate to these units, if omitted column-numbers of \code{Vqsn} 
-### are used.
-quantiles,
-### Optional numeric vector of length two with the quantiles to be
-### evaluated for the robust end-member loadings; default is 
-### \code{c(0.25, 0.75)}.
-Vqn,
-### Numeric matrix with optional normalised factor loadings. If present, the 
-### same factor loadings as the respectively selected end-member loadings 
-### are returned.
-classunits,
-### Numeric vector, optional class units (e.g. phi classes or micrometers) of 
-### the same length as columns of X.
-ID,
-### Numeric or character vector, optional sample IDs of the same
-### length as columns of X.
-plot = FALSE,
-### Logical scalar, optional graphical output of the results, default is FALSE.
-### If set to TRUE, selected end-member loadings are plotted in different 
-### colours, according to the specified classes. All end-member loadings are 
-### plotted in pale colour, means and standard deviations are plotted above 
-### in thicker lines. To plot median and quantile range instead of mean and 
-### standard deviation, add \code{median = TRUE} as further plot parameter. 
-### See examples section for further advice.
-legend,
-### Character scalar, specifing legend position (cf. \code{\link{legend}}). If
-### omitted, no legend will be plotted, default is no legend.
-...,
-### Additional arguments passed to the plot function. Use \code{colour} instead
-### of \code{col} to create different colours.
-pm = FALSE
-### Logical scalar to enable pm.
+robust.EM <- function(
+  Vqsn,
+  limits,
+  quantiles,
+  Vqn,
+  classunits,
+  ID,
+  plot = FALSE,
+  legend,
+  ...,
+  pm = FALSE
 ) {
+  
   ## check/set class units vector and test for consistency
   if(missing(classunits) == TRUE) {classunits <- 1:ncol(Vqsn)}
   if(missing(quantiles) == TRUE) {quantiles <- c(0.25, 0.75)}
@@ -139,10 +107,13 @@ pm = FALSE
   
   ## select modes that fall into limits for all limit pairs
   for(i in 1:nrow(limits)) {
+
     ## assign valid loadings
     EM.Vqsn <- Vqsn[(modes >= limits[i,1] & modes <= limits[i,2]),]
+    
     ## append loadings matrix to list
     EM.Vqsn.list[[length(EM.Vqsn.list) + 1]] <- EM.Vqsn
+    
     ## test if Vqn data set is present and if so assign valid loadings to list
     if(missing(Vqn) != TRUE) {
       EM.Vqn <- Vqn[(modes >= limits[i,1] & modes <= limits[i,2]),]
@@ -214,9 +185,10 @@ pm = FALSE
       {seq(1, nrow(EM.Vqsn.mean))}
       if("legend" %in% names(extraArgs)) {legend.text <- extraArgs$legend} else
       {legend.text <- rep(NA, nrow(EM.Vqsn.mean))
-       for(i in 1:nrow(EM.Vqsn.mean)) {mode <- classunits[EM.Vqsn.mean[i,] == 
-                                                            max(EM.Vqsn.mean[i,])]
-                                       legend.text[i] <- paste("EM ", i, " (", round(mode, 2), ")", sep = "")}}
+       for(i in 1:nrow(EM.Vqsn.mean)) {
+         mode <- classunits[EM.Vqsn.mean[i,] == max(EM.Vqsn.mean[i,])]
+         legend.text[i] <- paste("EM ", i, " (", round(mode, 2), ")", 
+                                 sep = "")}}
       legend.cex <- if("cex" %in% names(extraArgs)) {extraArgs$cex} else
       {1}
       legend.lty <- if("lty" %in% names(extraArgs)) {extraArgs$lty} else
@@ -381,33 +353,4 @@ pm = FALSE
          Vqsn.qt1    = EM.Vqsn.qt1,
          Vqsn.qt2    = EM.Vqsn.qt2)
   }
-
-  ##references<<
-  ## Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S, 
-  ## Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for 
-  ## deciphering modern detrital processes from lake sediments of Lake Donggi 
-  ## Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
-  
-  ##seealso<<
-  ## \code{\link{EMMA}}, 
-  ## \code{\link{test.robustness}}, 
-  ## \code{\link{define.limits}}
-  
-  ##keyword<<
-  ## EMMA
-}, ex = function(){
-  ## load example data, i.e. here TR
-  data(TR, envir = environment())
-  
-  ## define end-member limits
-  limits = cbind(c(11, 31, 60, 78), 
-                 c(13, 33, 62, 80))
-  
-  ## extract robust end-members with limits matrix
-  REM <- robust.EM(Vqsn = TR$Vqsn, limits = limits,
-                   plot = TRUE,
-                   legend = "topleft", 
-                   cex = 0.7, 
-                   colour = c("orange", "navyblue", "springgreen4", "red4"),
-                   median = TRUE)
-})
+}

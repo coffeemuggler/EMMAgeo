@@ -34,18 +34,11 @@
 #' test.lw(X = X.artificial, lw = lw)
 #' 
 #' @export test.lw
-test.lw <-
-structure(function # Function to test maximum valid lw value.
-### This function performs the weight transformation of the data matrix
-### after Klovan & Imbrie (1971) and performs EMMA() with different weight 
-### limits to check if valied results are yielded. It returns the 
-### maximum value for which the transformation remains stable.
-(X,
-### Numeric matrix with m samples (rows) and n variables (columns).
-lw
-### Numeric vector specifying the weight transformation limit, i.e. 
-### quantile; default is 0.
+test.lw <- function(
+  X,
+  lw
 ){
+  
   ## check/set default value
   if(missing(lw) == TRUE) {lw = 0}
   
@@ -78,33 +71,7 @@ lw
   step  <- i
   lw.max  <- lw[i]
   
-  ##value<< A list with objects
-  list(step = step, ##<< Numeric scalar with position of last valid value.
-       lw.max = lw.max) ##<< Numeric scalar with last valid value of lw.
-  ##end<<
-  
-  ##references<<
-  ## Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S, 
-  ## Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for 
-  ## deciphering modern detrital processes from lake sediments of Lake Donggi 
-  ## Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180. \cr
-  ## Klovan JE, Imbrie J. 1971. An Algorithm and FORTRAN-IV Program for 
-  ## Large-Scale Q-Mode Factor Analysis and Calculation of Factor Scores. 
-  ## Mathematical Geology 3: 61-77.
-    
-  ##seealso<<
-  ## \code{\link{EMMA}}, \code{\link{check.data}}, 
-  ## \code{\link{test.parameters}}
-  
-  ##keyword<<
-  ## EMMA
-}, ex = function(){
-  ## load example data set
-  data(X.artificial, envir = environment())
-  
-  ## create weight transformation limits vector
-  lw <- seq(from = 0, to = 0.6, by = 0.02)
-  
-  ## test the vector
-  test.lw(X = X.artificial, lw = lw)
-})
+  ## return results
+  return(list(step = step,
+              lw.max = lw.max))
+}

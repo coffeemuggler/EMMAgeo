@@ -5,7 +5,7 @@
 \title{Function for end-member modelling analysis.}
 \usage{
 EMMA(X, q, lw, c, Vqn, EM.ID, classunits, ID, rotation = "Varimax",
-  plot = FALSE, legend, ..., pm = FALSE)
+  plot = FALSE, ..., pm = FALSE)
 }
 \arguments{
 \item{X}{Numeric matrix with m samples (rows) and n variables (columns).}
@@ -23,8 +23,7 @@ end-member loadings. If provided, these are used instead of model-derived
 ones.}
 
 \item{EM.ID}{Character vector with end-member names. If present, these will
-be set as row-names of the output data set and used in the legend text if a
-legend is enabled.}
+be set as row-names of the output data set and used in the legend text.}
 
 \item{classunits}{Numeric vector, optional class units (e.g. micrometers or
 phi-units) of the same length as columns of X.}
@@ -40,17 +39,12 @@ possible (cf. \code{\link{rotations}}).}
 default is FALSE. If set to TRUE, end-member loadings and end-member scores
 are plotted.}
 
-\item{legend}{Character scalar, legend position (cf. \code{\link{legend}}).
-If omitted, no legend will be plotted, default is no legend.}
-
 \item{pm}{Logical scalar to enable pm.}
 
 \item{\dots}{Additional arguments passed to the plot function. Since the
 function returns two plots some additional graphical parameters must be
 specified as vector with the first element for the first plot and the second
-element for the second plot. Legend contents and colours apply to both
-plots. If colours are specified, \code{colour} should be used instead of
-\code{col}. See example section for further advice.}
+element for the second plot.}
 }
 \value{
 A list with numeric matrix objects. \item{loadings}{Normalised
@@ -90,9 +84,8 @@ EM <- EMMA(X = X.artificial, q = 4, lw = 0.05, c = 100,
            EM.ID = c("EM 1", "EM 2", "EM 3", "EM 4"),
            classunits = phi,
            xlab = c(expression(paste("Class [", phi, "]")), "Sample ID"),
-           legend = "topleft",
            cex = 0.7,
-           colour = colors()[c(441, 496, 499, 506)])
+           col = colors()[c(441, 496, 499, 506)])
 }
 \author{
 Michael Dietze, Elisabeth Dietze

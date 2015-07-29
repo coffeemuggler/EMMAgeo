@@ -32,28 +32,14 @@
 #' check.data(X = X.artificial, q = 6, lw = seq(0, 0.2, 0.01), c = 1)
 #' 
 #' @export check.data
-check.data <-
-structure(function # Function to check data consistency.
-### The input data matrix (X), number of end-members (q),
-### weight transformation limits (lw) and constant sum scaling
-### parameter (c) are checked for consistency. This includes checking
-### for absence of missing values, columns containing only zero-values and 
-### for numeric data type of variables. Furthermore, a check tests if 
-### lw is below the maximum possible value, preventing numerical instability 
-### prior to factor rotation.
-(X, 
-### Numeric matrix with m samples (rows) and n variables (columns).
-q, 
-### Numeric scalar with number of end-members to be modelled.
-lw,
-### Numeric scalar or vector specifying the weight transformation limit, i.e. 
-### quantile.
-c,
-### Numeric scalar specifying the constant sum scaling parameter, e.g. 1, 
-### 100, 1000.
-invisible = TRUE
-### Logical scalar setting visibility option.
+check.data <- function(
+  X, 
+  q, 
+  lw,
+  c,
+  invisible = TRUE
 ){
+  
   ## create result vector
   result <- NA
   
@@ -171,23 +157,4 @@ invisible = TRUE
   
   ## return result
   return(result[2:length(result)])
-  ### Character vector with test results.
-  
-  ##references<<
-  ## Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S, 
-  ## Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for 
-  ## deciphering modern detrital processes from lake sediments of Lake Donggi 
-  ## Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
-    
-  ##seealso<<
-  ## \code{\link{EMMA}}
-  
-  ##keyword<<
-  ## EMMA
-}, ex = function(){
-  ## load example data set
-  data(X.artificial, envir = environment())
-  
-  ## perform data set check
-  check.data(X = X.artificial, q = 6, lw = seq(0, 0.2, 0.01), c = 1)
-  })
+}
