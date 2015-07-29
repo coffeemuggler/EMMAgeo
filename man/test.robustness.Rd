@@ -5,7 +5,7 @@
 \title{Function to test model robustness.}
 \usage{
 test.robustness(X, q, lw, P, c, classunits, ID, rotation = "Varimax", ol.rej,
-  mRt.rej, plot = FALSE, .., pm = FALSE)
+  mRt.rej, plot = FALSE, ..., pm = FALSE)
 }
 \arguments{
 \item{X}{Numeric matrix with m samples (rows) and n variables (columns).}

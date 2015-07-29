@@ -111,21 +111,18 @@
 #' @export test.robustness
 test.robustness <- function(
   X,
-q, 
-lw,
-P,
-c,
-classunits,
-ID,
-rotation = "Varimax",
-ol.rej,
-mRt.rej,
-plot = FALSE,
-### Logical scalar, optional graphical output of the results, default is 
-### FALSE. If set to TRUE, end-member loadings and end-member scores are 
-### plotted.
-..,
-pm = FALSE
+  q, 
+  lw,
+  P,
+  c,
+  classunits,
+  ID,
+  rotation = "Varimax",
+  ol.rej,
+  mRt.rej,
+  plot = FALSE,
+  ...,
+  pm = FALSE
 ){
   
   ## check/set class units vector and test for consistency
@@ -294,12 +291,12 @@ pm = FALSE
                                    5, 0.01, 100, invisible = FALSE)}
   
   ## return results
-  return(list(q = data.t[,1],
+  list(q = data.t[,1],
        lw = data.t[,2],
        modes = data.t[,3],
        mRt = data.t[,4],
        ol = data.t[,5],
        loadings = Vqsn.t,
        Vqsn = Vqsn.t,
-       Vqn = Vqn.t))
+       Vqn = Vqn.t)
 }
