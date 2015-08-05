@@ -34,7 +34,6 @@ shinyServer(function(
     } else {
      
       return(read.table(file = file.user$datapath, 
-                        header = input$header, 
                         sep = input$sep)) 
     }
   })
@@ -47,7 +46,34 @@ shinyServer(function(
       X <- get.data()
     }
     
-    data.frame(x = X)
+    X <- data.frame(x = X)
+    
+    if(input$Classes == TRUE) {
+      classes <- X[1,]
+      X <- X[-1,]
+    } else {
+      classes <- seq(from = 1, to = ncol(X))
+    }
+    
+    if(input$ID == TRUE) {
+      ID <- X[,1]
+      classes <- classes[-1]
+      X <- X[,-1]
+    }
+    
+    if(input$Depth == TRUE) {
+      Depth <- X[,2]
+      classes <- classes[-1]
+      X <- X[,-1]
+    }
+    
+    if(input$Classes == TRUE) {
+      ID <- ID[-1]
+      Depth <- Depth[-1]
+    }
+    
+    X
+    
   })
   
   ## render GSD plot
