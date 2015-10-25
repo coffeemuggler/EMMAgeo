@@ -172,7 +172,7 @@ test.robustness <- function(
   
   ## create result matrices
   data.t <- matrix(nrow = sum(q.t), 
-                   ncol = 7) # metadata (q, lw, modes, mRt, mRm, mRn, ol)
+                   ncol = 10) # metadata (q, lw, modes, mRt, mRm, mRn, mEt, mEm, mEn, ol)
   Vqn.t  <- matrix(nrow = sum(q.t), 
                    ncol = ncol(X)) # end-member loadings
   Vqsn.t <- matrix(nrow = sum(q.t), 
@@ -204,6 +204,10 @@ test.robustness <- function(
                                     na.rm = TRUE), q.t[i]), # mRt
                            rep(mean(EM$Rm, na.rm = TRUE), q.t[i]), # mRm
                            rep(mean(EM$Rn, na.rm = TRUE), q.t[i]), # mRn
+                           rep(mean(c(EM$Em, EM$En), 
+                                    na.rm = TRUE), q.t[i]), # mEt
+                           rep(mean(EM$Em, na.rm = TRUE), q.t[i]), # mEm
+                           rep(mean(EM$En, na.rm = TRUE), q.t[i]), # mEn
                            rep(EM$ol, q.t[i])) # ol
     
     ## update counter variables
@@ -220,7 +224,7 @@ test.robustness <- function(
   ## optionally remove all data sets that failed rejection criterion ol.rej
   if(missing(ol.rej) == FALSE) {
     ## identify rows that passed criterion
-    ID     <- data.t[,7] < ol.rej
+    ID     <- data.t[,10] < ol.rej
     ## keep data rows that passed criterion
     Vqsn.t <- Vqsn.t[ID,]
     Vqn.t  <- Vqn.t[ID,]
@@ -299,7 +303,10 @@ test.robustness <- function(
        mRt = data.t[,4],
        mRm = data.t[,5],
        mRn = data.t[,6],
-       ol = data.t[,7],
+       mRt = data.t[,7],
+       mRm = data.t[,8],
+       mRn = data.t[,9],
+       ol = data.t[,10],
        loadings = Vqsn.t,
        Vqsn = Vqsn.t,
        Vqn = Vqn.t)
