@@ -1,47 +1,52 @@
-#' Function to interpolate classes.
+#' Interpolate data between different classes.
 #' 
-#' This function interpolates grain-size classes, either to higher or to lower
-#' resolution.
+#' This function interpolates grain-size data for different classes, either to 
+#' higher or to lower resolution.
 #' 
 #' 
-#' @param X Numeric matrix with m samples (rows) and n variables (columns).
-#' @param boundaries.in Numeric vector with class boundaries of the input data.
-#' @param boundaries.out Numeric vector with class boundaries of the output
+#' @param X \code{Numeric} matrix, input data set with m samples (rows) 
+#' and n variables (columns).
+#'  
+#' @param boundaries.in \code{Numeric} vector, class boundaries of the 
+#' input data.
+#' 
+#' @param boundaries.out \code{Numeric} vector, class boundaries of the output
 #' data.
-#' @param method Logical scalar, interpolation method, one out of "linear"
-#' (linear interpolation), "fmm" (cubic spline), "natural" (natural spline),
-#' "periodic" (periodic spline). Default is \code{"natural"}.
-#' @param fixed.start Logical scalar, specifying if the outer boundaries should
-#' be set to the same values as in the original matrix, default is \code{TRUE}.
-#' This may become necessary to avoid interpolation errors, see example.
-#' @return Numeric matrix with interpolated class values.
+#' 
+#' @param method \code{Logical} scalar, interpolation method, one out of 
+#' "linear" (linear interpolation), "fmm" (cubic spline), "natural" 
+#' (natural spline), "periodic" (periodic spline). Default is \code{"natural"}.
+#' 
+#' @param fixed.start \code{Logocal} scalar, specifying if the outer boundaries 
+#' should be set to the same values as in the original matrix, default is 
+#' \code{TRUE}. This may become necessary to avoid interpolation errors, see 
+#' example.
+#' 
+#' @return \code{Numeric} matrix, interpolated class values.
+#' 
 #' @author Michael Dietze, Elisabeth Dietze
 #' @seealso \code{\link{EMMA}}, \code{\link{approx}}, \code{\link{spline}}
-#' @references Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
-#' Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
-#' deciphering modern detrital processes from lake sediments of Lake Donggi
-#' Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
 #' @keywords EMMA
 #' @examples
 #' 
 #' ## load example data
-#' data(X.artificial, envir = environment())
-#' classes.in <- seq(from = 1, to = 10, length.out = ncol(X.artificial))
+#' data(example_X)
+#' classes.in <- seq(from = 1, to = 10, length.out = ncol(X))
 #'   
 #' ## Example 1 - decrease the class numbers
 #' ## define number of output classes
 #' classes.out <- seq(1, 10, length.out = 20)
 #' 
 #' ## interpolate the data set
-#' Y <- interpolate.classes(X = X.artificial, 
+#' Y <- interpolate.classes(X = X, 
 #'                          boundaries.in = classes.in, 
 #'                          boundaries.out = classes.out,
 #'                          method = "linear")
 #' 
 #' ## show original vs. interpolation for first 10 samples
-#' plot(NA, xlim = c(1, 10), ylim = c(0, 11))
+#' plot(NA, xlim = c(1, 10), ylim = c(0, 40))
 #' for(i in 1:10) {
-#'   lines(classes.in, X.artificial[i,] * 20 + i)
+#'   lines(classes.in, X[i,] * 20 + i)
 #'   lines(classes.out, Y[i,] * 20 + i, col = 2)
 #' }
 #' 
@@ -50,14 +55,14 @@
 #' classes.out <- seq(1, 10, length.out = 200)
 #' 
 #' ## interpolate the data set
-#' Y <- interpolate.classes(X = X.artificial, 
+#' Y <- interpolate.classes(X = X, 
 #'                          boundaries.in = classes.in, 
 #'                          boundaries.out = classes.out)
 #' 
 #' ## show original vs. interpolation for first 10 samples
-#' plot(NA, xlim = c(1, 10), ylim = c(0, 11))
+#' plot(NA, xlim = c(1, 10), ylim = c(0, 40))
 #' for(i in 1:10) {
-#'   lines(classes.in, X.artificial[i,] * 20 + i)
+#'   lines(classes.in, X[i,] * 20 + i)
 #'   lines(classes.out, Y[i,] * 20 + i, col = 2)
 #' }
 #' 

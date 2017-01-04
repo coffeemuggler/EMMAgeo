@@ -1,27 +1,33 @@
-#' Function to create grain-size-distributions.
+#' Create grain-size-distributions.
 #' 
-#' This function allows to create artificial grain-size-compositions. One such
+#' This function allows creating artificial grain-size end-members. One such
 #' "artificial end-member loading" may be composed of one or more superimposed
 #' normal distributions.
 #' 
-#' When mixing individual artificial end member loadings, these should span
-#' over the same classes. Hence, \code{boundaries} and \code{n} should be the
-#' same for all end-member loadings. The function builds composites of
-#' individual normal distributions. Each distribution is scaled according to
-#' \code{s}. Finally the distribution is scaled to 100 \%.
+#' When building a data set of many artificial end member loadings, these 
+#' should all have the same \code{boundaries} and \code{n}. The function 
+#' builds composites of individual normal distributions. Each distribution is 
+#' scaled according to \code{s}. Finally the distribution is scaled to 100 \%.
 #' 
-#' @param p1 Numeric vector with means of normal distributions, i.e. mode
+#' @param p1 \code{Numeric} vector, means of normal distributions, i.e. mode
 #' positions.
-#' @param p2 Numeric vector with standard deviations of normal distributions,
-#' i.e. mode width.
-#' @param s Numeric vector with relative proportions of each mode, i.e.
+#' 
+#' @param p2 \code{Numeric} vector, standard deviations of normal 
+#' distributions, i.e. mode width.
+#' 
+#' @param s \code{Numeric} vector, relative proportions of each mode, i.e.
 #' relative mode height.
-#' @param boundaries Numeric vector of length 2 with class boundaries (i.e.
-#' \code{c(lower boundary, upper boundary)}).
-#' @param n Numeric scalar with number of classes, i.e. resolution of the
-#' end-member.
-#' @return Numeric vector with normalised end-member loadings, consisting of
-#' the mixed normal distributions according to the input parameters.
+#' 
+#' @param boundaries \code{Numeric} vector of length two with class boundaries 
+#' (i.e. \code{c(lower boundary, upper boundary)}).
+#' 
+#' @param n \code{Numeric} scalar with number of classes, i.e. resolution of 
+#' the end-member.
+#' 
+#' @return \code{Numeric} vector with normalised end-member loadings, 
+#' consisting of the mixed normal distributions according to the input 
+#' parameters.
+#' 
 #' @author Michael Dietze, Elisabeth Dietze
 #' @seealso \code{\link{mix.EM}}
 #' @keywords EMMA

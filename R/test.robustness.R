@@ -1,39 +1,12 @@
-#' Function to test model robustness.
+#' Test model robustness.
 #' 
-#' All possible combinations of number of end-members and weight transformation
-#' limits are used to perform EMMA. The resulting loadings are written to an
-#' output matrix and mode positions (i.e. class with maximum loading) of all
-#' loadings are evaluated and returned.
+#' This function takes a definition of weight transformation 
+#' limits and corresponding minimum and maximum numbers of end-members to 
+#' model all end-member scenarios in accordance with these parameters. Based 
+#' on the output the user can decide on robust end-members.
 #' 
 #' The function value \code{$loadings} is redundant but was added for user
-#' convenience.
-#' 
-#' @param X Numeric matrix with m samples (rows) and n variables (columns).
-#' @param q Numeric vector with number of end-members to be modelled.
-#' @param lw Numeric vector specifying the weight tranformation limits, i.e.
-#' quantiles; default is 0.
-#' @param P Numeric matrix, optional alternative input parameters for q and lw,
-#' either of the form m:3 with m variations in the columns q.min, q.max, lw or
-#' of the form m:2 with m variations in the columns q, lw.
-#' @param c Numeric scalar specifying the constant sum scaling parameter, e.g.
-#' 1, 100, 1000; default is 100.
-#' @param classunits Numeric vector, optional class units (e.g. phi classes or
-#' micrometers) of the same length as columns of X.
-#' @param ID Numeric or character vector, optional sample IDs of the same
-#' length as columns of X.
-#' @param rotation Character scalar, rotation type, default is "Varimax" (cf.
-#' Dietze et al., 2012). One out of the rotations provided in GPArotation is
-#' possible (cf. \code{\link{rotations}}).
-#' @param ol.rej Numeric scalar, optional rejection threshold for overlapping
-#' criterion.  All model runs with overlapping end-members greater than the
-#' specified integer will be removed.
-#' @param mRt.rej Numeric scalar, optional rejection threshold for mean total
-#' explained variance criterion. All modelled end-members below the specified
-#' value will be removed.
-#' @param plot Logical scalar, optional graphical output of the results,
-#' default is FALSE. If set to TRUE, end-member loadings and end-member scores
-#' are plotted.
-#' @param \dots Additional arguments passed to the plot function. Since the
+#' convenience.\cr Since the
 #' function returns two plots, additional graphical parameters must be
 #' specified as vector with the first element for the first plot and the second
 #' element for the second plot. If graphical parameters are natively vectors
@@ -41,13 +14,52 @@
 #' vector as a row. If colours are specified, \code{colour} should be used
 #' instead of \code{col}. \code{ylim} can only be modified for the first plot.
 #' See example section for further advice.
-#' @param pm Logical scalar to enable pm.
-#' @return A list with objects \item{q}{Vector with q.} \item{lw}{Vector with
-#' lw.} \item{modes}{Vector with mode class.} \item{mRt}{Vector with mean total
+#' 
+#' @param X Numeric matrix with m samples (rows) and n variables (columns).
+#' 
+#' @param q Numeric vector with number of end-members to be modelled.
+#' 
+#' @param l Numeric vector specifying the weight tranformation limits, i.e.
+#' quantiles; default is 0.
+#' 
+#' @param P Numeric matrix, optional alternative input parameters for q and l,
+#' either of the form m:3 with m variations in the columns q.min, q.max, l or
+#' of the form m:2 with m variations in the columns q, l.
+#' 
+#' @param c Numeric scalar specifying the constant sum scaling parameter, e.g.
+#' 1, 100, 1000; default is 100.
+#' 
+#' @param classunits Numeric vector, optional class units (e.g. phi classes or
+#' micrometers) of the same length as columns of X.
+#' 
+#' @param ID Numeric or character vector, optional sample IDs of the same
+#' length as columns of X.
+#' 
+#' @param rotation Character scalar, rotation type, default is "Varimax" (cf.
+#' Dietze et al., 2012). One out of the rotations provided in GPArotation is
+#' possible (cf. \code{\link{rotations}}).
+#' 
+#' @param ol.rej Numeric scalar, optional rejection threshold for overlapping
+#' criterion.  All model runs with overlapping end-members greater than the
+#' specified integer will be removed.
+#' 
+#' @param mRt.rej Numeric scalar, optional rejection threshold for mean total
+#' explained variance criterion. All modelled end-members below the specified
+#' value will be removed.
+#' 
+#' @param plot Logical scalar, optional graphical output of the results,
+#' default is FALSE. If set to TRUE, end-member loadings and end-member scores
+#' are plotted.
+#' 
+#' @param \dots Additional arguments passed to the plot function (see details).
+#' 
+#' @return A list with objects \item{q}{Vector with q.} \item{l}{Vector with
+#' l.} \item{modes}{Vector with mode class.} \item{mRt}{Vector with mean total
 #' explained variance.} \item{ol}{Vector with n overlapping end-members.}
 #' \item{loadings}{Matrix with normalised rescaled end-member loadings.}
 #' \item{Vqsn}{Matrix with rescaled end-member loadings.} \item{Vqn}{Matrix
 #' with normalised factor loadings.}
+#' 
 #' @author Michael Dietze, Elisabeth Dietze
 #' @references Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 #' Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
@@ -57,13 +69,13 @@
 #' @examples
 #' 
 #' ## load example data set
-#' data(X.artificial, envir = environment())
+#' data(example_X)
 #' 
 #' ## Example 1 - perform the most simple test
 #' q  <- 4:7
-#' lw <- seq(from = 0, to = 0.1, by = 0.02)
+#' l <- seq(from = 0, to = 0.1, by = 0.02)
 #' 
-#' M1  <- test.robustness(X = X.artificial, q = q, lw = lw, 
+#' M1  <- test.robustness(X = X, q = q, l = l, 
 #'                        ol.rej = 1, mRt.rej = 0.8, 
 #'                        plot = TRUE,
 #'                        colour = c(4, 7),
@@ -73,10 +85,10 @@
 #'                                                  sep = ""))))
 #' 
 #' ## Example 2 -  perform the test without rejection criteria and plots
-#' P  <- cbind(rep(q[1], length(lw)),
-#'             rep(q[3], length(lw)),
-#'             lw)
-#' M2  <- test.robustness(X = X.artificial, P = P)
+#' P  <- cbind(rep(q[1], length(l)),
+#'             rep(q[3], length(l)),
+#'             l)
+#' M2  <- test.robustness(X = X, P = P)
 #' 
 #' ## Plot 1 - end-member loadings which do not overlap and yielded mRt > 0.80.
 #' plot(M2$Vqsn[1,], type = "l", ylim = c(0, max(M2$Vqsn, na.rm = TRUE)),
@@ -85,7 +97,7 @@
 #' 
 #' # Plot 2 - histogram of mode positions
 #' hist(M2$modes,
-#'      breaks = 1:ncol(X.artificial), 
+#'      breaks = 1:ncol(X), 
 #'      main = "Mode positions",
 #'      xlab = "Class")
 #' 
@@ -112,7 +124,7 @@
 test.robustness <- function(
   X,
   q, 
-  lw,
+  l,
   P,
   c,
   classunits,
@@ -121,9 +133,13 @@ test.robustness <- function(
   ol.rej,
   mRt.rej,
   plot = FALSE,
-  ...,
-  pm = FALSE
+  ...
 ){
+  
+  ## check for l vs. lw
+  if("lw" %in% names(list(...))) {
+    stop('Parameter "lw" is depreciated. Use "l" instead.')
+  }
   
   ## check/set class units vector and test for consistency
   if(missing(classunits) == TRUE) {classunits <- 1:ncol(X)}
@@ -138,41 +154,41 @@ test.robustness <- function(
   if(nrow(X) != length(ID)) stop(
     "ID vector is not of same length as variables.")
   
-  ## create vectors with test values of q and lw
+  ## create vectors with test values of q and l
   if(missing(P) == TRUE) {
   ## option 1 - no input matrix P given
-    ## create test vectors q and lw
-    q.t  <- rep(q, each = length(lw))
-    lw.t <- rep(seq(min(lw), max(lw), length.out = length(lw)), 
+    ## create test vectors q and l
+    q.t  <- rep(q, each = length(l))
+    l.t <- rep(seq(min(l), max(l), length.out = length(l)), 
               length(q))
   } else if(ncol(P) == 3) {
   
-  ## option 2 - P with q.min, q.max and lw
+  ## option 2 - P with q.min, q.max and l
     ## create help and dummy variables
     N <- sum(P[,2] - P[,1]) # total numerb of q 
     q.t  <- NA # dummy vector q.t
-    lw.t <- NA # dummy vector lw.t
-    ## attach q and lw series to dummy vectors 
+    l.t <- NA # dummy vector l.t
+    ## attach q and l series to dummy vectors 
     for(i in 1:nrow(P)) {
       q.n  <- seq(P[i,1], P[i,2])
-      lw.n <- rep(P[i,3], length(q.n))
+      l.n <- rep(P[i,3], length(q.n))
       q.t  <- c(q.t, q.n)
-      lw.t <- c(lw.t, lw.n)
+      l.t <- c(l.t, l.n)
     }
     ## remove dummy vector values
     q.t  <- q.t[2:length(q.t)]
-    lw.t <- lw.t[2:length(lw.t)]
+    l.t <- l.t[2:length(l.t)]
   } else if(ncol(P) == 2) {
     
-  ## option 3 - P with q and lw
-    ## assgin values to test vectors q and lw
+  ## option 3 - P with q and l
+    ## assgin values to test vectors q and l
     q.t  <- P[,1]
-    lw.t <- P[,2]
+    l.t <- P[,2]
   }
   
   ## create result matrices
   data.t <- matrix(nrow = sum(q.t), 
-                   ncol = 10) # metadata (q, lw, modes, mRt, mRm, mRn, mEt, mEm, mEn, ol)
+                   ncol = 10) # metadata (q, l, modes, mRt, mRm, mRn, mEt, mEm, mEn, ol)
   Vqn.t  <- matrix(nrow = sum(q.t), 
                    ncol = ncol(X)) # end-member loadings
   Vqsn.t <- matrix(nrow = sum(q.t), 
@@ -188,7 +204,7 @@ test.robustness <- function(
     ## perform EMMA
     EM <- EMMA(X, 
                q = q.t[i], 
-               lw = lw.t[i], 
+               l = l.t[i], 
                classunits = classunits, 
                ID = ID, 
                c = c, 
@@ -198,7 +214,7 @@ test.robustness <- function(
     Vqn.t[ni:nj,]     <- EM$Vqn
     Vqsn.t[ni:nj,]    <- EM$Vqsn
     data.t[ni:nj,]    <- c(rep(q.t[i], q.t[i]), # q
-                           rep(lw.t[i], q.t[i]), # lw
+                           rep(l.t[i], q.t[i]), # l
                            rep(NA, q.t[i]), # dummy peak position
                            rep(mean(c(EM$Rm, EM$Rn), 
                                     na.rm = TRUE), q.t[i]), # mRt
@@ -256,7 +272,7 @@ test.robustness <- function(
       {c(expression(paste("Loadings (", V[qsn], ")", sep = "")), 
          "Mode positions")}
     xlab <- if("xlab" %in% names(extraArgs)) {extraArgs$xlab} else
-      {c("Classes", "Classes")}
+      {c("Class", "Class")}
     ylab <- if("ylab" %in% names(extraArgs)) {extraArgs$ylab} else
       {c("Amount, relative", "Amount, relative")}
     ylim <- if("ylim" %in% names(extraArgs)) {extraArgs$ylim} else
@@ -292,13 +308,9 @@ test.robustness <- function(
         oma = c(0, 0, 0, 0))
   }
   
-  ## optionally add pm
-  if(pm == TRUE) {pm <- check.data(matrix(runif(4), ncol = 2), 
-                                   5, 0.01, 100, invisible = FALSE)}
-  
   ## return results
   list(q = data.t[,1],
-       lw = data.t[,2],
+       l = data.t[,2],
        modes = data.t[,3],
        mRt = data.t[,4],
        mRm = data.t[,5],
@@ -309,5 +321,7 @@ test.robustness <- function(
        ol = data.t[,10],
        loadings = Vqsn.t,
        Vqsn = Vqsn.t,
-       Vqn = Vqn.t)
+       Vqn = Vqn.t,
+       X_in = X,
+       l_in = unique(l.t))
 }

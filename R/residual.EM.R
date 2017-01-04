@@ -1,14 +1,16 @@
-#' Function to evaluate residual end-member loading.
+#' Calculate a residual end-member loading.
 #' 
 #' This function calculates an optional residual end-member loading. It uses
 #' the modelled end-member loadings as input and evaluates the root of 1 minus
-#' the sum of all squared loadings to analyse the remaining variance, e.g.  if
-#' not all (robust) EMs are included (cf. Dietze et al., 2012). Negative values
-#' are set to zero.
+#' the sum of all squared loadings. The residual end-member can be used to 
+#' analyse the remaining variance, e.g.  if not all (robust) EMs are included 
+#' (cf. Dietze et al., 2012). Negative values are set to zero.
 #' 
 #' 
-#' @param Vqn Numeric matrix with m robust end-member loadings.
-#' @return Numeric vector with residual end-member loading.
+#' @param Vqn \code{Numeric} matrix, m unscaled robust end-member loadings.
+#' 
+#' @return \code{Numeric} vector, residual end-member loading.
+#' 
 #' @author Michael Dietze, Elisabeth Dietze
 #' @seealso \code{\link{EMMA}}, \code{\link{robust.EM}}
 #' @references Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
@@ -18,19 +20,21 @@
 #' @keywords EMMA
 #' @examples
 #' 
-#' ## Some preparing steps to retrieve only robust end-members
-#' ## load example data, i.e. here TR
-#' data(REM, envir = environment())
+#' ## load example data
+#' data(example_X)
+#' data(example_EMrob)
 #' 
 #' ## define mean robust end-member loadings
-#' Vqn.rob <- REM$Vqn.mean
-#' ## perform residual end-member loading calculation
-#' Vqn.res <- residual.EM(Vqn.rob)
+#' Vqn <- EMMA(X = X, q = 2, plot = TRUE)$loadings
 #' 
-#' # Visualisation of the result
-#' plot(NA, xlim = c(1, 80), ylim = c(0, 1))
-#' for(i in 1:4) {lines(Vqn.rob[i,])}
-#' lines(Vqn.res, col = 2)
+#' ## perform residual end-member loading calculation
+#' Vqn.res <- residual.EM(Vqn)
+#' 
+#' ## model EMMA with the residual end-member
+#' E_res <- EMMA(X = X, 
+#'               q = 3, 
+#'               Vqn = rbind(Vqn, Vqn.res), 
+#'               plot = TRUE)
 #' 
 #' @export residual.EM
 residual.EM <- function(
@@ -41,7 +45,9 @@ residual.EM <- function(
   Vqn <- t(Vqn)
   
   ## calculate squared residual end-member loading
-  res.sq <- 1 - apply(Vqn^2, 1, sum)
+  res.sq <- 1 - apply(X = Vqn^2, 
+                      MARGIN = 1, 
+                      FUN = sum)
   
   ## set negative values to zero
   res.sq[res.sq < 0] <- 0

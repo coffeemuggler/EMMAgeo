@@ -1,356 +1,443 @@
-#' Function to extract robust end-members.
+#' Extract robust end-members
 #' 
-#' This function takes a matrix with end-member loadings and extracts those
-#' whose modes fall into specified limits. The function returns a list with all
-#' passing end-member loadings and scores, along with their respective
-#' coumn-wise (variable-wise) measures of centrality and dispersion.
+#' This function takes a list object with potential end-member loadings and 
+#' extracts those with modes in specified limits to describe them by mean and
+#' standard deviation and use these descriptions to propagate the uncertainties
+#' to end-member scores.
 #' 
+#' The function is used to extract potential end-member loadings based on their
+#' mode positions and, optionally the height of the mode class, and use them to 
+#' infer mean and stanard deviation of all 
+#' end-members that match the group criteria defined by \code{limits}. These 
+#' information are then used to model the uncertainty of the corresponding
+#' end-member scores. The function uses input from two preceeding approaches. 
+#' In a compact protocol \code{model.em} delivers these data in a predefined 
+#' way. In the extended protocol \code{test.robustness} does this.
 #' 
-#' @param Vqsn Numeric matrix with m samples (rows) and n variables (columns).
-#' @param limits Numeric matrix with two columns that contain the boundaries of
-#' mode classes for each end-member. The first column contains the lower, the
-#' second column the upper limit. If \code{classunits} are provided, the limits
-#' are assumed to relate to these units, if omitted column-numbers of
-#' \code{Vqsn} are used.
-#' @param quantiles Optional numeric vector of length two with the quantiles to
-#' be evaluated for the robust end-member loadings; default is \code{c(0.25,
-#' 0.75)}.
-#' @param Vqn Numeric matrix with optional normalised factor loadings. If
-#' present, the same factor loadings as the respectively selected end-member
-#' loadings are returned.
-#' @param classunits Numeric vector, optional class units (e.g. phi classes or
-#' micrometers) of the same length as columns of X.
-#' @param ID Numeric or character vector, optional sample IDs of the same
-#' length as columns of X.
-#' @param plot Logical scalar, optional graphical output of the results,
-#' default is FALSE. If set to TRUE, selected end-member loadings are plotted
-#' in different colours, according to the specified classes. All end-member
-#' loadings are plotted in pale colour, means and standard deviations are
-#' plotted above in thicker lines. To plot median and quantile range instead of
-#' mean and standard deviation, add \code{median = TRUE} as further plot
-#' parameter.  See examples section for further advice.
-#' @param legend Character scalar, specifing legend position (cf.
-#' \code{\link{legend}}). If omitted, no legend will be plotted, default is no
-#' legend.
-#' @param \dots Additional arguments passed to the plot function. Use
-#' \code{colour} instead of \code{col} to create different colours.
-#' @param pm Logical scalar to enable pm.
-#' @return A list object containing: \item{Vqsn.data}{A list with Vqsn values.}
-#' \item{Vqsn.mean}{A matrix with Vqsn means.} \item{Vqsn.median}{A matrix with
-#' Vqsn medians.} \item{Vqsn.sd}{A matrix with Vqsn standard deviations.}
-#' \item{Vqsn.qt1}{A matrix with Vqsn quantiles 1.} \item{Vqsn.qt2}{A matrix
-#' with Vqsn quantiles 2.} \item{Vqn.data}{A list with Vqn values.}
-#' \item{Vqn.mean}{A matrix with Vqn means.} \item{Vqn.median}{A matrix with
-#' Vqn medians.} \item{Vqn.sd}{A matrix with Vqn standard deviations.}
-#' \item{Vqn.qt1}{A matrix with Vqn quantiles 1.} \item{Vqn.qt2}{A matrix with
-#' Vqn quantiles 2.}
+#' @param em \code{List} of class \code{"EMMAgeo_empot"}, i.e. the outout of 
+#' \code{model.em()} or \code{test.robustness()}, containing potential 
+#' end-members, both in unscaled and rescaled version as well as further 
+#' parameters.
+#' 
+#' @param limits \code{Numeric} matrix with two columns, defining the class 
+#' limits for the robust end-members to calculate. The first column defines the 
+#' lower limits, the second column the upper limits. End-members are organised 
+#' in rows.
+#' 
+#' @param amount \code{Numeric} matrix with two columns, defining the minimum 
+#' and maximum amount of the modal class for each end-member.
+#' 
+#' @param l \code{Numeric} scalar, weight transformation limit for 
+#' modelling the average end-member output.
+#' 
+#' @param mc_n \code{Numeric} scalar, number of Monte Carlo simulations to 
+#' estimate end-member scores uncertainty. The default setting is ten times the 
+#' product of number of end-members and number of weight transformation limits. 
+#' The latter is inherited from \code{model.em()}. To disable modelling of 
+#' scores uncertainty, set \code{mc_n = 0}.
+#' 
+#' @param type \code{Character} scalar, type of oadings statistics. One out of 
+#' \code{"mean"} and \code{"median"}. Default is \code{"mean"}.
+#' 
+#' @param qt \code{Numeric} vector of length two, quantiles to describe 
+#' end-member loadings. Default is \code{c(0.25, 0.75)} (i.e., the quartile 
+#' range).
+#' 
+#' @param cores \code{Numeric} scalar, number of CPU cores to be used for 
+#' calculations. Only useful in multicore architectures. Default is \code{1} 
+#' (single core).
+#' 
+#' @param plot \code{Logical} scalar, option for plot output. Default is 
+#' \code{FALSE}.
+#' 
+#' @param \dots Additional arguments passed to \code{EMMA} and \code{plot}. 
+#'  
+#' @return \code{List} with statistic descriptions of end-member loadings 
+#' and scores.
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{EMMA}}, \code{\link{test.robustness}},
-#' \code{\link{define.limits}}
-#' @references Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
-#' Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
-#' deciphering modern detrital processes from lake sediments of Lake Donggi
-#' Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
+#' @seealso \code{\link{robust.loadings}}, \code{\link{robust.scores}}
 #' @keywords EMMA
 #' @examples
 #' 
-#' ## load example data, i.e. here TR
-#' data(TR, envir = environment())
+#' ## Not run because of long computation time, compact protocol
 #' 
-#' ## define end-member limits
-#' limits = cbind(c(11, 31, 60, 78), 
-#'                c(13, 33, 62, 80))
+#' ## load example data set
+#' # data(example_X)
 #' 
-#' ## extract robust end-members with limits matrix
-#' REM <- robust.EM(Vqsn = TR$Vqsn, limits = limits,
-#'                  plot = TRUE,
-#'                  legend = "topleft", 
-#'                  cex = 0.7, 
-#'                  colour = c("orange", "navyblue", "springgreen4", "red4"),
-#'                  median = TRUE)
+#' ## get weight transformation limit vector
+#' # l <- get.l(X = X)
 #' 
+#' ## get minimum and maximum number of end-members
+#' # q <- get.q(X = X, l = l)
+#' 
+#' ## get all potential model scenarios
+#' # EM_pot <- model.EM(X = X, q = q, plot = TRUE)
+#' 
+#' ## define end-member mode class limits
+#' # limits <- cbind(c(61, 74, 95, 102), 
+#' #                 c(64, 76, 100, 105))
+#' 
+#' ## get robust end-members in the default way, with plot output
+#' # rem <- robust.EM(em = EM_pot,
+#' #                  limits = limits,
+#' #                  plot = TRUE)
+#'                     
+#' ## get robust end-members by only modelling uncertainty in loadings
+#' # robust_EM <- robust.EM(em = EMpot, 
+#' # limits = limits, 
+#' # plot = TRUE)
+#'                     
 #' @export robust.EM
 robust.EM <- function(
-  Vqsn,
+  em,
   limits,
-  quantiles,
-  Vqn,
-  classunits,
-  ID,
+  amount,
+  l,
+  mc_n,
+  type = "mean",
+  qt = c(0.25, 0.75),
+  cores = 1,
   plot = FALSE,
-  legend,
-  ...,
-  pm = FALSE
+  ...
 ) {
   
-  ## check/set class units vector and test for consistency
-  if(missing(classunits) == TRUE) {classunits <- 1:ncol(Vqsn)}
-  if(missing(quantiles) == TRUE) {quantiles <- c(0.25, 0.75)}
-  if(ncol(Vqsn) != length(classunits)) stop(
-    "Units vector is not of same length as variables.")
+  ## read out additional EMMA parameters
+  extraArgs <- list(...)
   
-  ## check/set ID vector and test for consistency
-  if(missing(ID) == TRUE) ID <- 1:nrow(Vqsn)
-  if(nrow(Vqsn) != length(ID)) stop(
-    "ID vector is not of same length as variables.")
+  ## check/set amount
+  if(missing(amount) == TRUE) {
+    amount <- cbind(rep(x = 0, 
+                        times = nrow(limits)),
+                    rep(x = max(em$Vqsn, na.rm = TRUE), 
+                        times = nrow(limits)))
+  }
   
-  ## create modes vector
-  modes <- rep(NA, nrow(Vqsn))
+  ## check/set rotation
+  if("rotation" %in% names(extraArgs)) {
+    rotation <- extraArgs$rotation
+  } else{
+    rotation <- "Varimax"
+  }
   
-  ## determine mode class for all end-member loadings
-  for(i in 1:nrow(Vqsn)) {modes[i] <- classunits[Vqsn[i,1:ncol(
-    Vqsn)] == max(Vqsn[i,1:ncol(Vqsn)])]}
+  ##check/set l
+  if(missing(l) == TRUE) {
+    print("Parameter l missing! Set to 'mRt' by default")
+    l <- "mRt"
+  } 
   
-  ## create dummy list structures
-  EM.Vqsn.list <- list(matrix(nrow = 1, ncol = ncol(Vqsn)))
-  EM.Vqn.list  <- list(matrix(nrow = 1, ncol = ncol(Vqsn)))
-  
-  ## select modes that fall into limits for all limit pairs
-  for(i in 1:nrow(limits)) {
+  if(is.numeric(l) == TRUE) {
+    
+    l_max <- test.l.max(X = em$X_in)
+    
+    if(l > l_max) {
+      warning("l is greater than l_max! Values set to 0.95 * l_max.")
+      l <- 0.95 * l_max
+    }
+  } else {
+    
+    if(sum(match(x = l, 
+                 table = c("mRt", "mRm", "mRn", "mEt", "mEm", "mEn"))) < 1) {
+      warning("Keyword for l not defined! Set to 'mRt' automatically.")
+      l <- "mRt"
+    }
+  }
 
-    ## assign valid loadings
-    EM.Vqsn <- Vqsn[(modes >= limits[i,1] & modes <= limits[i,2]),]
+  ## evaluate robust loadings
+  robust_loadings <- robust.loadings(em = em, 
+                                     limits = limits, 
+                                     amount = amount, 
+                                     type = type,
+                                     qt = qt, 
+                                     plot = FALSE)
+
+  ## assign average loadings
+  Vqn_average <- robust_loadings$Vqn$mean
+
+  ## optionally evaluate l_opt
+  if(is.character(l) == TRUE) {
     
-    ## append loadings matrix to list
-    EM.Vqsn.list[[length(EM.Vqsn.list) + 1]] <- EM.Vqsn
+    l <- get.l.opt(X = em$X_in, 
+                   l = em$l_in, 
+                   quality = l,
+                   Vqn = Vqn_average, 
+                   rotation = rotation, 
+                   plot = FALSE)
+  }
+  
+  ## check/set Monte Carlo runs
+  if(missing(mc_n) == TRUE) {
+    mc_n <- 10 * nrow(Vqn_average) * length(em$l_in)
+  }
+  
+  ## evaluate robust scores
+  robust_scores <- robust.scores(loadings = robust_loadings, 
+                                 l = l, 
+                                 mc_n = mc_n, 
+                                 cores = cores, 
+                                 plot = FALSE)
+
+  ## optionally, plot end-member loadings and scores
+  if(plot == TRUE) {
     
-    ## test if Vqn data set is present and if so assign valid loadings to list
-    if(missing(Vqn) != TRUE) {
-      EM.Vqn <- Vqn[(modes >= limits[i,1] & modes <= limits[i,2]),]
-      EM.Vqn.list[[length(EM.Vqn.list) + 1]] <- EM.Vqn
+    if("classunits" %in% names(extraArgs)) {
+      classunits <- extraArgs$classunits
+    } else{
+      classunits <- seq(from = 1, to = ncol(em$X_in))
+    }  
+    
+    if("ID" %in% names(extraArgs)) {
+      ID <- extraArgs$ID
+    } else{
+      ID <- seq(from = 1, to = nrow(em$X_in))
+    } 
+
+    if(type == "mean") {
+      
+      Vqsn_average_plot <- robust_loadings$Vqsn$mean
+      
+      Vqsn_scatter_plot <- vector(mode = "list", 
+                                  length = nrow(Vqsn_average_plot))
+      
+      for(i in 1:nrow(Vqsn_average_plot)) {
+        Vqsn_scatter_plot[[i]] <- c(
+          robust_loadings$Vqsn$mean[i,] - 1 * robust_loadings$Vqsn$sd[i,],
+          rev(robust_loadings$Vqsn$mean[i,] + 1 * robust_loadings$Vqsn$sd[i,]))
+        
+        Vqsn_scatter_plot[[i]][Vqsn_scatter_plot[[i]] < 0] <- 0
+      }
+      
+      classes_plot <- c(classunits, rev(classunits))
+      
+    } else {
+      
+      Vqsn_average_plot <- robust_loadings$Vqsn$median
+      
+      Vqsn_scatter_plot <- vector(mode = "list", 
+                                  length = nrow(Vqsn_average_plot))
+      
+      for(i in 1:nrow(Vqsn_average_plot)) {
+        Vqsn_scatter_plot[[i]] <- c(
+          robust_loadings$Vqsn$qt1[i,],
+          rev(robust_loadings$Vqsn$qt2[i,]))
+        
+        Vqsn_scatter_plot[[i]][Vqsn_scatter_plot[[i]] < 0] <- 0
+      }
+      
+      classes_plot <- c(classunits, rev(classunits))
     }
-  }
-  ## remove dummy matrices from list
-  EM.Vqsn.list[1] <- NULL
-  EM.Vqn.list[1]  <- NULL
-  
-  ## infer empty classes
-  empty.classes <- rep(NA, nrow(limits))
-  for(i in 1:nrow(limits)) {
-    empty.classes[i] <- ifelse(length(EM.Vqsn.list[[i]]) == 0, TRUE, FALSE)
-  }
-  
-  ## check for complete data sets
-  if(sum(empty.classes) == 0) {
-    ## CASE 1 - complete results list
-  
-    ## create dummy output matrices for existing data
-    EM.Vqsn.mean   <- matrix(nrow = nrow(limits), ncol = ncol(Vqsn))
-    EM.Vqsn.median <- matrix(nrow = nrow(limits), ncol = ncol(Vqsn))
-    EM.Vqsn.sd     <- matrix(nrow = nrow(limits), ncol = ncol(Vqsn))
-    EM.Vqsn.qt1    <- matrix(nrow = nrow(limits), ncol = ncol(Vqsn))
-    EM.Vqsn.qt2    <- matrix(nrow = nrow(limits), ncol = ncol(Vqsn))
-    EM.Vqn.mean    <- matrix(nrow = nrow(limits), ncol = ncol(Vqsn))
-    EM.Vqn.median  <- matrix(nrow = nrow(limits), ncol = ncol(Vqsn))
-    EM.Vqn.sd      <- matrix(nrow = nrow(limits), ncol = ncol(Vqsn))
-    EM.Vqn.qt1     <- matrix(nrow = nrow(limits), ncol = ncol(Vqsn))
-    EM.Vqn.qt2     <- matrix(nrow = nrow(limits), ncol = ncol(Vqsn))
     
-    ## define quantiles function
-    qts <- function(X, quantiles) {quantile(X, quantiles)}
+    if("EM.ID" %in% names(extraArgs)) {
+      EM.ID <- extraArgs$EM.ID
+    } else {
+      EM.ID <- paste("EM", 1:nrow(Vqsn_average_plot), sep = "")
+    }
     
-    ## calculate mean, median, sd and quantiles for Vqsn and, if present, Vqn
-    for (i in 1:nrow(limits)) {
-      EM.Vqsn.mean[i,]    <- apply(EM.Vqsn.list[[i]], 2, mean)
-      EM.Vqsn.median[i,]  <- apply(EM.Vqsn.list[[i]], 2, median)
-      EM.Vqsn.sd[i,]      <- apply(EM.Vqsn.list[[i]], 2, sd)
-      EM.Vqsn.qt1[i,]     <- apply(EM.Vqsn.list[[i]], 2, qts, quantiles[1])
-      EM.Vqsn.qt2[i,]     <- apply(EM.Vqsn.list[[i]], 2, qts, quantiles[2])
-      if(missing(Vqn) != TRUE) {
-        EM.Vqn.mean[i,]   <- apply(EM.Vqn.list[[i]], 2, mean)
-        EM.Vqn.median[i,]  <- apply(EM.Vqn.list[[i]], 2, median)
-        EM.Vqn.sd[i,]     <- apply(EM.Vqn.list[[i]], 2, sd)
-        EM.Vqn.qt1[i,]     <- apply(EM.Vqn.list[[i]], 2, qts, quantiles[1])
-        EM.Vqn.qt2[i,]     <- apply(EM.Vqn.list[[i]], 2, qts, quantiles[2])
+    if("main" %in% names(extraArgs)) {
+      main <- extraArgs$main
+    } else {
+      main <- c("Robust end-member loadings",
+                "Robust end-member scores")
+    }
+    
+    if("xlab" %in% names(extraArgs)) {
+      xlab <- extraArgs$xlab
+    } else {
+      xlab <- c("Class",
+                "Samples")
+    }
+    
+    if("ylab" %in% names(extraArgs)) {
+      ylab <- extraArgs$ylab
+    } else {
+      ylab <- c("Relative amounts",
+                "Relative amounts per end-member")
+    }
+    
+    if("ylim" %in% names(extraArgs)) {
+      ylim <- extraArgs$ylim
+    } else {
+      ylim <- rbind(c(0, max(unlist(Vqsn_scatter_plot), na.rm = TRUE)),
+                    c(0, 1))
+    }
+    
+    if("log" %in% names(extraArgs)) {
+      log <- extraArgs$log
+    } else {
+      log <- ""
+    }
+    
+    if("col" %in% names(extraArgs)) {
+      col <- extraArgs$col
+    } else {
+      col <- seq(1, nrow(robust_loadings$Vqsn$mean))
+    }
+    
+    if("cex" %in% names(extraArgs)) {
+      cex <- extraArgs$cex
+    } else {
+      cex <- 1
+    }
+    
+    if("lty" %in% names(extraArgs)) {
+      lty <- extraArgs$lty
+    } else {
+      lty <- 1
+    }
+    
+    if("lwd" %in% names(extraArgs)) {
+      lwd <- extraArgs$lwd
+    } else {
+      lwd <- 1
+    }
+    
+    ## setup plot area
+    ## save origial parameters
+    par.old <- op <- par(no.readonly = TRUE)
+    
+    ## adjust margins
+    par(mar = c(3.9, 4.5, 3.1, 1.1))
+    
+    ## define layout
+    layout(rbind(c(1, 1, 2, 2), 
+                 c(1, 1, 2, 2), 
+                 c(3, 3, 4, 4), 
+                 c(3, 3, 4, 4),
+                 c(3, 3, 4, 4), 
+                 c(3, 3, 4, 4),
+                 c(5, 5, 5, 5))
+    )
+    
+    ## plot col-wise explained variance
+    plot(x = classunits, 
+         y = robust_scores$Rn, 
+         type = "b", 
+         main = paste("Class-wise explained variance (mean = ", 
+                      signif(x = mean(robust_scores$Rn * 100), 
+                             digits = 2), " %)", sep = ""),
+         xlab = xlab[1],
+         ylab = expression(R^2),
+         log = log)
+    
+    ## plot row-wise explained variance
+    plot(x = 1:nrow(em$X_in), 
+         y = robust_scores$Rm, 
+         type = "b", 
+         main = paste("Sample-wise explained variance (mean = ", 
+                      signif(x = mean(robust_scores$Rm * 100), 
+                             digits = 2), " %)", sep = ""),
+         xlab = xlab[2],
+         ylab = expression(R^2))
+    
+    ## plot end-member loadings
+    plot(NA,
+         main = main[1],
+         xlab = xlab[1],
+         ylab = ylab[1],
+         xlim = range(classes_plot),
+         ylim = as.vector(ylim[1,]),
+         log = log,
+         col = col[1])
+    
+    if(nrow(Vqsn_average_plot) > 1) {
+      for(i in 1:nrow(Vqsn_average_plot)) {
+        
+        polygon(x = classes_plot, 
+                y = Vqsn_scatter_plot[[i]], 
+                border = NA, 
+                col = adjustcolor(col = col[i], 
+                                  alpha.f = 0.3))
+        
+        lines(x = classunits, 
+              y = Vqsn_average_plot[i,], 
+              col = col[i])
       }
     }
     
-    ## optionally plot results
-    if(plot == TRUE) {
+    ## plot end-member scores
+    
+    Mqs_scatter_plot <- cbind(robust_scores$mean - robust_scores$sd,
+                              robust_scores$mean + robust_scores$sd)
+    Mqs_scatter_plot <- ifelse(Mqs_scatter_plot < 0, 0, Mqs_scatter_plot)
+    Mqs_scatter_plot <- ifelse(Mqs_scatter_plot > 1, 1, Mqs_scatter_plot)
+    
+    plot(NA, 
+         xlim = c(1, nrow(robust_scores$mean)), 
+         ylim = c(0, ncol(robust_scores$mean)), 
+         axes = FALSE,
+         main = main[2],
+         xlab = xlab[2],
+         ylab = ylab[2])
+    box(which = "plot")
+    axis(side = 1)
+    ticks_scores <- seq(from = 0, 
+                        to = ncol(robust_scores$mean), 
+                        by = 0.5)
+    labels_scores <- c(rep(c(0, NA), 
+                           times = ncol(robust_scores$mean)), NA)
+    axis(side = 2, 
+         at = ticks_scores, 
+         labels = labels_scores)
+    
+    for(i in 1:ncol(robust_scores$mean)) {
       
-      ## adjust plot margins
-      par(oma = c(0, 1, 0, 0))
-      
-      ## read additional arguments list and check/set default values
-      extraArgs <- list(...)
-      main <- if("main" %in% names(extraArgs)) {extraArgs$main} else
-      {expression(paste("End-member loadings (", V[qsn], ")", sep = ""))}
-      xlab <- if("xlab" %in% names(extraArgs)) {extraArgs$xlab} else
-      {"Classes"}
-      ylab <- if("ylab" %in% names(extraArgs)) {extraArgs$ylab} else
-      {"Amount, relative"}
-      ylim <- if("ylim" %in% names(extraArgs)) {extraArgs$ylim} else
-      {c(0, max(Vqsn, na.rm = TRUE))}
-      colour <- if("colour" %in% names(extraArgs)) {extraArgs$colour} else
-      {seq(1, nrow(EM.Vqsn.mean))}
-      if("legend" %in% names(extraArgs)) {legend.text <- extraArgs$legend} else
-      {legend.text <- rep(NA, nrow(EM.Vqsn.mean))
-       for(i in 1:nrow(EM.Vqsn.mean)) {
-         mode <- classunits[EM.Vqsn.mean[i,] == max(EM.Vqsn.mean[i,])]
-         legend.text[i] <- paste("EM ", i, " (", round(mode, 2), ")", 
-                                 sep = "")}}
-      legend.cex <- if("cex" %in% names(extraArgs)) {extraArgs$cex} else
-      {1}
-      legend.lty <- if("lty" %in% names(extraArgs)) {extraArgs$lty} else
-      {1}
-      median <- if("median" %in% names(extraArgs)) {extraArgs$median} else
-      {FALSE}
-      
-      ## create plot colour vector in hsv-space
-      plot.colour <- t(rgb2hsv(col2rgb(colour)))
-      plot.colour.half <- plot.colour
-      plot.colour.half[,2] <- 0.1
-      if(sum(col2rgb(colour[1]) == c(0,0,0)) == 3) {
-        plot.colour.half[1,] <- c(0, 0, 0.74)}
-      
-      ## plot all end-member loadings coloured by limit class    
-      ## plot first curve of first end-member class
-      plot(classunits, EM.Vqsn.list[[1]][1,],
-           type = "l", 
-           main = main,
-           xlab = xlab,
-           ylab = ylab,
-           ylim = ylim,
-           col  = plot.colour[,1])
-      ## plot other curves of first end-member class
-      if(nrow(EM.Vqsn.list[[1]] > 1)) {for(i in 1:nrow(EM.Vqsn.list[[1]])) {
-        lines(classunits, EM.Vqsn.list[[1]][i,], 
-              col = hsv(h = plot.colour.half[1,1],
-                        s = plot.colour.half[1,2],
-                        v = plot.colour.half[1,3]))}}
-      ## plot all curves of all other end-member classes
-      if(nrow(limits) > 1) {for (j in 2: nrow(limits)) {
-        lines(classunits, EM.Vqsn.list[[j]][1,], 
-              type = "l", 
-              col = hsv(h = plot.colour.half[j,1],
-                        s = plot.colour.half[j,2],
-                        v = plot.colour.half[j,3]))
-        if(nrow(EM.Vqsn.list[[j]] > 1)) {for (i in 1:nrow(EM.Vqsn.list[[j]])) {
-          lines(classunits, EM.Vqsn.list[[j]][i,], 
-                col = hsv(h = plot.colour.half[j,1],
-                          s = plot.colour.half[j,2],
-                          v = plot.colour.half[j,3]))
-        }}
-      }}
-      ## optionally, plot mean and standard deviation curves
-      if(median == FALSE){
-        lines(classunits, EM.Vqsn.mean[1,] - EM.Vqsn.sd[1,],
-              col = hsv(h = plot.colour[1,1],
-                        s = plot.colour[1,2],
-                        v = plot.colour[1,3]))
-        lines(classunits, EM.Vqsn.mean[1,], lwd = 2,
-              col = hsv(h = plot.colour[1,1],
-                        s = plot.colour[1,2],
-                        v = plot.colour[1,3]))
-        lines(classunits, EM.Vqsn.mean[1,] + EM.Vqsn.sd[1,],
-              col = hsv(h = plot.colour[1,1],
-                        s = plot.colour[1,2],
-                        v = plot.colour[1,3]))
-        if(nrow(limits) > 1) for(i in 2:nrow(limits)) {
-          lines(classunits, EM.Vqsn.mean[i,] - EM.Vqsn.sd[i,],
-                col = hsv(h = plot.colour[i,1],
-                          s = plot.colour[i,2],
-                          v = plot.colour[i,3]))
-          lines(classunits, EM.Vqsn.mean[i,], lwd = 2,
-                col = hsv(h = plot.colour[i,1],
-                          s = plot.colour[i,2],
-                          v = plot.colour[i,3]))
-          lines(classunits, EM.Vqsn.mean[i,] + EM.Vqsn.sd[i,],
-                col = hsv(h = plot.colour[i,1],
-                          s = plot.colour[i,2],
-                          v = plot.colour[i,3]))
-        }
-      } else {
-        ## alternatively plot median and quantile range
-        lines(classunits, EM.Vqsn.qt1[1,],
-              col = hsv(h = plot.colour[1,1],
-                        s = plot.colour[1,2],
-                        v = plot.colour[1,3]))
-        lines(classunits, EM.Vqsn.median[1,], lwd = 2,
-              col = hsv(h = plot.colour[1,1],
-                        s = plot.colour[1,2],
-                        v = plot.colour[1,3]))
-        lines(classunits, EM.Vqsn.qt2[1,],
-              col = hsv(h = plot.colour[1,1],
-                        s = plot.colour[1,2],
-                        v = plot.colour[1,3]))
-        if(nrow(limits) > 1) for(i in 2:nrow(limits)) {
-          lines(classunits, EM.Vqsn.qt1[i,],
-                col = hsv(h = plot.colour[i,1],
-                          s = plot.colour[i,2],
-                          v = plot.colour[i,3]))
-          lines(classunits, EM.Vqsn.median[i,], lwd = 2,
-                col = hsv(h = plot.colour[i,1],
-                          s = plot.colour[i,2],
-                          v = plot.colour[i,3]))
-          lines(classunits, EM.Vqsn.qt2[i,],
-                col = hsv(h = plot.colour[i,1],
-                          s = plot.colour[i,2],
-                          v = plot.colour[i,3]))
-        }
-      }
-      ## optionally add legend
-      if(missing(legend) == FALSE) {legend.position <- legend
-                                    legend(x = legend.position,
-                                           legend = legend.text,
-                                           col = hsv(h = plot.colour[,1],
-                                                     s = plot.colour[,2],
-                                                     v = plot.colour[,3]),
-                                           cex = legend.cex,
-                                           lty = legend.lty)}
+      segments(x0 = ID,
+               y0 = Mqs_scatter_plot[,i] + (i - 1),
+               x1 = ID,
+               y1 = Mqs_scatter_plot[,i + ncol(robust_scores$mean)] + (i - 1),
+               col = col[i])
+      points(x = ID, 
+             y = robust_scores$mean[,i] + (i - 1), 
+             cex = 0.5, 
+             col = col[i])
     }
     
-    ## optionally add pm
-    if(pm == TRUE) {pm <- check.data(matrix(runif(4), ncol = 2), 
-                                     5, 0.01, 100, invisible = FALSE)}
+    ## plot legend-like information
+    par(mar = c(1, 1, 1, 1))
     
-    ## readjust plot margins
-    par(oma = c(0, 0, 0, 0))
+    plot(NA, 
+         xlim = c(0, 1), 
+         ylim = c(0, 1), 
+         axes = FALSE, 
+         ann = FALSE, 
+         frame.plot = TRUE)
     
-  } else {
-    ## CASE 2 - incomplete results list
+    mtext(line = -2, 
+          text = "End-member ID (mode position | explained variance)", 
+          cex = 0.9 * cex)
     
-    ## create dummy output matrices for empty data
-    EM.Vqsn.mean   <- c()
-    EM.Vqsn.median <- c()
-    EM.Vqsn.sd     <- c()
-    EM.Vqsn.qt1    <- c()
-    EM.Vqsn.qt2    <- c()
-    EM.Vqn.mean    <- c()
-    EM.Vqn.median  <- c()
-    EM.Vqn.sd      <- c()
-    EM.Vqn.qt1     <- c()
-    EM.Vqn.qt2     <- c()
+    ## bugfix included 2017-01-04 | assign classunits for legend output
+    classunits_legend <- classunits[robust_scores$modes]
+
+    legend(x = "bottom", 
+           legend = paste(EM.ID, " (", signif(x = classunits_legend, 
+                                              digits = 2), " | ", 
+                          signif(x = robust_scores$Mqs.var, 
+                                 digits = 2), " %)", sep = ""), 
+           col = col, 
+           lty = lty, 
+           lwd = lwd, 
+           horiz = TRUE, 
+           box.lty = 0)
     
-    ## notify empty output
-    print(paste("No end-members found that fit to the following limits: ",
-          limits[empty.classes,1], " - ", limits[empty.classes,2],
-          ". No output generated. Remove empty class.",
-          sep = ""))
+    ## reset plot parameters
+    par(par.old)
   }
   
-  ## return output, either with or without Vqn data
-  if(missing(Vqn) != TRUE) {
-    ##value<< A list object containing:
-    list(Vqsn.data   = EM.Vqsn.list,   ##<< A list with Vqsn values.
-         Vqsn.mean   = EM.Vqsn.mean,   ##<< A matrix with Vqsn means.
-         Vqsn.median = EM.Vqsn.median, ##<< A matrix with Vqsn medians.
-         Vqsn.sd     = EM.Vqsn.sd, ##<< A matrix with Vqsn standard deviations.
-         Vqsn.qt1    = EM.Vqsn.qt1,    ##<< A matrix with Vqsn quantiles 1.
-         Vqsn.qt2    = EM.Vqsn.qt2,    ##<< A matrix with Vqsn quantiles 2.
-         Vqn.data    = EM.Vqn.list,    ##<< A list with Vqn values.
-         Vqn.mean    = EM.Vqn.mean,    ##<< A matrix with Vqn means.
-         Vqn.median = EM.Vqn.median, ##<< A matrix with Vqn medians.
-         Vqn.sd      = EM.Vqn.sd,   ##<< A matrix with Vqn standard deviations.
-         Vqn.qt1    = EM.Vqn.qt1,    ##<< A matrix with Vqn quantiles 1.
-         Vqn.qt2    = EM.Vqn.qt2)    ##<< A matrix with Vqn quantiles 2.
-    ##end<<
-  } else {
-    list(Vqsn.data   = EM.Vqsn.list,
-         Vqsn.mean   = EM.Vqsn.mean,
-         Vqsn.median = EM.Vqsn.median,
-         Vqsn.sd     = EM.Vqsn.sd,
-         Vqsn.qt1    = EM.Vqsn.qt1,
-         Vqsn.qt2    = EM.Vqsn.qt2)
-  }
+  ## return output
+  return(list(loadings = robust_loadings$Vqsn,
+              scores = list(mean = robust_scores$mean,
+                            sd = robust_scores$sd),
+              Xm = robust_scores$Xm,
+              modes = robust_scores$modes,
+              Mqs.var = robust_scores$Mqs.var,
+              Em = robust_scores$Em,
+              En = robust_scores$En,
+              RMSEm = robust_scores$RMSEm,
+              RMSEn = robust_scores$RMSEn,
+              Rm = robust_scores$Rm,
+              Rn = robust_scores$Rn,
+              mRm = robust_scores$mRm,
+              mRn = robust_scores$mRn,
+              mRt = robust_scores$mRt,
+              ol = robust_scores$ol))
 }

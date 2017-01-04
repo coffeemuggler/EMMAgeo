@@ -1,4 +1,4 @@
-#' Function to test maximum valid lw value.
+#' Test a vector of weight transformation limits for mximum value.
 #' 
 #' This function performs the weight transformation of the data matrix after
 #' Klovan & Imbrie (1971) and performs EMMA() with different weight limits to
@@ -6,11 +6,18 @@
 #' the transformation remains stable.
 #' 
 #' 
-#' @param X Numeric matrix with m samples (rows) and n variables (columns).
-#' @param lw Numeric vector specifying the weight transformation limit, i.e.
+#' @param X \code{Numeric} matrix, input data set with m samples (rows) 
+#' and n variables (columns).
+#' 
+#' @param l \code{Numeric} vector, weight transformation limit, i.e.
 #' quantile; default is 0.
-#' @return A list with objects \item{step}{Numeric scalar with position of last
-#' valid value.} \item{lw.max}{Numeric scalar with last valid value of lw.}
+#' 
+#' @param \dots Further arguments passed to the function.
+#' 
+#' @return \code{List} with objects \item{step}{Numeric scalar with position 
+#' of the last valid value.} \item{l.max}{Numeric scalar with last valid 
+#' value of \code{l}.}
+#' 
 #' @author Michael Dietze, Elisabeth Dietze
 #' @seealso \code{\link{EMMA}}, \code{\link{check.data}},
 #' \code{\link{test.parameters}}
@@ -25,32 +32,35 @@
 #' @examples
 #' 
 #' ## load example data set
-#' data(X.artificial, envir = environment())
+#' data(example_X)
 #' 
-#' ## create weight transformation limits vector
-#' lw <- seq(from = 0, to = 0.6, by = 0.02)
+#' test <- test.l(X = X, l = seq(from = 0, to = 0.6, by = 0.1))
 #' 
-#' ## test the vector
-#' test.lw(X = X.artificial, lw = lw)
 #' 
-#' @export test.lw
-test.lw <- function(
+#' @export test.l
+test.l <- function(
   X,
-  lw
+  l,
+  ...
 ){
   
-  ## check/set default value
-  if(missing(lw) == TRUE) {lw = 0}
+  ## check for l vs. lw
+  if("lw" %in% names(list(...))) {
+    stop('Parameter "lw" is depreciated. Use "l" instead.')
+  }
   
-  ## loop through all elements of vector lw
-  for(i in 1:length(lw)) {
+  ## check/set default value
+  if(missing(l) == TRUE) {l = 0}
+  
+  ## loop through all elements of vector l
+  for(i in 1:length(l)) {
 
     ## rescale X constant sum
     X  <- X / apply(X, 1, sum)
 
     ## calculate weight limit quantiles column-wise
     ls <- sapply(X = 1:ncol(X), FUN = function(j) {
-      quantile(x = X[,j], probs = c(lw[i], 1 - lw[i]), type = 5)})
+      quantile(x = X[,j], probs = c(l[i], 1 - l[i]), type = 5)})
 
     ## perform weight-transformation
     W <- t((t(X) - ls[1,]) / (ls[2,] - ls[1,]))
@@ -61,17 +71,17 @@ test.lw <- function(
       break}
     
     ## optional break when Mqs from EMMA cannot be calculated
-    if(is.na(mean(EMMA(X = X, q = 2, lw = lw[i])$Mqs))) {
+    if(is.na(mean(EMMA(X = X, q = 2, l = l[i])$Mqs))) {
       i = i - 1
       break
     }
   }
  
-  ## assign last valid step number and lw-value
+  ## assign last valid step number and l-value
   step  <- i
-  lw.max  <- lw[i]
+  l.max  <- l[i]
   
   ## return results
   return(list(step = step,
-              lw.max = lw.max))
+              l.max = l.max))
 }

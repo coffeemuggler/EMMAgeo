@@ -8,16 +8,22 @@
 #' value, sums the resulting variables, adds uniform noise and normalises the
 #' resulting mixed sample to 100 \%.
 #' 
-#' @param EM Numeric matrix containing the grain-size distribution definitions.
+#' @param EM \code{Numeric} matrix, grain-size distribution definitions.
+#' 
 #' Each definition is in a separate row with variable contributions in columns.
-#' @param proportion Numeric vector containing the relative proportions of each
+#' 
+#' @param proportion \code{Numeric} vector, relative proportions of each
 #' distribution per sample.
-#' @param noise Numeric scalar containing optional relative white noise levels.
-#' @param autocorrelation Numeric scalar specifying the degree of
+#' 
+#' @param noise \code{Numeric} scalar, optional relative white noise levels.
+#' 
+#' @param autocorrelation \code{Numeric} scalar, the degree of
 #' autocorrelation among classes.  Autocorrelation is realised as running mean
 #' of the specified length. Only odd values are allowed.
-#' @return Numeric vector comprising a sample composed of known proportions of
+#' 
+#' @return \code{Numeric} vector, a sample composed of known proportions of
 #' end-members.
+#' 
 #' @author Michael Dietze, Elisabeth Dietze
 #' @seealso \code{\link{create.EM}}
 #' @keywords EMMA
