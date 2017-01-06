@@ -83,7 +83,7 @@
 #' #                  plot = TRUE)
 #'                     
 #' ## get robust end-members by only modelling uncertainty in loadings
-#' # robust_EM <- robust.EM(em = EMpot, 
+#' # robust_EM <- robust.EM(em = EM_pot, 
 #' # limits = limits, 
 #' # plot = TRUE)
 #'                     
