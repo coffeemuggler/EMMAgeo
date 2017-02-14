@@ -38,9 +38,6 @@ l.max <- test.l.max(X = X)
 
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \references{
 Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
@@ -53,5 +50,7 @@ Mathematical Geology 3: 61-77.
 \seealso{
 \code{\link{EMMA}}, \code{\link{test.l}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

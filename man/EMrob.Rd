@@ -20,4 +20,3 @@ data(example_EMrob)
 
 }
 \keyword{datasets}
-

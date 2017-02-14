@@ -52,11 +52,10 @@ data(example_EMpot)
 #           quality = "mRt")
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \seealso{
 \code{\link{EMMA}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

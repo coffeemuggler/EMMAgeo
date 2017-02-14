@@ -58,11 +58,10 @@ plot(phi, EMa.1, type = "l")
 lines(phi, EMa.2, col = "red")
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \seealso{
 \code{\link{mix.EM}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

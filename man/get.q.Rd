@@ -68,9 +68,6 @@ data(X, envir = environment())
 get.q(X = X, l = c(0, 0.05, 0.10, 0.15))
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \references{
 Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
@@ -81,5 +78,7 @@ Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
 \code{\link{EMMA}}, \code{\link{test.parameters}}, 
 \code{\link{test.robustness}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

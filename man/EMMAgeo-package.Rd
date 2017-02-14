@@ -2,8 +2,8 @@
 % Please edit documentation in R/EMMAgeo-package.R
 \docType{package}
 \name{EMMAgeo-package}
-\alias{EMMAgeo}
 \alias{EMMAgeo-package}
+\alias{EMMAgeo}
 \title{End-member modelling algorithm and supporting functions for unmixing 
 grain-size distributions and further compositional data.}
 \description{
@@ -32,4 +32,3 @@ of real world sediment end-members.
 Michael Dietze, Elisabeth Dietze
 }
 \keyword{package}
-

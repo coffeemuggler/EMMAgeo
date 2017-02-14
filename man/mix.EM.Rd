@@ -57,11 +57,10 @@ lines(phi, sample1)
 lines(phi, sample2)
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \seealso{
 \code{\link{create.EM}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

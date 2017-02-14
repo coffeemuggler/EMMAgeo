@@ -23,10 +23,9 @@ GUI()
 }
 
 }
-\author{
-Michael Dietze
-}
 \seealso{
 \code{\link{runApp}}
 }
-
+\author{
+Michael Dietze
+}

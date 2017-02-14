@@ -38,11 +38,10 @@ l <- get.l(X = X,
            min = 0.02)
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \seealso{
 \code{\link{test.l.max}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

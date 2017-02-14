@@ -57,11 +57,10 @@ robust_scores <- robust.scores(loadings = robust_loadings,
                                plot = TRUE)
                     
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \seealso{
 \code{\link{robust.EM}}, \code{\link{robust.loadings}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

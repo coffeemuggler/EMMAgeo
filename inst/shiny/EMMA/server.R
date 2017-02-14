@@ -14,8 +14,7 @@
 #' 
 #' @export shinyServer
 
-data(X.artificial, envir = environment())
-X <- X.artificial
+data(example_X, envir = environment())
 
 shinyServer(function(
   input, 

@@ -96,9 +96,6 @@ EM <- EMMA(X = X, q = 4, l = 0.05, c = 100,
            col = rainbow(n = 4))
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \references{
 Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
@@ -114,5 +111,7 @@ Geological Survey Professsional Papers 574.
 \code{\link{test.parameters}}, \code{\link{rotations}},
 \code{\link{eigen}}, \code{\link{nnls}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

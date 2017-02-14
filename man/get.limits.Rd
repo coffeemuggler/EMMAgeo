@@ -42,11 +42,10 @@ data(example_EMpot)
 limits <- get.limits(loadings = EMpot$loadings)
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \seealso{
 \code{\link{EMMA}}, \code{\link{model.EM}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

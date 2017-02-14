@@ -39,11 +39,10 @@ TR <- test.robustness(X = X, q = q, l = l)
 # limits  
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \seealso{
 \code{\link{test.robustness}}, \code{\link{robust.EM}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

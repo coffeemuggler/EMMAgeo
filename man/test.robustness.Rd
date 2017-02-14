@@ -126,14 +126,13 @@ stem(M2$modes, scale = 2)
 
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \references{
 Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
 deciphering modern detrital processes from lake sediments of Lake Donggi
 Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180. \cr
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

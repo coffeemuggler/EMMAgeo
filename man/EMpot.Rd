@@ -21,4 +21,3 @@ data(example_EMpot)
 
 }
 \keyword{datasets}
-

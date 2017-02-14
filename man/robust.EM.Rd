@@ -92,16 +92,15 @@ way. In the extended protocol \code{test.robustness} does this.
 #                  plot = TRUE)
                     
 ## get robust end-members by only modelling uncertainty in loadings
-# robust_EM <- robust.EM(em = EMpot, 
+# robust_EM <- robust.EM(em = EM_pot, 
 # limits = limits, 
 # plot = TRUE)
                     
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \seealso{
 \code{\link{robust.loadings}}, \code{\link{robust.scores}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

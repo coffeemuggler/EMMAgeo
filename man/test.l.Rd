@@ -35,9 +35,6 @@ test <- test.l(X = X, l = seq(from = 0, to = 0.6, by = 0.1))
 
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \references{
 Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
@@ -51,5 +48,7 @@ Mathematical Geology 3: 61-77.
 \code{\link{EMMA}}, \code{\link{check.data}},
 \code{\link{test.parameters}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

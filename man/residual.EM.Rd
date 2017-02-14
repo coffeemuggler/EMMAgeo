@@ -38,9 +38,6 @@ E_res <- EMMA(X = X,
               plot = TRUE)
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \references{
 Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
@@ -50,5 +47,7 @@ Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
 \seealso{
 \code{\link{EMMA}}, \code{\link{robust.EM}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

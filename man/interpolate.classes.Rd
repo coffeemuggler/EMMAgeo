@@ -73,11 +73,10 @@ for(i in 1:10) {
 }
 
 }
-\author{
-Michael Dietze, Elisabeth Dietze
-}
 \seealso{
 \code{\link{EMMA}}, \code{\link{approx}}, \code{\link{spline}}
 }
+\author{
+Michael Dietze, Elisabeth Dietze
+}
 \keyword{EMMA}
-

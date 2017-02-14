@@ -37,4 +37,3 @@ image(x = s,
 
 }
 \keyword{datasets}
-
