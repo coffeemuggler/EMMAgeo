@@ -2,6 +2,7 @@
 #' 
 #' A graphical user interface (GUI) server backend is started.
 #' 
+#' 
 #' @param input A collection of input objects.
 #' @param output A collection of input objects.
 #' @return A GUI server.

@@ -2,7 +2,7 @@
 #' 
 #' A graphical user interface (GUI) is started.
 #' 
-#' #' @return A GUI.
+#' @return A GUI.
 #' @author Michael Dietze, Elisabeth Dietze
 #' @keywords EMMA
 #' @examples
