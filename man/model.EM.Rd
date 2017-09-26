@@ -4,7 +4,7 @@
 \alias{model.EM}
 \title{Model all possible end-member scenarios.}
 \usage{
-model.EM(X, q, l, plot = TRUE, col.q = TRUE, bw, ...)
+model.EM(X, q, l, classunits, plot = TRUE, col.q = TRUE, bw, ...)
 }
 \arguments{
 \item{X}{\code{Numeric} matrix, input data set with m samples (rows) 
@@ -15,6 +15,9 @@ of end-members (cf. \code{get.q()}), required.}
 
 \item{l}{\code{Numeric} vector, weight transformation limit values, 
 corresponding to the matrix q, required.}
+
+\item{classunits}{\code{Numeric} vector, optional class units 
+(e.g. micrometers or phi-units) of the same length as columns of \code{X}.}
 
 \item{plot}{\code{Logical} scalar, option to plot the results (cf. 
 details for explanations), default is \code{TRUE}.}

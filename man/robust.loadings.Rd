@@ -4,8 +4,8 @@
 \alias{robust.loadings}
 \title{Extract robust end-member loadings.}
 \usage{
-robust.loadings(em, limits, amount, type = "mean", qt = c(0.25, 0.75),
-  plot = FALSE, ...)
+robust.loadings(em, limits, classunits, amount, type = "mean", qt = c(0.25,
+  0.75), plot = FALSE, ...)
 }
 \arguments{
 \item{em}{\code{List} of class \code{"EMMAgeo_empot"}, i.e. the outout of 
@@ -17,6 +17,9 @@ parameters.}
 for the robust end-members to calculate. The first column defines the lower
 limits, the second column the upper limits. End-members are organised in 
 rows.}
+
+\item{classunits}{\code{Numeric} vector, optional class units 
+(e.g. micrometers or phi-units) of the same length as columns of \code{X}.}
 
 \item{amount}{\code{Numeric} matrix with two columns, defining the minimum and 
 maximum amount of the modal class for each end-member.}

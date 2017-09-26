@@ -4,11 +4,14 @@
 \alias{get.limits}
 \title{Infer lower and upper mode position limits to define robust end-members.}
 \usage{
-get.limits(loadings, bw, threshold = 0.7)
+get.limits(loadings, classunits, bw, threshold = 0.7)
 }
 \arguments{
 \item{loadings}{\code{Numeric} matrix, m loadings (rows) and n classes 
 (columns).}
+
+\item{classunits}{\code{Numeric} vector, optional class units 
+(e.g. micrometers or phi-units) of the same length as columns of \code{X}.}
 
 \item{bw}{\code{Numeric} scalar, bandwidth of the kernel, moved over the 
 data set. If omitted, the default value of 1 % of the number of classes is
@@ -39,7 +42,7 @@ to get reasonable results. The default value may or may not be adequate!
 data(example_EMpot)
 
 ## infer mode cluster limits
-limits <- get.limits(loadings = EMpot$loadings)
+limits <- get.limits(loadings = EMpot)
 
 }
 \seealso{

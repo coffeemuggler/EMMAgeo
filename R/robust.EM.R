@@ -24,6 +24,9 @@
 #' lower limits, the second column the upper limits. End-members are organised 
 #' in rows.
 #' 
+#' @param classunits \code{Numeric} vector, optional class units 
+#' (e.g. micrometers or phi-units) of the same length as columns of \code{X}.
+#' 
 #' @param amount \code{Numeric} matrix with two columns, defining the minimum 
 #' and maximum amount of the modal class for each end-member.
 #' 
@@ -91,6 +94,7 @@
 robust.EM <- function(
   em,
   limits,
+  classunits,
   amount,
   l,
   mc_n,
@@ -100,6 +104,12 @@ robust.EM <- function(
   plot = FALSE,
   ...
 ) {
+  
+  ## check/set class units
+  if(missing(classunits) == TRUE) {
+    
+    classunits <- seq(from = 1, to = ncol(em$X_in)) 
+  }
   
   ## read out additional EMMA parameters
   extraArgs <- list(...)
@@ -119,9 +129,21 @@ robust.EM <- function(
     rotation <- "Varimax"
   }
   
+  if(missing(classunits) == TRUE) {
+
+    classunits <- seq(from = 1, to = ncol(em$X_in))
+  }  
+  
+  if("ID" %in% names(extraArgs)) {
+    ID <- extraArgs$ID
+  } else{
+    ID <- seq(from = 1, to = nrow(em$X_in))
+  } 
+  
   ##check/set l
   if(missing(l) == TRUE) {
     print("Parameter l missing! Set to 'mRt' by default")
+    
     l <- "mRt"
   } 
   
@@ -145,6 +167,7 @@ robust.EM <- function(
   ## evaluate robust loadings
   robust_loadings <- robust.loadings(em = em, 
                                      limits = limits, 
+                                     classunits = classunits,
                                      amount = amount, 
                                      type = type,
                                      qt = qt, 
@@ -178,18 +201,6 @@ robust.EM <- function(
 
   ## optionally, plot end-member loadings and scores
   if(plot == TRUE) {
-    
-    if("classunits" %in% names(extraArgs)) {
-      classunits <- extraArgs$classunits
-    } else{
-      classunits <- seq(from = 1, to = ncol(em$X_in))
-    }  
-    
-    if("ID" %in% names(extraArgs)) {
-      ID <- extraArgs$ID
-    } else{
-      ID <- seq(from = 1, to = nrow(em$X_in))
-    } 
 
     if(type == "mean") {
       

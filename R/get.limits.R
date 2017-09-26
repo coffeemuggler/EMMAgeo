@@ -14,6 +14,9 @@
 #' @param loadings \code{Numeric} matrix, m loadings (rows) and n classes 
 #' (columns).
 #' 
+#' @param classunits \code{Numeric} vector, optional class units 
+#' (e.g. micrometers or phi-units) of the same length as columns of \code{X}.
+#' 
 #' @param bw \code{Numeric} scalar, bandwidth of the kernel, moved over the 
 #' data set. If omitted, the default value of 1 % of the number of classes is
 #' used.
@@ -33,11 +36,12 @@
 #' data(example_EMpot)
 #' 
 #' ## infer mode cluster limits
-#' limits <- get.limits(loadings = EMpot$loadings)
+#' limits <- get.limits(loadings = EMpot)
 #' 
 #' @export get.limits
 get.limits <- function(
   loadings,
+  classunits,
   bw,
   threshold = 0.7
 ) {
@@ -58,18 +62,26 @@ get.limits <- function(
     }
   }
   
-  ## check/set bw
-  if(missing(bw) == TRUE) {
-    bw <- (max(loadings_mode) - min(loadings_mode)) / 100
+  ## check/set classunits
+  if(missing(classunits) == TRUE) {
+    
+    classunits <- seq(from = 1, 
+                      to = ncol(loadings$loadings))
   }
   
+  ## check/set bw
+  if(missing(bw) == TRUE) {
+    
+    bw <- (max(loadings_mode) - min(loadings_mode)) / 100
+  }
   
   ## create kde of modes
   kde <- density(x = loadings_mode,
                  bw = bw)
   
   ## keep kde parts above threshold value and convert to limits
-  kde.ok <- kde$y >= quantile(x = kde$y, probs = threshold)
+  kde.ok <- kde$y >= quantile(x = kde$y, 
+                              probs = threshold)
   
   kde.limits.1 <- diff(x = kde.ok) == 1
   kde.limits.2 <- diff(x = kde.ok) == -1
@@ -82,6 +94,14 @@ get.limits <- function(
   limits <- t(apply(X = limits, 
                     MARGIN = 1, 
                     FUN = sort))
+  
+  ## round limits to integer values
+  limits <- round(x = limits, 
+                  digits = 0)
+  
+  ## convert limit classes to class units
+  limits <- cbind(classunits[limits[,1]],
+                  classunits[limits[,2]])
   
   ## print threshold value
   print(paste("Threshold in KDE density values is", 

@@ -14,6 +14,9 @@
 #' limits, the second column the upper limits. End-members are organised in 
 #' rows.
 #' 
+#' @param classunits \code{Numeric} vector, optional class units 
+#' (e.g. micrometers or phi-units) of the same length as columns of \code{X}.
+#' 
 #' @param amount \code{Numeric} matrix with two columns, defining the minimum and 
 #' maximum amount of the modal class for each end-member.
 #' 
@@ -53,6 +56,7 @@
 robust.loadings <- function(
   em,
   limits,
+  classunits,
   amount,
   type = "mean",
   qt = c(0.25, 0.75),
@@ -66,6 +70,12 @@ robust.loadings <- function(
                         times = nrow(limits)),
                     rep(x = max(em$Vqsn, na.rm = TRUE), 
                         times = nrow(limits)))
+  }
+  
+  ## check/set class units
+  if(missing(classunits) == TRUE) {
+    
+    classunits <- seq(from = 1, to = ncol(em$X_in)) 
   }
   
   ## read out additional EMMA parameters
@@ -95,12 +105,6 @@ robust.loadings <- function(
     rotation <- "Varimax"
   }  
   
-  if("classunits" %in% names(extraArgs)) {
-    classunits <- extraArgs$classunits
-  } else{
-    classunits <- seq(from = 1, to = ncol(em$X_in))
-  }  
-  
   if("ID" %in% names(extraArgs)) {
     ID <- extraArgs$ID
   } else{
@@ -118,19 +122,23 @@ robust.loadings <- function(
   }
   
   ## create dummy list structures
-  EM.Vqn.list <- vector(mode = "list", length = nrow(limits))
-  EM.Vqsn.list <- vector(mode = "list", length = nrow(limits))
+  EM.Vqn.list <- vector(mode = "list", 
+                        length = nrow(limits))
+  
+  EM.Vqsn.list <- vector(mode = "list", 
+                         length = nrow(limits))
   
   ## select modes that fall into limits for all limit pairs
   for(i in 1:nrow(limits)) {
     
+    ## get suitable loadings
+    i_ok <- em$modes_classunits >= limits[i,1] & 
+      em$modes_classunits <= limits[i,2]
+    
     ## identify valid loadings
-    Vqn_mode <- em$Vqn[(em$modes >= limits[i,1] & 
-                          em$modes <= limits[i,2]),]
-    Vqsn_mode <- em$Vqsn[(em$modes >= limits[i,1] & 
-                            em$modes <= limits[i,2]),]
-    mode_mode <- em$modes[(em$modes >= limits[i,1] & 
-                             em$modes <= limits[i,2])]
+    Vqn_mode <- em$Vqn[i_ok,]
+    Vqsn_mode <- em$Vqsn[i_ok,]
+    mode_mode <- seq(from = 1, to = nrow(em$Vqn))[i_ok]
     
     Vqsn_mode_max <- numeric(length(mode_mode))
     for(j in 1:length(mode_mode)) {

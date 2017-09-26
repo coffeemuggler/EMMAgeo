@@ -28,6 +28,9 @@
 #' @param l \code{Numeric} vector, weight transformation limit values, 
 #' corresponding to the matrix q, required.
 #' 
+#' @param classunits \code{Numeric} vector, optional class units 
+#' (e.g. micrometers or phi-units) of the same length as columns of \code{X}.
+#' 
 #' @param plot \code{Logical} scalar, option to plot the results (cf. 
 #' details for explanations), default is \code{TRUE}.
 #' 
@@ -68,15 +71,31 @@ model.EM <- function(
   X,
   q,
   l,
+  classunits,
   plot = TRUE,
   col.q = TRUE,
   bw,
   ...
 ) {
   
+  ## check/set class units
+  if(missing(classunits) == TRUE) {
+    
+    classunits <- seq(from = 1, to = ncol(X)) 
+  }
+  
   ## check for l vs. lw
   if("lw" %in% names(list(...))) {
     stop('Parameter "lw" is depreciated. Use "l" instead.')
+  }
+  
+  ## check7set log option
+  if("log" %in% names(list(...))) {
+    
+    log_plot <- list(...)$log
+  } else {
+    
+    log_plot <- ""
   }
   
   ## check/set l
@@ -101,6 +120,10 @@ model.EM <- function(
   ## run test.robustness()
   em <- test.robustness(X = X, P = P, ...)
   
+  ## assign class units
+  em[[length(em) + 1]] <- classunits[em$modes]
+  names(em)[length(names(em))] <- "modes_classunits"
+
   ## assign plot colour
   if(col.q == TRUE) {
     plot_col <- em$q - min(em$q) + 1
@@ -112,23 +135,36 @@ model.EM <- function(
   ## optionally, plot output
   if(plot == TRUE) {
     
+    ## get old margins
+    mar_old <- par()$mar
+    
+    ## set new margins
+    par(mar = c(5.1, 4.1, 4.1, 4.1))
+    
     ## create empty, scaled plot
     plot(NA, 
-         xlim = c(1,ncol(em$loadings)), 
-         ylim = c(min(em$loadings), max(em$loadings) * 1.1),
+         xlim = range(classunits), 
+         ylim = c(min(em$loadings), 
+                  max(em$loadings) * 1.1),
          xlab = "Class",
-         ylab = "Contribution",
-         main = paste("Loadings (n = ", nrow(em$loadings), ")", sep = ""))
-    
+         ylab = "Contribution", 
+         log = log_plot,
+         main = paste("Loadings (n = ", 
+                      nrow(em$loadings), 
+                      ")", 
+                      sep = ""))
+
     ## add all potential loadings
     for(i in 1:nrow(em$loadings)) {
-      lines(x = 1:ncol(em$loadings),
+      lines(x = classunits,
             y = em$loadings[i,],
-            col = adjustcolor(col = plot_col[i], alpha.f = 0.3))
+            col = adjustcolor(col = plot_col[i], 
+                              alpha.f = 0.3))
     }
     
     ## add cumulate mode position plot
     par(new = TRUE)
+    
     plot(x = sort(em$modes),
          y = 1:length(em$modes),
          xlim = c(1,ncol(em$loadings)),
@@ -149,7 +185,10 @@ model.EM <- function(
          lwd = 2,
          ann = FALSE,
          axes = FALSE)
-  }
+    axis(side = 4)
+    mtext(text = "Density", 
+          side = 4, 
+          line = 2.5)
   
   if(col.q == TRUE) {
     legend(x = "top",
@@ -159,6 +198,22 @@ model.EM <- function(
            horiz = TRUE,
            box.lty = 0)
   }
+    
+    ## create empty plot, scaled to initial plot
+    par(new = TRUE)
+    
+    plot(NA, 
+         xlim = range(classunits), 
+         ylim = c(min(em$loadings), 
+                  max(em$loadings) * 1.1),
+         log = log_plot,
+         ann = FALSE,
+         axes = FALSE)
+   
+    ## restore old margins
+    par(mar = mar_old)
+  }
+  
   
   ## set class
   class(em) <- "EMMAgeo_empot"
