@@ -323,5 +323,6 @@ test.robustness <- function(
        Vqsn = Vqsn.t,
        Vqn = Vqn.t,
        X_in = X,
-       l_in = unique(l.t))
+       l_in = unique(l.t),
+       modes_classunits = classunits[data.t[,3]])
 }

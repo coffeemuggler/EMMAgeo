@@ -138,15 +138,9 @@ robust.loadings <- function(
     ## identify valid loadings
     Vqn_mode <- em$Vqn[i_ok,]
     Vqsn_mode <- em$Vqsn[i_ok,]
-    mode_mode <- seq(from = 1, to = nrow(em$Vqn))[i_ok]
-    
-    Vqsn_mode_max <- numeric(length(mode_mode))
-    for(j in 1:length(mode_mode)) {
-      
-      Vqsn_mode_max[j] <- Vqsn_mode[j, mode_mode[j]]
-    }
-    
-    
+   
+    Vqsn_mode_max <- rowMaxs(Vqsn_mode)
+
     Vqn_mode <- Vqn_mode[Vqsn_mode_max > amount[i, 1] &
                            Vqsn_mode_max < amount[i, 2],]
     
@@ -159,7 +153,6 @@ robust.loadings <- function(
     ## assign valid loadings Vqn
     EM.Vqsn.list[[i]] <- Vqsn_mode
   }
-  
   
   ## calculate statistic descriptions for loadings
   EM.Vqn.mean <- lapply(X = EM.Vqn.list, FUN = function(x) {

@@ -128,12 +128,7 @@ robust.EM <- function(
   } else{
     rotation <- "Varimax"
   }
-  
-  if(missing(classunits) == TRUE) {
 
-    classunits <- seq(from = 1, to = ncol(em$X_in))
-  }  
-  
   if("ID" %in% names(extraArgs)) {
     ID <- extraArgs$ID
   } else{
@@ -179,17 +174,23 @@ robust.EM <- function(
   ## optionally evaluate l_opt
   if(is.character(l) == TRUE) {
     
-    l <- get.l.opt(X = em$X_in, 
+    l <- try(get.l.opt(X = em$X_in, 
                    l = em$l_in, 
                    quality = l,
                    Vqn = Vqn_average, 
                    rotation = rotation, 
-                   plot = FALSE)
+                   plot = FALSE), 
+             silent = TRUE)
   }
   
   ## check/set Monte Carlo runs
   if(missing(mc_n) == TRUE) {
     mc_n <- 10 * nrow(Vqn_average) * length(em$l_in)
+  }
+  
+  if(class(l) == "try-error") {
+    
+    stop("No end-members found that match limit definitions!")
   }
   
   ## evaluate robust scores

@@ -121,8 +121,7 @@ model.EM <- function(
   em <- test.robustness(X = X, P = P, ...)
   
   ## assign class units
-  em[[length(em) + 1]] <- classunits[em$modes]
-  names(em)[length(names(em))] <- "modes_classunits"
+  em$modes_classunits <- classunits[em$modes]
 
   ## assign plot colour
   if(col.q == TRUE) {
