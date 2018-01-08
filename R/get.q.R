@@ -60,7 +60,7 @@
 #' @examples
 #' 
 #' ## load example data set
-#' data(X, envir = environment())
+#' data("example_X")
 #' 
 #' ## create parameter matrix
 #' get.q(X = X, l = c(0, 0.05, 0.10, 0.15))
