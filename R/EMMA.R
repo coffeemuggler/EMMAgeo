@@ -316,7 +316,7 @@ EMMA <- function(
       ylim <- extraArgs$ylim
     } else {
       ylim <- rbind(c(0, max(Vqsn, na.rm = TRUE)),
-                    c(0, 1))
+                    c(-0.04, 1.04))
     }
     
     if("log" %in% names(extraArgs)) {
@@ -340,13 +340,13 @@ EMMA <- function(
     if("lty" %in% names(extraArgs)) {
       lty <- extraArgs$lty
     } else {
-      lty <- 1
+      lty <- rep(1, q)
     }
 
     if("lwd" %in% names(extraArgs)) {
       lwd <- extraArgs$lwd
     } else {
-      lwd <- 1
+      lwd <- rep(1, q)
     }
 
     ## setup plot area
@@ -354,7 +354,11 @@ EMMA <- function(
     par.old <- op <- par(no.readonly = TRUE)
     
     ## adjust margins
-    par(mar = c(3.9, 4.5, 3.1, 1.1))
+    par(mar = c(3.9, 4.5, 3.1, 1.1),
+        cex.axis = cex, 
+        cex.lab = cex, 
+        cex.main = 1.2 * cex, 
+        cex.sub = cex)
     
     ## define layout
     layout(rbind(c(1, 1, 2, 2), 
@@ -374,7 +378,8 @@ EMMA <- function(
                       signif(x = mean(Rn * 100), digits = 2), " %)", sep = ""),
          xlab = xlab[1],
          ylab = expression(R^2),
-         log = log)
+         log = log,
+         cex = cex)
     
     ## plot row-wise explained variance
     plot(x = 1:nrow(X), 
@@ -383,7 +388,8 @@ EMMA <- function(
          main = paste("Sample-wise explained variance (mean = ", 
                       signif(x = mean(Rm * 100), digits = 2), " %)", sep = ""),
          xlab = xlab[2],
-         ylab = expression(R^2))
+         ylab = expression(R^2),
+         cex = cex)
     
     ## plot end-member loadings
     plot(classunits, Vqsn[1,], type = "l", 
@@ -392,13 +398,19 @@ EMMA <- function(
          ylab = ylab[1],
          ylim = as.vector(ylim[1,]),
          log = log,
-         col = col[1])
+         col = col[1],
+         lty = lty[1],
+         lwd = lwd[1],
+         cex = cex)
     
     if(nrow(Vqsn) >= 2) {
       for(i in 2:nrow(Vqsn)) {
         lines(x = classunits, 
               y = Vqsn[i,], 
-              col = col[i])
+              col = col[i],
+              lty = lty[i],
+              lwd = lwd[i],
+              cex = cex)
       }
     }
     
@@ -418,6 +430,7 @@ EMMA <- function(
             space = 0, 
             names.arg = barplot_names,
             horiz = FALSE)
+    box(which = "plot")
     
     ## plot legend-like information
     par(mar = c(1, 1, 1, 1))
@@ -431,7 +444,8 @@ EMMA <- function(
     
     mtext(line = -2, 
           text = "End-member ID (mode position | explained variance)", 
-          cex = 0.9 * cex)
+          cex = 0.8 * cex, 
+          font = 2)
     
     legend(x = "bottom", 
            legend = paste(EM.ID, " (", signif(x = modes, digits = 2), " | ", 
@@ -440,7 +454,8 @@ EMMA <- function(
            lty = lty, 
            lwd = lwd, 
            horiz = TRUE, 
-           box.lty = 0)
+           box.lty = 0, 
+           cex = cex)
     
     ## reset plot parameters
     par(par.old)
