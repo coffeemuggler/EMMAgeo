@@ -2,7 +2,7 @@ Package: EMMAgeo
 Type: Package
 Title: End-Member Modelling of Grain-Size Data
 Version: 0.9.6
-Date: 2016-06-29
+Date: 2018-02-25
 Author: Michael Dietze, Elisabeth Dietze
 Maintainer: Michael Dietze <mdietze@gfz-potsdam.de>
 Description: End-member modelling analysis of grain-size data.
