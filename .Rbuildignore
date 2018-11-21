@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+.git
+.Rd2pdf19942
+.gitignore

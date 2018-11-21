@@ -134,6 +134,13 @@ model.EM <- function(
   ## optionally, plot output
   if(plot == TRUE) {
     
+    ## create plot object
+    em_plot <- em
+    
+    ## set negative values to zero
+    em_plot$loadings[em_plot$loadings < 0] <- 0
+    em_plot$Vqsn[em_plot$Vqsn < 0] <- 0
+    
     ## get old margins
     mar_old <- par()$mar
     
@@ -143,20 +150,20 @@ model.EM <- function(
     ## create empty, scaled plot
     plot(NA, 
          xlim = range(classunits), 
-         ylim = c(min(em$loadings), 
-                  max(em$loadings) * 1.1),
+         ylim = c(min(em_plot$loadings), 
+                  max(em_plot$loadings) * 1.1),
          xlab = "Class",
          ylab = "Contribution", 
          log = log_plot,
          main = paste("Loadings (n = ", 
-                      nrow(em$loadings), 
+                      nrow(em_plot$loadings), 
                       ")", 
                       sep = ""))
 
     ## add all potential loadings
-    for(i in 1:nrow(em$loadings)) {
+    for(i in 1:nrow(em_plot$loadings)) {
       lines(x = classunits,
-            y = em$loadings[i,],
+            y = em_plot$loadings[i,],
             col = adjustcolor(col = plot_col[i], 
                               alpha.f = 0.3))
     }
@@ -164,9 +171,9 @@ model.EM <- function(
     ## add cumulate mode position plot
     par(new = TRUE)
     
-    plot(x = sort(em$modes),
-         y = 1:length(em$modes),
-         xlim = c(1,ncol(em$loadings)),
+    plot(x = sort(em_plot$modes),
+         y = 1:length(em_plot$modes),
+         xlim = c(1,ncol(em_plot$loadings)),
          type = "b",
          lwd = 2,
          col = plot_col,
@@ -175,7 +182,7 @@ model.EM <- function(
     
     ## add mode position KDE plot
     par(new = TRUE)
-    kde <- density(x = em$modes,
+    kde <- density(x = em_plot$modes,
                    from = 1, 
                    to = ncol(X),
                    bw = bw)
@@ -191,8 +198,8 @@ model.EM <- function(
   
   if(col.q == TRUE) {
     legend(x = "top",
-           legend = paste("q = ", seq(from = min(em$q), 
-                                      to = max(em$q))),
+           legend = paste("q = ", seq(from = min(em_plot$q), 
+                                      to = max(em_plot$q))),
            text.col = sort(x = unique(x = plot_col)),
            horiz = TRUE,
            box.lty = 0)
@@ -203,8 +210,8 @@ model.EM <- function(
     
     plot(NA, 
          xlim = range(classunits), 
-         ylim = c(min(em$loadings), 
-                  max(em$loadings) * 1.1),
+         ylim = c(min(em_plot$loadings), 
+                  max(em_plot$loadings) * 1.1),
          log = log_plot,
          ann = FALSE,
          axes = FALSE)
