@@ -27,8 +27,8 @@
 #' end-member loadings Default is \code{c(0.25, 0.75)} (i.e., 
 #' the quartile range).
 #' 
-#' @param plot \code{Character} scalar, option for plot output. One out of 
-#' \code{"mean"} and \code{"median"}. Default is \code{"mean"}.
+#' @param plot \code{Logical} scalar, option to enable plot output. Default 
+#' is \code{FALSE}.
 #' 
 #' @param \dots Additional arguments passed to \code{EMMA} and \code{plot}. 
 #'  
@@ -247,7 +247,7 @@ robust.loadings <- function(
          xlab = "Class",
          ylab = "Relative amount",
          log = log_in)
-    
+
     for(i in 1:nrow(limits)) {
       polygon(x = classes_plot, 
               y = Vqsn_scatter_plot[[i]], 

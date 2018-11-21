@@ -31,8 +31,8 @@ maximum amount of the modal class for each end-member.}
 end-member loadings Default is \code{c(0.25, 0.75)} (i.e., 
 the quartile range).}
 
-\item{plot}{\code{Character} scalar, option for plot output. One out of 
-\code{"mean"} and \code{"median"}. Default is \code{"mean"}.}
+\item{plot}{\code{Logical} scalar, option to enable plot output. Default 
+is \code{FALSE}.}
 
 \item{\dots}{Additional arguments passed to \code{EMMA} and \code{plot}.}
 }
