@@ -3,3 +3,6 @@
 .git
 .Rd2pdf19942
 .gitignore
+README.html
+README.md
+LICENSE.txt
