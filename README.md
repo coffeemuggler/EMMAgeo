@@ -1,4 +1,4 @@
-# eseis
+# EMMAgeo
 
 The R package 'EMMAgeo' provides a functions for end-member modelling analysis of grain-size data.
 
@@ -28,7 +28,7 @@ devtools::install_github(repo = "coffeemuggler/EMMAgeo")
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version. EMMAgeo is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied. See the [GNU General Public License](https://github.com/coffeemuggler/EMMAgeo/blob/master/LICENSE.txt) for more details.
 
-Copyright © 2018 Helmholtz Centre Potsdam GFZ German Research Centre for Geosciences, Potsdam, Germany
+Copyright © 2019 Helmholtz Centre Potsdam GFZ German Research Centre for Geosciences, Potsdam, Germany
 
 ## Citation
 
