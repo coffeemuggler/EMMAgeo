@@ -1,4 +1,4 @@
-# EMMAgeo
+# EMMAgeo - R package, v. 0.9.6
 
 The R package 'EMMAgeo' provides a functions for end-member modelling analysis of grain-size data.
 
