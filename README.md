@@ -32,7 +32,10 @@ Copyright © 2019 Helmholtz Centre Potsdam GFZ German Research Centre for Geosci
 
 ## Citation
 
-Please use the below reference when citing the usage of the package. It is important to not just use one of them but the two.
+Please use the below reference when citing the usage of the package. It is important to not just use one of them but both.
+
+Dietze, E., and Dietze, M.: Grain-size distribution unmixing using the R package EMMAgeo, E&G
+Quaternary Sci. J., 69, 1-8, https://doi.org/10.5194/egqsj-69-1-2019, 2019.
 
 Dietze, E and Dietze, M. (2019). EMMAgeo. GFZ Data Services. R package version 0.9.6. http://doi.org/10.5880/GFZ.4.6.2019.002.
 

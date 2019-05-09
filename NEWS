@@ -1,7 +1,10 @@
 Changes for R-package EMMAgeo
 
-Version 0.9.5
-	-  
+Version 0.9.6
+	- GUI functionality corrected for other platforms
+	- classunit implementation also available for compact protocol
+	- plot output polished
+	- License and Readme information added
 
 Version 0.9.4
 	- parameter name lw changed to l in all functions
