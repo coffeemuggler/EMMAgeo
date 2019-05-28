@@ -19,7 +19,8 @@ limits, the second column the upper limits. End-members are organised in
 rows.}
 
 \item{classunits}{\code{Numeric} vector, optional class units 
-(e.g. micrometers or phi-units) of the same length as columns of \code{X}.}
+(e.g. micrometers or phi-units) of the same length as the number of 
+(grain-size) classes per sample.}
 
 \item{amount}{\code{Numeric} matrix with two columns, defining the minimum and 
 maximum amount of the modal class for each end-member.}
