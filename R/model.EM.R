@@ -1,4 +1,4 @@
-#' Model all possible end-member scenarios.
+#' Model all possible end-member scenarios
 #' 
 #' This function takes a definition of weight transformation 
 #' limits and corresponding minimum and maximum numbers of end-members to 

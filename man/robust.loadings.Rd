@@ -2,7 +2,7 @@
 % Please edit documentation in R/robust.loadings.R
 \name{robust.loadings}
 \alias{robust.loadings}
-\title{Extract robust end-member loadings.}
+\title{Extract robust end-member loadings}
 \usage{
 robust.loadings(em, limits, classunits, amount, type = "mean",
   qt = c(0.25, 0.75), plot = FALSE, ...)
