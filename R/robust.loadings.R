@@ -140,7 +140,7 @@ robust.loadings <- function(
     Vqn_mode <- em$Vqn[i_ok,]
     Vqsn_mode <- em$Vqsn[i_ok,]
    
-    Vqsn_mode_max <- matrixStats::rowMaxs(Vqsn_mode)
+    Vqsn_mode_max <- rowMaxs(Vqsn_mode)
 
     Vqn_mode <- Vqn_mode[Vqsn_mode_max > amount[i, 1] &
                            Vqsn_mode_max < amount[i, 2],]
