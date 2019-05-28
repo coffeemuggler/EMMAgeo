@@ -1,4 +1,4 @@
-#' Extract robust end-member loadings.
+#' Extract robust end-member loadings
 #' 
 #' This function takes a list object with potential end-member loadings and 
 #' extracts those with modes in specified limits to describe them by mean and
@@ -113,12 +113,12 @@ robust.loadings <- function(
   
   if(ncol(em$X_in) != length(classunits)) {
     
-    stop("Units vector is not of same length as variables.")
+    stop("Units vector is not of same length as data set resolution.")
   }
   
   if(nrow(em$X_in) != length(ID)) {
     
-    stop("ID vector is not of same length as variables.")
+    stop("ID vector is not of same length as samples.")
   }
   
   ## create dummy list structures
@@ -139,7 +139,7 @@ robust.loadings <- function(
     Vqn_mode <- em$Vqn[i_ok,]
     Vqsn_mode <- em$Vqsn[i_ok,]
    
-    Vqsn_mode_max <- rowMaxs(Vqsn_mode)
+    Vqsn_mode_max <- matrixStats::rowMaxs(Vqsn_mode)
 
     Vqn_mode <- Vqn_mode[Vqsn_mode_max > amount[i, 1] &
                            Vqsn_mode_max < amount[i, 2],]
@@ -152,6 +152,31 @@ robust.loadings <- function(
     
     ## assign valid loadings Vqn
     EM.Vqsn.list[[i]] <- Vqsn_mode
+  }
+  
+  ## identify empty end-member clusters
+  i_filled <- do.call(c, lapply(X = EM.Vqn.list, FUN = function(x) {
+    
+    nrow(x) >= 1
+  }))
+  
+  ## remove empty clusters
+  EM.Vqn.list <- EM.Vqn.list[i_filled]
+  EM.Vqsn.list <- EM.Vqsn.list[i_filled]
+  
+  ## announce removed clusters
+  if(sum(i_filled) < nrow(limits)) {
+    
+    limits_empty <- limits[!i_filled,]
+    
+    warning(paste("No end-members found with modes between", 
+                   paste(apply(X = rbind(limits_empty), 
+                         MARGIN = 1, 
+                         FUN = paste, 
+                         collapse = "-"), 
+                         collapse = ", ")))
+    
+    limits <- limits[i_filled,]
   }
   
   ## calculate statistic descriptions for loadings
@@ -195,75 +220,81 @@ robust.loadings <- function(
     apply(X = x, MARGIN = 2, FUN = quantile, probs = qt[2], na.rm = TRUE)
   })
   
-  ## prepare plot data for mean or median option
-  if(type == "mean") {
+  ## check if any clusters have remained
+  if(nrow(limits) > 0) {
     
-    Vqn_average <- do.call(rbind, EM.Vqn.mean)
-    
-    Vqsn_average_plot <- EM.Vqsn.mean
-    
-    Vqsn_scatter_plot <- vector(mode = "list", 
-                                length = length(Vqsn_average_plot))
-    
-    for(i in 1:nrow(limits)) {
-      Vqsn_scatter_plot[[i]] <- c(EM.Vqsn.mean[[i]] - 1 * EM.Vqsn.sd[[i]],
-                                  rev(EM.Vqsn.mean[[i]] + 1 * EM.Vqsn.sd[[i]]))
+    ## prepare plot data for mean or median option
+    if(type == "mean") {
       
-      Vqsn_scatter_plot[[i]][Vqsn_scatter_plot[[i]] < 0] <- 0
+      Vqn_average <- do.call(rbind, EM.Vqn.mean)
+      
+      Vqsn_average_plot <- EM.Vqsn.mean
+      
+      Vqsn_scatter_plot <- vector(mode = "list", 
+                                  length = length(Vqsn_average_plot))
+      
+      for(i in 1:nrow(limits)) {
+        Vqsn_scatter_plot[[i]] <- c(EM.Vqsn.mean[[i]] - 1 * EM.Vqsn.sd[[i]],
+                                    rev(EM.Vqsn.mean[[i]] + 1 * EM.Vqsn.sd[[i]]))
+        
+        Vqsn_scatter_plot[[i]][Vqsn_scatter_plot[[i]] < 0] <- 0
+      }
+      
+      classes_plot <- c(classunits, rev(classunits))
+      
+    } else if(type == "median") {
+      
+      Vqn_average <- do.call(rbind, EM.Vqn.median)
+      
+      Vqsn_average_plot <- EM.Vqsn.median
+      
+      Vqsn_scatter_plot <- vector(mode = "list", 
+                                  length = length(Vqsn_average_plot))
+      
+      for(i in 1:nrow(limits)) {
+        Vqsn_scatter_plot[[i]] <- c(EM.Vqsn.qt1[[i]],
+                                    rev(EM.Vqsn.qt2[[i]]))
+        
+        Vqsn_scatter_plot[[i]][Vqsn_scatter_plot[[i]] < 0] <- 0
+      }
+      
+      classes_plot <- c(classunits, rev(classunits))
+      
     }
     
-    classes_plot <- c(classunits, rev(classunits))
-    
-  } else if(type == "median") {
-    
-    Vqn_average <- do.call(rbind, EM.Vqn.median)
-    
-    Vqsn_average_plot <- EM.Vqsn.median
-    
-    Vqsn_scatter_plot <- vector(mode = "list", 
-                                length = length(Vqsn_average_plot))
-    
-    for(i in 1:nrow(limits)) {
-      Vqsn_scatter_plot[[i]] <- c(EM.Vqsn.qt1[[i]],
-                                  rev(EM.Vqsn.qt2[[i]]))
+    ## optionally create plot output
+    if(plot == TRUE) {
       
-      Vqsn_scatter_plot[[i]][Vqsn_scatter_plot[[i]] < 0] <- 0
+      ## store old plot parameters
+      par_old <- par(no.readonly = TRUE)
+      
+      plot(x = NA, 
+           xlim = range(classunits), 
+           ylim = range(c(Vqsn_scatter_plot)),
+           main = "Robust loadings",
+           xlab = "Class",
+           ylab = "Relative amount",
+           log = log_in)
+      
+      for(i in 1:nrow(limits)) {
+        polygon(x = classes_plot, 
+                y = Vqsn_scatter_plot[[i]], 
+                border = NA, 
+                col = adjustcolor(col = col_in[i], 
+                                  alpha.f = 0.3))
+        
+        lines(x = classunits, 
+              y = Vqsn_average_plot[[i]], 
+              col = col_in[i], 
+              lwd = 2)
+      }
+      
+      ## restore plot parameters
+      par(par_old)
     }
-    
-    classes_plot <- c(classunits, rev(classunits))
-    
   }
 
-  ## optionally create plot output
-  if(plot == TRUE) {
 
-    ## store old plot parameters
-    par_old <- par(no.readonly = TRUE)
-    
-    plot(x = NA, 
-         xlim = range(classunits), 
-         ylim = range(c(Vqsn_scatter_plot)),
-         main = "Robust loadings",
-         xlab = "Class",
-         ylab = "Relative amount",
-         log = log_in)
-
-    for(i in 1:nrow(limits)) {
-      polygon(x = classes_plot, 
-              y = Vqsn_scatter_plot[[i]], 
-              border = NA, 
-              col = adjustcolor(col = col_in[i], 
-                                alpha.f = 0.3))
-      
-      lines(x = classunits, 
-            y = Vqsn_average_plot[[i]], 
-            col = col_in[i], 
-            lwd = 2)
-    }
-    
-    ## restore plot parameters
-    par(par_old)
-  }
   
   ## create output
   data_out <- list(Vqsn = list(mean = do.call(rbind, EM.Vqsn.mean),
