@@ -169,7 +169,12 @@ EMMA <- function(
   A <- t(W) %*% W
 
   ## perform eigenspace decomposition
-  EIG <- eigen(A)
+  EIG <- try(eigen(A), silent = TRUE)
+  
+  if(class(EIG) == "try-error") {
+    
+    stop("Cannot compute eigen space! Consider decreasing l.")
+  }
 
   ## assign raw eigenvectors V
   V <- EIG$vectors[,order(seq(ncol(A), 1, -1))]
