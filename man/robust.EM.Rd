@@ -71,33 +71,35 @@ way. In the extended protocol \code{test.robustness} does this.
 }
 \examples{
 
-## Not run because of long computation time, compact protocol
+\dontrun{
 
 ## load example data set
-# data(example_X)
+data(example_X)
 
 ## get weight transformation limit vector
-# l <- get.l(X = X)
+l <- get.l(X = X)
 
 ## get minimum and maximum number of end-members
-# q <- get.q(X = X, l = l)
+q <- get.q(X = X, l = l)
 
 ## get all potential model scenarios
-# EM_pot <- model.EM(X = X, q = q, plot = TRUE)
+EM_pot <- model.EM(X = X, q = q, plot = TRUE)
 
 ## define end-member mode class limits
-# limits <- cbind(c(61, 74, 95, 102), 
-#                 c(64, 76, 100, 105))
+limits <- cbind(c(61, 74, 95, 102), 
+                c(64, 76, 100, 105))
 
 ## get robust end-members in the default way, with plot output
-# rem <- robust.EM(em = EM_pot,
-#                  limits = limits,
-#                  plot = TRUE)
+rem <- robust.EM(em = EM_pot,
+                 limits = limits,
+                 plot = TRUE)
                     
 ## get robust end-members by only modelling uncertainty in loadings
-# robust_EM <- robust.EM(em = EM_pot, 
-# limits = limits, 
-# plot = TRUE)
+robust_EM <- robust.EM(em = EM_pot, 
+                       limits = limits, 
+                       plot = TRUE)
+
+}
                     
 }
 \seealso{
