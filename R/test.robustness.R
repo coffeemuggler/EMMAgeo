@@ -142,17 +142,28 @@ test.robustness <- function(
   }
   
   ## check/set class units vector and test for consistency
-  if(missing(classunits) == TRUE) {classunits <- 1:ncol(X)}
+  flag_classunit <- TRUE
+  if(missing(classunits) == TRUE) {
+    classunits <- 1:ncol(X)
+    flag_classunit <- FALSE
+  }
+  
   if(ncol(X) != length(classunits)) {stop(
     "Units vector is not of same length as variables.")}
   
   ## check/set constant sum value
-  if(missing(c) == TRUE) {c <- 100}
+  if(missing(c) == TRUE) {
+    c <- 100
+  }
   
   ## check/set ID vector and test for consistency
-  if(missing(ID) == TRUE) ID <- 1:nrow(X)
-  if(nrow(X) != length(ID)) stop(
-    "ID vector is not of same length as variables.")
+  if(missing(ID) == TRUE) {
+    ID <- 1:nrow(X)
+  }
+  
+  if(nrow(X) != length(ID)) {
+    stop("ID vector is not of same length as variables.")
+  }
   
   ## create vectors with test values of q and l
   if(missing(P) == TRUE) {
@@ -233,14 +244,17 @@ test.robustness <- function(
   
   ## determine mode position
   for(i in 1:nrow(Vqsn.t)) {
+    
     data.t[i,3] <- classunits[Vqsn.t[i,1:ncol(
       Vqsn.t)] == max(Vqsn.t[i,1:ncol(Vqsn.t)])]
   }
   
   ## optionally remove all data sets that failed rejection criterion ol.rej
   if(missing(ol.rej) == FALSE) {
+    
     ## identify rows that passed criterion
-    ID     <- data.t[,10] < ol.rej
+    ID <- data.t[,10] < ol.rej
+    
     ## keep data rows that passed criterion
     Vqsn.t <- Vqsn.t[ID,]
     Vqn.t  <- Vqn.t[ID,]
@@ -252,12 +266,15 @@ test.robustness <- function(
   
   ## optionally remove all data sets that failed rejection criterion mRt.rej
   if(missing(mRt.rej) == FALSE) {
+    
     ## identify rows that passed criterion
     ID     <- data.t[,4] > mRt.rej
+    
     ## keep data rows that passed criterion
     Vqsn.t <- Vqsn.t[ID,]
     Vqn.t  <- Vqn.t[ID,]
     data.t <- data.t[ID,]
+    
     ## stop if result is NULL
     if(is.matrix(Vqsn.t) == FALSE) stop("No output passed threshold mRt.rej.")
   }
@@ -308,6 +325,15 @@ test.robustness <- function(
         oma = c(0, 0, 0, 0))
   }
   
+  ## assign modes in classunit dimension
+  if(flag_classunit == TRUE) {
+    
+    modes_classunits<- data.t[,3]
+  } else {
+    
+    modes_classunits <- classunits[data.t[,3]]
+  }
+  
   ## return results
   list(q = data.t[,1],
        l = data.t[,2],
@@ -324,5 +350,5 @@ test.robustness <- function(
        Vqn = Vqn.t,
        X_in = X,
        l_in = unique(l.t),
-       modes_classunits = classunits[data.t[,3]])
+       modes_classunits = modes_classunits)
 }
