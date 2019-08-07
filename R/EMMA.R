@@ -112,6 +112,22 @@ EMMA <- function(
  ...
 ) {
   
+  ## take care of 0 values and exclude them in accordance to the 
+  ## procedure in Dietze et al. (2014)
+  ## Why should we do this? Because if we don't the function will crash.
+  if (any(colSums(X) == 0)) {
+    warning(
+      paste0(
+        length(which(colSums(X) == 0)),
+        " zero (0) value columns are ignored! The new matrix has only ", ncol(X), " columns!"
+      ),
+      call. = FALSE
+    )
+    X <- X[, colSums(X) != 0]
+    
+  }
+  
+
   ## check for l vs. lw
   if("lw" %in% names(list(...))) {
     
@@ -130,14 +146,21 @@ EMMA <- function(
   }
   
   ## check/set class units vector and test for consistency
-  if(missing(classunits) == TRUE) {
+  ## assign column names if available
+  if (missing(classunits)) {
+    if (is.null(colnames(X))) {
+      classunits <- 1:ncol(X)
+      
+    } else {
+      classunits <- as.numeric(colnames(X))
+      
+    }
+  }  
     
-    classunits <- 1:ncol(X)
-  }
-  
   if(ncol(X) != length(classunits)) {
+    warning("Units vector is not of same length as variables; column index assigned.", call. = FALSE)
+    classunits <- 1:ncol(X)
     
-    stop("Units vector is not of same length as variables.")
   }
   
   ## check/set ID vector and test for consistency
@@ -156,7 +179,7 @@ EMMA <- function(
   X  <- X / rowSums(X) * c
 
   ## calculate weight limit quantiles column-wise
-  ls <- apply(X <- X, 
+  ls <- apply(X = X, 
               MARGIN = 2, 
               FUN = quantile, 
               probs = c(l, 1 - l), 
@@ -289,7 +312,7 @@ EMMA <- function(
   modes <- numeric(q)
   for(i in 1:q) {modes[i] <- classunits[Vqsn[i,1:ncol(
     Vqsn)] == max(Vqsn[i,1:ncol(Vqsn)])]}
- 
+
   ## optionally, plot end-member loadings and scores
   if(plot == TRUE) {
     
