@@ -236,7 +236,7 @@ EMMA <- function(
   Wm <- Mq %*% Vqn
 
   ## calculate scaling vector after Miesch (1976)
-  ls <- apply(X <- X, 
+  ls <- apply(X = X, 
               MARGIN = 2, 
               FUN = quantile, 
               probs = c(l, 1 - l), 
@@ -443,9 +443,15 @@ EMMA <- function(
     }
     
     ## adjust barplot labels
-    barplot_names_show <- pretty(ID, n = round(length(ID) / 5))
-    barplot_names_match <- match(x = ID, table = barplot_names_show) * 0 + 1
-    barplot_names <- ID * barplot_names_match
+    if (class(ID) != "character") {
+      barplot_names_show <- pretty(ID, n = round(length(ID) / 5))
+      barplot_names_match <-
+        match(x = ID, table = barplot_names_show) * 0 + 1
+      barplot_names <- ID * barplot_names_match
+    } else{
+      barplot_names <- ID
+      
+    }
     
     ## plot end-member scores
     barplot(t(Mqs), 

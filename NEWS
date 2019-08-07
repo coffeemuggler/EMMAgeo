@@ -1,7 +1,8 @@
 Changes for R-package EMMAgeo
 
 Version 0.9.7
-  - 
+  - The EMMA() does not break anymore if the input matrix contains 0 value columns (#2)
+  - EMMA() does not crash anymore if 'ID' is a character vector
 
 Version 0.9.6
 	- GUI functionality corrected for other platforms
