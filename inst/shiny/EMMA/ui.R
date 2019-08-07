@@ -18,7 +18,7 @@ shinyUI(fluidPage(
                 sidebarPanel(tabsetPanel(
                                tabPanel(title = "Data",
                                         fileInput(inputId = "file.user", 
-                                                  label = strong("Data set"),
+                                                  label = strong("Data set (ASCII file, must end with .txt)"),
                                                   accept="text/plain"),
                                         tags$hr(),
                                         checkboxInput("ID", 
