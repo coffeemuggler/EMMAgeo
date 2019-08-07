@@ -23,10 +23,10 @@
 #' @param q \code{Numeric} scalar, number of end-members to be modelled.
 #' 
 #' @param l \code{Numeric} scalar or vector, weight transformation
-#' limit, i.e.  quantile.
+#' limit, i.e.  quantile. Set to zero if omitted.
 #' 
 #' @param c \code{Numeric} scalar, constant sum scaling parameter, e.g.
-#' 1, 100, 1000.
+#' 1, 100, 1000. Set to 100 if omitted.
 #' 
 #' @param Vqn \code{Numeric} matrix, optional unscaled user-defined
 #' end-member loadings. If provided, these are used instead of model-derived
