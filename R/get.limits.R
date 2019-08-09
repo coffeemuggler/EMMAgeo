@@ -79,30 +79,28 @@ get.limits <- function(
   kde <- density(x = loadings_mode,
                  bw = bw)
   
-  ## keep kde parts above threshold value and convert to limits
-  kde.ok <- kde$y >= quantile(x = kde$y, 
-                              probs = threshold)
   
-  kde.limits.1 <- diff(x = kde.ok) == 1
-  kde.limits.2 <- diff(x = kde.ok) == -1
-  
-  ## create limits matrix
-  limits <- cbind(kde$x[kde.limits.1], 
-                  kde$x[kde.limits.2])
-  
-  ## sort limits row-wise
-  limits <- t(apply(X = limits, 
-                    MARGIN = 1, 
-                    FUN = sort))
-  
-  ## round limits to integer values
-  limits <- round(x = limits, 
-                  digits = 0)
-  
+  # get index values above and equal the threshold
+  kde.ok <- which(kde$y >= quantile(x = kde$y,
+                                     probs = threshold))
+
+
+  ### get series of TRUE values
+  temp_diff <- cumsum(diff(kde.ok) > 1)
+
+  ## extract get corresponding boundaris from kde.y
+  limits <- t(vapply(min(temp_diff):max(temp_diff), function(x){
+    kde$x[range(kde.ok[which(temp_diff == x)])]
+
+  }, numeric(2)))
+
+  ## round 
+  limits <- round(limits, 0)
+
   ## convert limit classes to class units
   limits <- cbind(classunits[limits[,1]],
                   classunits[limits[,2]])
-  
+
   ## print threshold value
   print(paste("Threshold in KDE density values is", 
               round(x = quantile(x = kde$y, 
