@@ -71,7 +71,7 @@ get.limits <- function(
   
   ## check/set bw
   if(missing(bw) == TRUE) {
-    
+  
     bw <- (max(loadings_mode) - min(loadings_mode)) / 100
   }
   
@@ -88,7 +88,7 @@ get.limits <- function(
   ### get series of TRUE values
   temp_diff <- cumsum(diff(kde.ok) > 1)
 
-  ## extract get corresponding boundaris from kde.y
+  ## extract get corresponding boundaris from kde.x
   limits <- t(vapply(min(temp_diff):max(temp_diff), function(x){
     kde$x[range(kde.ok[which(temp_diff == x)])]
 
