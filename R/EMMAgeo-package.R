@@ -33,7 +33,7 @@
 #' @importFrom grDevices adjustcolor col2rgb hsv rainbow rgb2hsv
 #' @importFrom graphics abline axis barplot contour hist image 
 #' layout legend lines locator mtext par plot points rug 
-#' text polygon box segments
+#' text polygon box segments axTicks
 #' @importFrom stats median approx complete.cases cor density na.omit 
 #' quantile rnorm runif sd spline var
 #' @importFrom utils setTxtProgressBar txtProgressBar
