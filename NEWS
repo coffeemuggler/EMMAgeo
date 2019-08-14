@@ -1,7 +1,8 @@
 Changes for R-package EMMAgeo
 
 Version 0.9.7
-  - 
+  - get.limits() crashed under particular circumstances (#7); fixed
+  - robust.EM() crahsed if ID was of type character (#14); fixed
 
 Version 0.9.6
 	- GUI functionality corrected for other platforms
