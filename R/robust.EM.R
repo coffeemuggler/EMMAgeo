@@ -382,7 +382,7 @@ robust.EM <- function(
          xlab = xlab[2],
          ylab = ylab[2])
     box(which = "plot")
-    axis(side = 1)
+    axis(side = 1, at = axTicks(1), labels = ID)
     ticks_scores <- seq(from = 0, 
                         to = ncol(robust_scores$mean), 
                         by = 0.5)
@@ -393,13 +393,12 @@ robust.EM <- function(
          labels = labels_scores)
     
     for(i in 1:ncol(robust_scores$mean)) {
-      
-      segments(x0 = ID,
+      segments(x0 = 1:length(ID),
                y0 = Mqs_scatter_plot[,i] + (i - 1),
-               x1 = ID,
+               x1 = 1:length(ID),
                y1 = Mqs_scatter_plot[,i + ncol(robust_scores$mean)] + (i - 1),
                col = col[i])
-      points(x = ID, 
+      points(x = 1:length(ID), 
              y = robust_scores$mean[,i] + (i - 1), 
              cex = 0.5, 
              col = col[i])
