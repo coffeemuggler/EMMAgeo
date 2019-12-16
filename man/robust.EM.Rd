@@ -4,8 +4,19 @@
 \alias{robust.EM}
 \title{Extract robust end-members}
 \usage{
-robust.EM(em, limits, classunits, amount, l, mc_n, type = "mean",
-  qt = c(0.25, 0.75), cores = 1, plot = FALSE, ...)
+robust.EM(
+  em,
+  limits,
+  classunits,
+  amount,
+  l,
+  mc_n,
+  type = "mean",
+  qt = c(0.25, 0.75),
+  cores = 1,
+  plot = FALSE,
+  ...
+)
 }
 \arguments{
 \item{em}{\code{List} of class \code{"EMMAgeo_empot"}, i.e. the outout of 

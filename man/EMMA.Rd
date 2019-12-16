@@ -4,8 +4,19 @@
 \alias{EMMA}
 \title{End-member modelling analysis algorithm.}
 \usage{
-EMMA(X, q, l, c, Vqn, classunits, ID, EM.ID, rotation = "Varimax",
-  plot = FALSE, ...)
+EMMA(
+  X,
+  q,
+  l,
+  c,
+  Vqn,
+  classunits,
+  ID,
+  EM.ID,
+  rotation = "Varimax",
+  plot = FALSE,
+  ...
+)
 }
 \arguments{
 \item{X}{\code{Numeric} matrix, input data set with m samples (rows) 

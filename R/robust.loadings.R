@@ -314,7 +314,7 @@ robust.loadings <- function(
                    Vqsn_data = EM.Vqsn.list)
   
   ## set class
-  class(data_out) <- "EMMAgeo_robload"
+  class(data_out)[1] <- "EMMAgeo_robload"
   
   ## return output
   return(data_out)

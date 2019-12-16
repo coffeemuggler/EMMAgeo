@@ -190,7 +190,7 @@ robust.EM <- function(
     mc_n <- 10 * nrow(Vqn_average) * length(em$l_in)
   }
   
-  if(class(l) == "try-error") {
+  if(class(l)[1] == "try-error") {
     
     stop("No end-members found that match limit definitions!")
   }

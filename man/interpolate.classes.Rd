@@ -4,8 +4,13 @@
 \alias{interpolate.classes}
 \title{Interpolate data between different classes.}
 \usage{
-interpolate.classes(X, boundaries.in, boundaries.out, method = "natural",
-  fixed.start = TRUE)
+interpolate.classes(
+  X,
+  boundaries.in,
+  boundaries.out,
+  method = "natural",
+  fixed.start = TRUE
+)
 }
 \arguments{
 \item{X}{\code{Numeric} matrix, input data set with m samples (rows) 

@@ -166,7 +166,7 @@ get.q <- function(X,
   q <- cbind(na.omit(object = q))
   
   ## set class
-  class(q) <- "EMMAgeo_q"
+  class(q)[1] <- "EMMAgeo_q"
   
   ## return result
   return(q)

@@ -4,8 +4,16 @@
 \alias{robust.loadings}
 \title{Extract robust end-member loadings}
 \usage{
-robust.loadings(em, limits, classunits, amount, type = "mean",
-  qt = c(0.25, 0.75), plot = FALSE, ...)
+robust.loadings(
+  em,
+  limits,
+  classunits,
+  amount,
+  type = "mean",
+  qt = c(0.25, 0.75),
+  plot = FALSE,
+  ...
+)
 }
 \arguments{
 \item{em}{\code{List} of class \code{"EMMAgeo_empot"}, i.e. the outout of 

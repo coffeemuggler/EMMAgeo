@@ -53,7 +53,7 @@ get.l <- function(
            length.out = n)
   
   ## set class of l
-  class(l) <- "EMMAgeo_l"
+  class(l)[1] <- "EMMAgeo_l"
   
   ## return output  
   return(l)

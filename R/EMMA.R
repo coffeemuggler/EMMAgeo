@@ -177,7 +177,7 @@ EMMA <- function(
   ## perform eigenspace decomposition
   EIG <- try(eigen(A), silent = TRUE)
   
-  if(class(EIG) == "try-error") {
+  if(class(EIG)[1] == "try-error") {
     
     stop("Cannot compute eigen space! Consider decreasing l.")
   }

@@ -4,8 +4,16 @@
 \alias{get.q}
 \title{Generate a parameter matrix with q.min and q.max values for robust EMMA.}
 \usage{
-get.q(X, l = 0, q.min = 2, q.max = 10, criteria.min = 0.5,
-  criteria.max = "local_max", correct.output = TRUE, ...)
+get.q(
+  X,
+  l = 0,
+  q.min = 2,
+  q.max = 10,
+  criteria.min = 0.5,
+  criteria.max = "local_max",
+  correct.output = TRUE,
+  ...
+)
 }
 \arguments{
 \item{X}{\code{Numeric} matrix, input data set with m samples (rows) 

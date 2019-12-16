@@ -47,7 +47,7 @@ get.limits <- function(
 ) {
   
   ## fill mode vector
-  if(class(loadings) == "EMMAgeo_empot") {
+  if(class(loadings)[1] == "EMMAgeo_empot") {
   
     loadings_mode <- loadings$modes  
   } else {
