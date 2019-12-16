@@ -222,7 +222,7 @@ model.EM <- function(
   
   
   ## set class
-  class(em) <- "EMMAgeo_empot"
+  class(em)[1] <- "EMMAgeo_empot"
 
   ## return output
   return(em)
