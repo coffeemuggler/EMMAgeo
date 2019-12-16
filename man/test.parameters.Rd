@@ -4,8 +4,17 @@
 \alias{test.parameters}
 \title{Evaluate influence of model parameters.}
 \usage{
-test.parameters(X, q, l = 0, c = 100, rotation = "Varimax",
-  plot = FALSE, legend, multicore = FALSE, ...)
+test.parameters(
+  X,
+  q,
+  l = 0,
+  c = 100,
+  rotation = "Varimax",
+  plot = FALSE,
+  legend,
+  multicore = FALSE,
+  ...
+)
 }
 \arguments{
 \item{X}{\code{Numeric} matrix, input data set with m samples (rows) 

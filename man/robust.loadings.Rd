@@ -2,10 +2,18 @@
 % Please edit documentation in R/robust.loadings.R
 \name{robust.loadings}
 \alias{robust.loadings}
-\title{Extract robust end-member loadings.}
+\title{Extract robust end-member loadings}
 \usage{
-robust.loadings(em, limits, classunits, amount, type = "mean",
-  qt = c(0.25, 0.75), plot = FALSE, ...)
+robust.loadings(
+  em,
+  limits,
+  classunits,
+  amount,
+  type = "mean",
+  qt = c(0.25, 0.75),
+  plot = FALSE,
+  ...
+)
 }
 \arguments{
 \item{em}{\code{List} of class \code{"EMMAgeo_empot"}, i.e. the outout of 
@@ -19,7 +27,8 @@ limits, the second column the upper limits. End-members are organised in
 rows.}
 
 \item{classunits}{\code{Numeric} vector, optional class units 
-(e.g. micrometers or phi-units) of the same length as columns of \code{X}.}
+(e.g. micrometers or phi-units) of the same length as the number of 
+(grain-size) classes per sample.}
 
 \item{amount}{\code{Numeric} matrix with two columns, defining the minimum and 
 maximum amount of the modal class for each end-member.}

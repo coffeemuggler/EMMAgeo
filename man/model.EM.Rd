@@ -2,7 +2,7 @@
 % Please edit documentation in R/model.EM.R
 \name{model.EM}
 \alias{model.EM}
-\title{Model all possible end-member scenarios.}
+\title{Model all possible end-member scenarios}
 \usage{
 model.EM(X, q, l, classunits, plot = TRUE, col.q = TRUE, bw, ...)
 }

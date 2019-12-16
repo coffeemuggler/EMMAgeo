@@ -4,8 +4,19 @@
 \alias{EMMA}
 \title{End-member modelling analysis algorithm.}
 \usage{
-EMMA(X, q, l, c, Vqn, classunits, ID, EM.ID, rotation = "Varimax",
-  plot = FALSE, ...)
+EMMA(
+  X,
+  q,
+  l,
+  c,
+  Vqn,
+  classunits,
+  ID,
+  EM.ID,
+  rotation = "Varimax",
+  plot = FALSE,
+  ...
+)
 }
 \arguments{
 \item{X}{\code{Numeric} matrix, input data set with m samples (rows) 
@@ -14,10 +25,10 @@ and n variables (columns).}
 \item{q}{\code{Numeric} scalar, number of end-members to be modelled.}
 
 \item{l}{\code{Numeric} scalar or vector, weight transformation
-limit, i.e.  quantile.}
+limit, i.e.  quantile. Set to zero if omitted.}
 
 \item{c}{\code{Numeric} scalar, constant sum scaling parameter, e.g.
-1, 100, 1000.}
+1, 100, 1000. Set to 100 if omitted.}
 
 \item{Vqn}{\code{Numeric} matrix, optional unscaled user-defined
 end-member loadings. If provided, these are used instead of model-derived

@@ -23,10 +23,10 @@
 #' @param q \code{Numeric} scalar, number of end-members to be modelled.
 #' 
 #' @param l \code{Numeric} scalar or vector, weight transformation
-#' limit, i.e.  quantile.
+#' limit, i.e.  quantile. Set to zero if omitted.
 #' 
 #' @param c \code{Numeric} scalar, constant sum scaling parameter, e.g.
-#' 1, 100, 1000.
+#' 1, 100, 1000. Set to 100 if omitted.
 #' 
 #' @param Vqn \code{Numeric} matrix, optional unscaled user-defined
 #' end-member loadings. If provided, these are used instead of model-derived
@@ -143,12 +143,18 @@ EMMA <- function(
   ## check/set ID vector and test for consistency
   if(missing(ID) == TRUE) {
     
-    ID <- 1:nrow(X)
+    ID <- as.character(1:nrow(X))
   }
   
   if(nrow(X) != length(ID)) {
     
     stop("ID vector is not of same length as variables.")
+  }
+  
+  ## check that no zero-only columns exist
+  if(any(colSums(X) == 0)) {
+    
+    stop("X contains columns with only zeros.")
   }
   
   ## End-member modelling
@@ -169,7 +175,12 @@ EMMA <- function(
   A <- t(W) %*% W
 
   ## perform eigenspace decomposition
-  EIG <- eigen(A)
+  EIG <- try(eigen(A), silent = TRUE)
+  
+  if(class(EIG)[1] == "try-error") {
+    
+    stop("Cannot compute eigen space! Consider decreasing l.")
+  }
 
   ## assign raw eigenvectors V
   V <- EIG$vectors[,order(seq(ncol(A), 1, -1))]
@@ -414,11 +425,6 @@ EMMA <- function(
       }
     }
     
-    ## adjust barplot labels
-    barplot_names_show <- pretty(ID, n = round(length(ID) / 5))
-    barplot_names_match <- match(x = ID, table = barplot_names_show) * 0 + 1
-    barplot_names <- ID * barplot_names_match
-    
     ## plot end-member scores
     barplot(t(Mqs), 
             main = main[2],
@@ -428,7 +434,7 @@ EMMA <- function(
             col = col,
             border = NA,
             space = 0, 
-            names.arg = barplot_names,
+            names.arg = ID,
             horiz = FALSE)
     box(which = "plot")
     

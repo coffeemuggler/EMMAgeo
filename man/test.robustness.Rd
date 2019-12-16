@@ -4,8 +4,20 @@
 \alias{test.robustness}
 \title{Test model robustness.}
 \usage{
-test.robustness(X, q, l, P, c, classunits, ID, rotation = "Varimax",
-  ol.rej, mRt.rej, plot = FALSE, ...)
+test.robustness(
+  X,
+  q,
+  l,
+  P,
+  c,
+  classunits,
+  ID,
+  rotation = "Varimax",
+  ol.rej,
+  mRt.rej,
+  plot = FALSE,
+  ...
+)
 }
 \arguments{
 \item{X}{Numeric matrix with m samples (rows) and n variables (columns).}
