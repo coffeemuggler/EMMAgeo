@@ -7,6 +7,7 @@
 
 # RStudio files
 .Rproj.user/
+.Rd2pdf19942/
 
 # produced vignettes
 vignettes/*.html
