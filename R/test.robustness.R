@@ -73,7 +73,7 @@
 #' 
 #' ## Example 1 - perform the most simple test
 #' q  <- 4:7
-#' l <- seq(from = 0, to = 0.1, by = 0.02)
+#' l <- seq(from = 0, to = 0.1, by = 0.05)
 #' 
 #' M1  <- test.robustness(X = X, q = q, l = l, 
 #'                        ol.rej = 1, mRt.rej = 0.8, 

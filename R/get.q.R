@@ -63,7 +63,7 @@
 #' data("example_X")
 #' 
 #' ## create parameter matrix
-#' get.q(X = X, l = c(0, 0.05, 0.10, 0.15))
+#' get.q(X = X, l = c(0, 0.05, 0.10))
 #' 
 #' @export get.q
 get.q <- function(X, 
