@@ -86,6 +86,12 @@ get.limits <- function(
   kde.limits.1 <- diff(x = kde.ok) == 1
   kde.limits.2 <- diff(x = kde.ok) == -1
   
+  ## stop if no meaningful limits can be produced
+  if(sum(kde.limits.1) != sum(kde.limits.1)) {
+    
+    stop("No coherent limits can be found! Set limits manually.")
+  }
+  
   ## create limits matrix
   limits <- cbind(kde$x[kde.limits.1], 
                   kde$x[kde.limits.2])
