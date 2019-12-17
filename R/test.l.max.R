@@ -32,7 +32,7 @@
 #' data(example_X)
 #' 
 #' ## create weight transformation limits vector
-#' l <- seq(from = 0, to = 0.6, by = 0.02)
+#' l <- seq(from = 0, to = 0.6, by = 0.2)
 #' 
 #' ## test l.max
 #' l.max <- test.l.max(X = X)

@@ -8,6 +8,7 @@
 # RStudio files
 .Rproj.user/
 .Rd2pdf19942/
+EMMAgeo.Rproj
 
 # produced vignettes
 vignettes/*.html
@@ -15,3 +16,4 @@ vignettes/*.pdf
 .Rproj.user
 
 .RData
+.gitignore
