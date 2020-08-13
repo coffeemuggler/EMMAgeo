@@ -11,8 +11,7 @@
 #' to get reasonable results. The default value may or may not be adequate! 
 #' 
 #' 
-#' @param loadings \code{Numeric} matrix, m loadings (rows) and n classes 
-#' (columns).
+#' @param loadings \code{R} object, output of function \code{model.EM}.
 #' 
 #' @param classunits \code{Numeric} vector, optional class units 
 #' (e.g. micrometers or phi-units) of the same length as columns of \code{X}.

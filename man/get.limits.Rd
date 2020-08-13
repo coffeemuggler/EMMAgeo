@@ -7,8 +7,7 @@
 get.limits(loadings, classunits, bw, threshold = 0.7)
 }
 \arguments{
-\item{loadings}{\code{Numeric} matrix, m loadings (rows) and n classes 
-(columns).}
+\item{loadings}{\code{R} object, output of function \code{model.EM}.}
 
 \item{classunits}{\code{Numeric} vector, optional class units 
 (e.g. micrometers or phi-units) of the same length as columns of \code{X}.}
