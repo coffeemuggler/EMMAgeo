@@ -1,10 +1,8 @@
-Changes for R-package EMMAgeo
-
 Version 0.9.8
-	- 
+	- legend text updated, classunits format corrected
 
 Version 0.9.7
-  	- object class querying updated
+	- object class querying updated
 	- ID assignment bug fixed
 	- Stop message for zero-only column case added
 	- Class unit aissgnment and propagation bug fixed

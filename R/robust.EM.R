@@ -201,7 +201,15 @@ robust.EM <- function(
                                  mc_n = mc_n, 
                                  cores = cores, 
                                  plot = FALSE)
+  
+  ## recalculate mode positions based on mean loadings
+  robust_scores$modes <- apply(X = robust_loadings$Vqsn$mean,
+                               MARGIN = 1,
+                               FUN = function(x, u) {
 
+                                 u[which(x == max(x))]
+                               }, u = classunits)
+  
   ## optionally, plot end-member loadings and scores
   if(plot == TRUE) {
 
@@ -368,7 +376,6 @@ robust.EM <- function(
     }
     
     ## plot end-member scores
-    
     Mqs_scatter_plot <- cbind(robust_scores$mean - robust_scores$sd,
                               robust_scores$mean + robust_scores$sd)
     Mqs_scatter_plot <- ifelse(Mqs_scatter_plot < 0, 0, Mqs_scatter_plot)
@@ -420,10 +427,10 @@ robust.EM <- function(
           cex = 0.9 * cex)
     
     ## bugfix included 2017-01-04 | assign classunits for legend output
-    classunits_legend <- classunits[robust_scores$modes]
+    classunits_legend <- robust_scores$modes
 
     legend(x = "bottom", 
-           legend = paste(EM.ID, " (", signif(x = classunits_legend, 
+           legend = paste(EM.ID, " (", round(x = classunits_legend, 
                                               digits = 2), " | ", 
                           signif(x = robust_scores$Mqs.var, 
                                  digits = 2), " %)", sep = ""), 

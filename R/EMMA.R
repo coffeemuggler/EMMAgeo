@@ -454,7 +454,7 @@ EMMA <- function(
           font = 2)
     
     legend(x = "bottom", 
-           legend = paste(EM.ID, " (", signif(x = modes, digits = 2), " | ", 
+           legend = paste(EM.ID, " (", round(x = modes, digits = 2), " | ", 
                           signif(x = Mqs.var, digits = 2), " %)", sep = ""), 
            col = col, 
            lty = lty, 
