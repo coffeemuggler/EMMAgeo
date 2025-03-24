@@ -29,8 +29,11 @@
 #' parameters.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{mix.EM}}
+#' 
+#' @seealso \code{mix.EM}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## set lower and upper class boundary, number of classes and class units

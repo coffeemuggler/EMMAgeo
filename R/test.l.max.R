@@ -17,7 +17,9 @@
 #' @return \code{Numeric} scalar, maximal possible l value.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{EMMA}}, \code{\link{test.l}}
+#' 
+#' @seealso \code{EMMA}, \code{test.l}
+#' 
 #' @references Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 #' Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
 #' deciphering modern detrital processes from lake sediments of Lake Donggi
@@ -25,7 +27,9 @@
 #' Klovan JE, Imbrie J. 1971. An Algorithm and FORTRAN-IV Program for
 #' Large-Scale Q-Mode Factor Analysis and Calculation of Factor Scores.
 #' Mathematical Geology 3: 61-77.
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set

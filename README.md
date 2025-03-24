@@ -43,13 +43,12 @@ Dietze, E and Dietze, M. (2019). EMMAgeo. GFZ Data Services. R package version 0
 
 Michael Dietze 
 
+Georg-August University Göttingen
 
-Helmholtz Centre Potsdam GFZ German Research Centre for Geoscienes 
+Institute of Geosciences and Geography
 
-Section 4.6 Geomorphology
+Goldschmidtstraße 7
 
-Telegrafenberg
+D-37077
 
-14473 Potsdam
-
-Germany
+Göttingen

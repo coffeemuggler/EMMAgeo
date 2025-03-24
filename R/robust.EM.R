@@ -57,9 +57,13 @@
 #'  
 #' @return \code{List} with statistic descriptions of end-member loadings 
 #' and scores.
+#' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{robust.loadings}}, \code{\link{robust.scores}}
+#' 
+#' @seealso \code{robust.loadings}, \code{robust.scores}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' \dontrun{

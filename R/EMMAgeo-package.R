@@ -21,11 +21,10 @@
 #' of real world sediment end-members.
 #' 
 #' \tabular{ll}{ Package: \tab EMMAgeo\cr Type: \tab Package\cr Version: \tab
-#' 0.9.7\cr Date: \tab 2019-05-10\cr License: \tab GPL-3\cr }
+#' 0.9.8\cr Date: \tab 2025-03-24\cr License: \tab GPL-3\cr }
 #' 
 #' @name EMMAgeo-package
 #' @aliases EMMAgeo
-#' @docType package
 #' @author Michael Dietze, Elisabeth Dietze
 #' @keywords package
 #' @import GPArotation
@@ -40,7 +39,8 @@
 #' @importFrom limSolve nnls
 #' @importFrom caTools runmean
 #' @importFrom matrixStats rowMins rowMaxs colVars
-NULL
+#' @md
+"_PACKAGE"
 
 #' example data
 #' 

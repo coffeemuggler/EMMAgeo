@@ -67,8 +67,7 @@
 #' of overlapping end-members.}
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{test.parameters}}, \code{\link{rotations}},
-#' \code{\link{eigen}}, \code{\link{nnls}}
+#' 
 #' @references Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 #' Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
 #' deciphering modern detrital processes from lake sediments of Lake Donggi
@@ -78,7 +77,9 @@
 #' Mathematical Geology 3: 61-77. Miesch AT. 1976. Q-Mode factor analysis of
 #' geochemical and petrologic data matrices with constant row sums. U.S.
 #' Geological Survey Professsional Papers 574.
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data and set phi-vector

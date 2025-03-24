@@ -27,8 +27,11 @@
 #' @return \code{Numeric} matrix with lower and upper mode limits.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{EMMA}}, \code{\link{model.EM}}
+#' 
+#' @seealso \code{EMMA}, \code{model.EM}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set

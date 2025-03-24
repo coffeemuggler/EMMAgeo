@@ -45,7 +45,7 @@ limits <- get.limits(loadings = EMpot)
 
 }
 \seealso{
-\code{\link{EMMA}}, \code{\link{model.EM}}
+\code{EMMA}, \code{model.EM}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

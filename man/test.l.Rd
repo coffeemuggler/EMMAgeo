@@ -45,8 +45,7 @@ Large-Scale Q-Mode Factor Analysis and Calculation of Factor Scores.
 Mathematical Geology 3: 61-77.
 }
 \seealso{
-\code{\link{EMMA}}, \code{\link{check.data}},
-\code{\link{test.parameters}}
+\code{EMMA}, \code{check.data}, \code{test.parameters}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

@@ -114,7 +114,7 @@ robust_EM <- robust.EM(em = EM_pot,
                     
 }
 \seealso{
-\code{\link{robust.loadings}}, \code{\link{robust.scores}}
+\code{robust.loadings}, \code{robust.scores}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

@@ -25,7 +25,7 @@
 #' default is FALSE.
 #' 
 #' @param legend \code{Character} scalar, specify legend position (cf.
-#' \code{\link{legend}}). If omitted, no legend will be plotted, default is no
+#' \code{legend}). If omitted, no legend will be plotted, default is no
 #' legend.
 #' 
 #' @param \dots Additional arguments passed to the plot function. Use
@@ -36,11 +36,14 @@
 #' r.min. }
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
+#' 
 #' @references Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 #' Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
 #' deciphering modern detrital processes from lake sediments of Lake Donggi
 #' Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set
