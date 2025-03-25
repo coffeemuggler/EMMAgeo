@@ -2,8 +2,10 @@ Package: EMMAgeo
 Type: Package
 Title: End-Member Modelling of Grain-Size Data
 Version: 0.9.8
-Date: 2025-03-24
-Author: Michael Dietze, Elisabeth Dietze
+Date: 2025-03-25
+Authors@R: c(
+    person("Michael", "Dietze", role = c("cre", "aut", "trl"), email = "michael.dietze@uni-goettingen.de"),
+    person("Elisabeth", "Dietze", role = c("ctb")))
 Maintainer: Michael Dietze <michael.dietze@uni-goettingen.de>
 Description: End-member modelling analysis of grain-size data is an approach 
     to unmix a data set's underlying distributions and their contribution to 
