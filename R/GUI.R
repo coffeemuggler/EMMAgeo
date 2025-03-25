@@ -13,10 +13,10 @@
 #' classes that contain only zeros throught all samples (i.e., remove them 
 #' beforehand, e.g., by \code{X = X[,colSums(X) > 0]}).
 #' 
-#' @param ... further arguments to pass to \code{\link{runApp}}
+#' @param ... further arguments to pass to function call
 #' 
 #' @author Michael Dietze
-#' @seealso \code{\link{runApp}}
+#' 
 #' @examples 
 #' 
 #' \dontrun{

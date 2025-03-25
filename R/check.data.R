@@ -4,7 +4,7 @@
 #' weight transformation limits (l) and constant sum scaling parameter 
 #' (\code{c}) are checked. This includes checking for absence of missing 
 #' values, columns containing only zero-values and for numeric data type of 
-#' all variables. A furthercheck tests if \code{l} is below the maximum 
+#' all variables. A further check tests if \code{l} is below the maximum 
 #' possible value, preventing numerical instability prior to factor rotation.
 #' 
 #' 
@@ -24,8 +24,11 @@
 #' @return \code{Character} vector, verbose test results.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{EMMA}}
+#' 
+#' @seealso \code{EMMA}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set

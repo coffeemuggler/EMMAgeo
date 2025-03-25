@@ -42,7 +42,7 @@ length as columns of X.}
 
 \item{rotation}{Character scalar, rotation type, default is "Varimax" (cf.
 Dietze et al., 2012). One out of the rotations provided in GPArotation is
-possible (cf. \code{\link{rotations}}).}
+possible.}
 
 \item{ol.rej}{Numeric scalar, optional rejection threshold for overlapping
 criterion.  All model runs with overlapping end-members greater than the
@@ -142,7 +142,7 @@ stem(M2$modes, scale = 2)
 Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
 deciphering modern detrital processes from lake sediments of Lake Donggi
-Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180. \cr
+Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
 }
 \author{
 Michael Dietze, Elisabeth Dietze

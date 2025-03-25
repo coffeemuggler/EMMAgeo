@@ -48,12 +48,16 @@
 #' input parameters, mode position, quality measures and value distributions.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{EMMA}}, \code{\link{test.l.max}}
+#' 
+#' @seealso \code{EMMA}, \code{test.l.max}
+#' 
 #' @references Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 #' Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
 #' deciphering modern detrital processes from lake sediments of Lake Donggi
 #' Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set

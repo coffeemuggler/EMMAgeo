@@ -11,8 +11,7 @@
 #' to get reasonable results. The default value may or may not be adequate! 
 #' 
 #' 
-#' @param loadings \code{Numeric} matrix, m loadings (rows) and n classes 
-#' (columns).
+#' @param loadings \code{R} object, output of function \code{model.EM}.
 #' 
 #' @param classunits \code{Numeric} vector, optional class units 
 #' (e.g. micrometers or phi-units) of the same length as columns of \code{X}.
@@ -28,8 +27,11 @@
 #' @return \code{Numeric} matrix with lower and upper mode limits.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{EMMA}}, \code{\link{model.EM}}
+#' 
+#' @seealso \code{EMMA}, \code{model.EM}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set
@@ -85,6 +87,12 @@ get.limits <- function(
   
   kde.limits.1 <- diff(x = kde.ok) == 1
   kde.limits.2 <- diff(x = kde.ok) == -1
+  
+  ## stop if no meaningful limits can be produced
+  if(sum(kde.limits.1) != sum(kde.limits.1)) {
+    
+    stop("No coherent limits can be found! Set limits manually.")
+  }
   
   ## create limits matrix
   limits <- cbind(kde$x[kde.limits.1], 

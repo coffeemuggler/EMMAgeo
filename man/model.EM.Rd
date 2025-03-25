@@ -76,7 +76,7 @@ deciphering modern detrital processes from lake sediments of Lake Donggi
 Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
 }
 \seealso{
-\code{\link{EMMA}}, \code{\link{test.l.max}}
+\code{EMMA}, \code{test.l.max}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

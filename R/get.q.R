@@ -50,8 +50,9 @@
 #' transformation values as rownames.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{EMMA}}, \code{\link{test.parameters}}, 
-#' \code{\link{test.robustness}}
+#' 
+#' @seealso \code{EMMA}, \code{test.parameters}, \code{test.robustness}
+#' 
 #' @references Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 #' Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
 #' deciphering modern detrital processes from lake sediments of Lake Donggi

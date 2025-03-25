@@ -4,9 +4,11 @@
 \name{EMpot}
 \alias{EMpot}
 \title{example data}
-\format{The format is: List of 8 $ q : num [1:90] 4 4 4 4 4 4 4 4 4 4 ...  $
+\format{
+The format is: List of 8 $ q : num [1:90] 4 4 4 4 4 4 4 4 4 4 ...  $
 lw : num [1:90] 0 0 0 0 0.05 0.05 0.05 0.05 0.1 0.1 ...  $ modes : num
-[1:90] 12 32 61 80 12 32 61 80 12 32 ...}
+[1:90] 12 32 61 80 12 32 61 80 12 32 ...
+}
 \description{
 A list with output of the function test.robustness()
 }

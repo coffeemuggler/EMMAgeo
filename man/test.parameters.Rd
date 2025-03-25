@@ -38,7 +38,7 @@ bitmaps of q, l and the specified test parameter and line-plots the
 specified parameter vs. \code{q}.}
 
 \item{legend}{\code{Character} scalar, specifying legend position (cf.
-\code{\link{legend}}).  If omitted, no legend will be plotted, default is no
+\code{legend}).  If omitted, no legend will be plotted, default is no
 legend.}
 
 \item{multicore}{\code{Logical} scalar, optionally ditribute calculations 
@@ -107,7 +107,7 @@ deciphering modern detrital processes from lake sediments of Lake Donggi
 Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
 }
 \seealso{
-\code{\link{EMMA}}
+\code{EMMA}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

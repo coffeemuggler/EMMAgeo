@@ -59,7 +59,7 @@ lines(phi, EMa.2, col = "red")
 
 }
 \seealso{
-\code{\link{mix.EM}}
+\code{mix.EM}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

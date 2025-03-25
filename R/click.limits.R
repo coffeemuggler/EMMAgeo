@@ -5,7 +5,7 @@
 #' Clicks must be placed in the order lower limit, upper limit - for each
 #' end-member successively.
 #' 
-#' @param data \code{List} object, output of \code{\link{test.robustness}}.
+#' @param data \code{List} object, output of \code{test.robustness}.
 #' 
 #' @param n \code{Numeric} scalar, number of target end-members.
 #' 
@@ -16,8 +16,11 @@
 #' limits, the second row upper limits for each end-member.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{test.robustness}}, \code{\link{robust.EM}}
+#' 
+#' @seealso \code{test.robustness}, \code{robust.EM}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set

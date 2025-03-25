@@ -25,8 +25,11 @@
 #' @return \code{Numeric} matrix, interpolated class values.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{EMMA}}, \code{\link{approx}}, \code{\link{spline}}
+#' 
+#' @seealso \code{EMMA}, \code{approx}, \code{spline}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data

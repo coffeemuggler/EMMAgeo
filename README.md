@@ -1,4 +1,4 @@
-# EMMAgeo - R package, v. 0.9.7
+# EMMAgeo - R package, v. 0.9.9
 
 The R package 'EMMAgeo' provides a functions for end-member modelling analysis of grain-size data.
 
@@ -37,19 +37,18 @@ Please use the below reference when citing the usage of the package. It is impor
 Dietze, E., and Dietze, M.: Grain-size distribution unmixing using the R package EMMAgeo, E&G
 Quaternary Sci. J., 69, 1-8, https://doi.org/10.5194/egqsj-69-1-2019, 2019.
 
-Dietze, E and Dietze, M. (2019). EMMAgeo. GFZ Data Services. R package version 0.9.7. http://doi.org/10.5880/GFZ.4.6.2019.002.
+Dietze, E and Dietze, M. (2019). EMMAgeo. GFZ Data Services. R package version 0.9.8. http://doi.org/10.5880/GFZ.4.6.2019.002.
 
 ### Contact
 
 Michael Dietze 
 
+Georg-August University Göttingen
 
-Helmholtz Centre Potsdam GFZ German Research Centre for Geoscienes 
+Institute of Geosciences and Geography
 
-Section 4.6 Geomorphology
+Goldschmidtstraße 7
 
-Telegrafenberg
+D-37077
 
-14473 Potsdam
-
-Germany
+Göttingen

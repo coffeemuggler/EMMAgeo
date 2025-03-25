@@ -20,7 +20,7 @@ of the a vailable keywords. Default is \code{"mRt"}.}
 end-member loadings.}
 
 \item{rotation}{\code{Character} scalar, rotation type, default is "Varimax"
-(cf. \code{\link{EMMA}} for further information).}
+(cf. \code{EMMA} for further information).}
 
 \item{plot}{\code{Logical} scalar, optional graphical output of the result.}
 
@@ -37,7 +37,7 @@ transformation value, which yielded the highest measure of model quality.
 \details{
 The parameter \code{quality} can be one out of the following keywords: 
 \code{"mRm"}, \code{"mRn"}, \code{"mRt"}, \code{"mEm"}, \code{"mEn"} and 
-\code{"mEt"}. See \code{\link{EMMA}} for definition of these keywords.
+\code{"mEt"}. See \code{EMMA} for definition of these keywords.
 }
 \examples{
 
@@ -53,7 +53,7 @@ data(example_EMpot)
 
 }
 \seealso{
-\code{\link{EMMA}}
+\code{EMMA}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

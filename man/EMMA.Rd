@@ -118,10 +118,6 @@ Mathematical Geology 3: 61-77. Miesch AT. 1976. Q-Mode factor analysis of
 geochemical and petrologic data matrices with constant row sums. U.S.
 Geological Survey Professsional Papers 574.
 }
-\seealso{
-\code{\link{test.parameters}}, \code{\link{rotations}},
-\code{\link{eigen}}, \code{\link{nnls}}
-}
 \author{
 Michael Dietze, Elisabeth Dietze
 }

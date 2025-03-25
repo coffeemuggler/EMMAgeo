@@ -13,8 +13,11 @@
 #' @return \code{Numeric} vector, converted grain-size class values.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{interpolate.classes}}
+#' 
+#' @seealso \code{interpolate.classes}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## generate phi-values

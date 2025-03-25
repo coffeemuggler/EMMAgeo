@@ -70,7 +70,7 @@ robust_loadings <- robust.loadings(em = EMpot,
                     
 }
 \seealso{
-\code{\link{robust.EM}}, \code{\link{robust.scores}}
+\code{robust.EM}, \code{robust.scores}
 }
 \author{
 Michael Dietze, Elisabeth Dietze
