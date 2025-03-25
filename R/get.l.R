@@ -19,8 +19,11 @@
 #' transformation values.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{test.l.max}}
+#' 
+#' @seealso \code{test.l.max}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set

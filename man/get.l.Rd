@@ -42,7 +42,7 @@ l <- get.l(X = X,
 
 }
 \seealso{
-\code{\link{test.l.max}}
+\code{test.l.max}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

@@ -7,7 +7,7 @@
 click.limits(data, n, classunits)
 }
 \arguments{
-\item{data}{\code{List} object, output of \code{\link{test.robustness}}.}
+\item{data}{\code{List} object, output of \code{test.robustness}.}
 
 \item{n}{\code{Numeric} scalar, number of target end-members.}
 
@@ -40,7 +40,7 @@ TR <- test.robustness(X = X, q = q, l = l)
 
 }
 \seealso{
-\code{\link{test.robustness}}, \code{\link{robust.EM}}
+\code{test.robustness}, \code{robust.EM}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

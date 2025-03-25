@@ -4,7 +4,9 @@
 \name{X}
 \alias{X}
 \title{example data}
-\format{num [1:100, 1:116] 0.000899 0.000516 0.00136 0.000989 0.00102 ...}
+\format{
+num [1:100, 1:116] 0.000899 0.000516 0.00136 0.000989 0.00102 ...
+}
 \description{
 Synthetic data set created by randomly mixed natural end-members
 }

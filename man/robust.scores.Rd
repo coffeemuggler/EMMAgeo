@@ -58,7 +58,7 @@ robust_scores <- robust.scores(loadings = robust_loadings,
                     
 }
 \seealso{
-\code{\link{robust.EM}}, \code{\link{robust.loadings}}
+\code{robust.EM}, \code{robust.loadings}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

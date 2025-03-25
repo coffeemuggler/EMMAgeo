@@ -37,8 +37,11 @@
 #' end-member loadings.
 #'  
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{robust.EM}}, \code{\link{robust.scores}}
+#' 
+#' @seealso \code{robust.EM}, \code{robust.scores}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set, potential end-members, output of model.EM()

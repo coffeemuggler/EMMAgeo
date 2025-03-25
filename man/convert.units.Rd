@@ -34,7 +34,7 @@ convert.units(mu = mu)
 
 }
 \seealso{
-\code{\link{interpolate.classes}}
+\code{interpolate.classes}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

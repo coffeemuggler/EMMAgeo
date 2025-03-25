@@ -7,7 +7,7 @@
 GUI(...)
 }
 \arguments{
-\item{...}{further arguments to pass to \code{\link{runApp}}}
+\item{...}{further arguments to pass to function call}
 }
 \description{
 This function starts a browser-based graphic user interface for EMMA. The 
@@ -31,9 +31,6 @@ beforehand, e.g., by \code{X = X[,colSums(X) > 0]}).
 GUI()
 }
 
-}
-\seealso{
-\code{\link{runApp}}
 }
 \author{
 Michael Dietze

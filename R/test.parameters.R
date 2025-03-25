@@ -43,7 +43,7 @@
 #' specified parameter vs. \code{q}.
 #' 
 #' @param legend \code{Character} scalar, specifying legend position (cf.
-#' \code{\link{legend}}).  If omitted, no legend will be plotted, default is no
+#' \code{legend}).  If omitted, no legend will be plotted, default is no
 #' legend.
 #' 
 #' @param multicore \code{Logical} scalar, optionally ditribute calculations 
@@ -57,13 +57,18 @@
 #' variance.} \item{mRt}{Mean total explained variance.} \item{ol}{Number of
 #' overlapping end-member loadings.} \item{q.max}{Maximum number of meaningful
 #' end-members.}
+#' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{EMMA}}
+#' 
+#' @seealso \code{EMMA}
+#' 
 #' @references Dietze E, Hartmann K, Diekmann B, IJmker J, Lehmkuhl F, Opitz S,
 #' Stauch G, Wuennemann B, Borchers A. 2012. An end-member algorithm for
 #' deciphering modern detrital processes from lake sediments of Lake Donggi
 #' Cona, NE Tibetan Plateau, China. Sedimentary Geology 243-244: 169-180.
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set

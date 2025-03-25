@@ -7,8 +7,7 @@
 get.limits(loadings, classunits, bw, threshold = 0.7)
 }
 \arguments{
-\item{loadings}{\code{Numeric} matrix, m loadings (rows) and n classes 
-(columns).}
+\item{loadings}{\code{R} object, output of function \code{model.EM}.}
 
 \item{classunits}{\code{Numeric} vector, optional class units 
 (e.g. micrometers or phi-units) of the same length as columns of \code{X}.}
@@ -46,7 +45,7 @@ limits <- get.limits(loadings = EMpot)
 
 }
 \seealso{
-\code{\link{EMMA}}, \code{\link{model.EM}}
+\code{EMMA}, \code{model.EM}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

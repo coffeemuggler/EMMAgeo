@@ -23,7 +23,7 @@ be reached by the end-members included, default is 0.95.}
 default is FALSE.}
 
 \item{legend}{\code{Character} scalar, specify legend position (cf.
-\code{\link{legend}}). If omitted, no legend will be plotted, default is no
+\code{legend}). If omitted, no legend will be plotted, default is no
 legend.}
 
 \item{\dots}{Additional arguments passed to the plot function. Use

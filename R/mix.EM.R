@@ -25,8 +25,11 @@
 #' end-members.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{create.EM}}
+#' 
+#' @seealso \code{create.EM}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## define end-member loadings and phi vector

@@ -58,7 +58,7 @@ lines(phi, sample2)
 
 }
 \seealso{
-\code{\link{create.EM}}
+\code{create.EM}
 }
 \author{
 Michael Dietze, Elisabeth Dietze

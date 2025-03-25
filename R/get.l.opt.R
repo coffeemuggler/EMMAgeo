@@ -5,7 +5,7 @@
 #' 
 #' The parameter \code{quality} can be one out of the following keywords: 
 #' \code{"mRm"}, \code{"mRn"}, \code{"mRt"}, \code{"mEm"}, \code{"mEn"} and 
-#' \code{"mEt"}. See \code{\link{EMMA}} for definition of these keywords.
+#' \code{"mEt"}. See \code{EMMA} for definition of these keywords.
 #' 
 #' @param X \code{Numeric} matrix, input data set with m samples (rows) 
 #' and n variables (columns).
@@ -20,7 +20,7 @@
 #' end-member loadings.
 #' 
 #' @param rotation \code{Character} scalar, rotation type, default is "Varimax"
-#' (cf. \code{\link{EMMA}} for further information).
+#' (cf. \code{EMMA} for further information).
 #' 
 #' @param plot \code{Logical} scalar, optional graphical output of the result.
 #' 
@@ -30,8 +30,11 @@
 #' EMMA result.
 #' 
 #' @author Michael Dietze, Elisabeth Dietze
-#' @seealso \code{\link{EMMA}}
+#' 
+#' @seealso \code{EMMA}
+#' 
 #' @keywords EMMA
+#' 
 #' @examples
 #' 
 #' ## load example data set

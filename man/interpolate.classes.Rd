@@ -79,7 +79,7 @@ for(i in 1:10) {
 
 }
 \seealso{
-\code{\link{EMMA}}, \code{\link{approx}}, \code{\link{spline}}
+\code{EMMA}, \code{approx}, \code{spline}
 }
 \author{
 Michael Dietze, Elisabeth Dietze
